@@ -67,7 +67,7 @@ Eclipse manages the build (you edit Build and Debug Configurations, not Makefile
 
 This is for two target embedded chips, the nRF52 having an ARM M4 mcu and the nRF51 having an ARM M0 mcu.  Many resources are named with 51 or 52 when they are specific to a target.
 
-You can set a build configuration active.  Then you edit it in the project's Properties.
+You can set a build configuration active.  Then you edit it in the project's Properties.  Below where it says "...chooses one...", it means: changing this property configures the active build configuration.  In other words, you don't edit a Makefile, you use the Eclipse GUI to modify the Eclipse internal project data.
 
 *Properties>C/C++ General>Paths and Symbols>Symbols* defines preprocessor symbol NRF51 or NRF52 which conditionally compiles code (mainly in Nordic provided files.)
 
