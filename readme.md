@@ -1,4 +1,4 @@
-A minimal Eclipse project for testing libraries for two targets in the nRF5x family of embedded radios (ARM architecture.)
+A minimal Eclipse project for two targets in the nRF5x family of embedded radios (ARM architecture.)
 
 If you don't use Eclipse and nRF5x, it's not interesting.  The value is in the Eclipse project's build and debug configurations, for learning or modifying.
 
@@ -20,6 +20,7 @@ I use:
      Ubuntu 16.04 LTS
      Eclipse Neon version
      Eclipse ARM GCC plugin
+     Nordic NRF_SDK v12
     
 See Also
 -
@@ -28,13 +29,10 @@ I started here:
 
 https://bitknitting.wordpress.com/2015/09/06/using-eclipse-for-nrf51-development-getting-off-makefile-and-into-managed-make/
 
-This project's configuration follows that tutorial, but:
+This project's configuration follows that tutorial, but also:
 
-    updated to have multiple build configurations:
-
-         for multiple targets: nRF51 and nRF52.
-         linking in target specific libraries
-         
+    having multiple build configurations for multiple targets: nRF51 and nRF52.
+    linking in target specific static libraries
     changed from C to C++
 
 
