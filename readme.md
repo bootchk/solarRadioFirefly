@@ -1,21 +1,22 @@
 Digital, solar fireflies using Nordic radio modules, that blink in unison.  No batteries, sleep mostly.
 
+Work in progress.
 
 Background
 -
 
 Firefly insects synchronize their flashing.
 
-There are analog electronics fireflies (communicating through their flashes.)  Using batteries.
+There are analog electronic fireflies (communicating through their flashes.)  Using batteries.
 
 Here, also electronic, but:
 
      digital
-     communicate via radio.
+     communicate via radio
      power is solar power  
      
-Much of the difficulty is in sleep synchronization: making the units wake at the same time.
-Also, managing limited power budget.
+Much of the difficulty is in sleep synchronization: making units wake at the same time.
+Also, managing a limited power budget.
 
     
 Environment
@@ -48,7 +49,7 @@ Choose a build configuration:  right mouse click on the project and choose *Prop
 
 Start the build:  click on the hammer icon, or choose *Project>Build All*
 
-The project uses libraries and headers from nother projects.  You might need to build that project and copy the library and header into this project.  If you are using a version of the NRF\_SDK other than v12, you might need to build the libraries on that base.
+The project uses libraries and headers from other projects.  You might need to build those projects and copy the libraries and headers into this project.  If you are using a version of the NRF\_SDK other than v12, you might need to build the libraries on that base.
 
 Debugging
 -
