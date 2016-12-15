@@ -13,11 +13,6 @@
 // Project has include path to nRF5x library
 #include "nRF5x.h"
 
-//#include "modules/radio.h"
-//#include "platform/sleeper.h"
-//#include "platform/ledLogger.h"
-//#include "platform/timerService.h"
-//#include "nRFCounter.h"
 
 // Project has include path to sleepSyncAgent project
 #include "sleepSyncAgent.h"
@@ -38,11 +33,10 @@ void timeoutCallback2() {}
 
 namespace {
 
-Radio radio;
-
 SleepSyncAgent sleepSyncAgent;
 
-// Objects from nRF5x i.e. platform
+// Objects from nRF5x library i.e. platform
+Radio radio;
 Mailbox myOutMailbox;
 LongClockTimer longClockTimer;
 Nvic nvic;
@@ -107,28 +101,26 @@ int powerManagedMain() {
 
 
 	/*
-	 * Stitch things together: objects use each other.
-	 */
+	 * Stitch things together: objects use each other.  Order is important.
 
-	/*
 	 * sleepSyncAgent owns and inits Sleeper instance which requires longClockTimer
 	 * which itself need nvic.
+	 *
+	 * sleepSyncAgent:
+	 * - uses radio instance which uses other devices
+	 * - uses LongClockTimer for nowTime
+	 * - communicates using mailBox
 	 */
+	// nvic, powerSupply, hfClock not need init
 	longClockTimer.init(&nvic);
 
-	/*
-	 * sleepSyncAgent uses radio instance which uses other devices
-	 */
 	radio.init(
 			&nvic,
 			&powerSupply,
 			&hfClock);
+	// sleepSyncAgent will connect msgReceivedCallback and handle all messages
 
-	/*
-	 *
-	 */
 	workSupervisor.init(&myOutMailbox, &longClockTimer);
-
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
 	sleepSyncAgent.loopOnEvents();	// never returns
