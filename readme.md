@@ -1,4 +1,4 @@
-Digital,solar fireflies.  Nordic modules that blink in unison.  No batteries, sleep mostly.
+Digital, solar fireflies using Nordic radio modules, that blink in unison.  No batteries, sleep mostly.
 
 
 Background
