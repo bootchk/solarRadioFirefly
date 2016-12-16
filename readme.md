@@ -36,8 +36,8 @@ The project derives from nRFRawProtocol which contains the original wireless pro
 
 Uses libraries (also on Github):
 
-     sleepSyncAgent
-     nRF5x
+     sleepSyncAgent (ARM M0 and ARM M4 versions, does not depend on nRF5x chips except via nRF5x library)
+     nRF5x (nRF51 and nRF52 versions, specific to ARM mcu and peripherals unique to nRF5x chip family)
      
 
 Building
