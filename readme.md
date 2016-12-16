@@ -39,6 +39,8 @@ Uses libraries (also on Github):
      sleepSyncAgent (ARM M0 and ARM M4 versions, does not depend on nRF5x chips except via nRF5x library)
      nRF5x (nRF51 and nRF52 versions, specific to ARM mcu and peripherals unique to nRF5x chip family)
      
+!!! Note the order of libraries is important (in the build configuration) because sleepSyncAgent uses nRF5x.
+     
 
 Building
 -
