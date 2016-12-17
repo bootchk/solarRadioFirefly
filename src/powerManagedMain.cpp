@@ -11,24 +11,14 @@
 
 
 // Project has include path to nRF5x library
-#include "nRF5x.h"
-
+#include <nRF5x.h>
 
 // Project has include path to sleepSyncAgent project
-#include "sleepSyncAgent.h"
-
+#include <sleepSyncAgent.h>
 
 // project local
 #include "modules/groupWork.h"
 #include "modules/workSupervisor.h"
-
-
-#ifdef OLD
-// Nothing, just wakes us.
-void timeoutCallback0() {}
-void timeoutCallback1() {}
-void timeoutCallback2() {}
-#endif
 
 
 namespace {
