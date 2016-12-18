@@ -8,6 +8,11 @@
 
 #include "nRF5x.h"
 
+
+// dummy workpayload represents version of code
+#define WORK_VERSION 34
+
+
 namespace {
 
 Mailbox* myOutMailbox;
@@ -19,7 +24,7 @@ void sendWork() {
 		log("Mail still in mailbox\n");
 	}
 	else {
-		myOutMailbox->put(33);	// 33 dummy data
+		myOutMailbox->put(WORK_VERSION);
 		log("App put work\n");
 	}
 }

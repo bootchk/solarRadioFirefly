@@ -27,8 +27,10 @@
 
 // Project has include path to nRF5x library
 #include <nRF5x.h>
+// Build config include path NRF_SDK/external/segger_rtt
+#include <SEGGER_RTT.h>
 
-
+// I couldn't get logPrintf to work
 
 
 Radio radio;
@@ -52,14 +54,25 @@ void logMessage() {
 
 	buffer = radio.getBufferAddress();
 
-	if (buffer[0] == 17)
+	switch(buffer[0]){
+
+	case 17:
 		// Print two LSB's of MasterID
-		logPrintf("Sync %02x%02x\n", buffer[1], buffer[2]);
-	else if (buffer[0] == 136)
-		logPrintf("Work %02x%02x\n", buffer[1], buffer[2]);
-	else
+		SEGGER_RTT_printf(0, "Sync %02x%02x\r\n", buffer[2], buffer[1]);
+
+		//logPrintf("Sync %02x%02x\r\n", buffer[1], buffer[2]);
+		//log("Sync"); logByte(buffer[1]); log("\n");
+		break;
+	case 136:
+		SEGGER_RTT_printf(0, "WorkSync %02x%02x %02X\n",  buffer[2],buffer[1], buffer[10]);
+		break;
+	case 34:
+		SEGGER_RTT_printf(0, "MergeSync %02x%02x\n",  buffer[2],buffer[1]);
+		break;
+	default:
 		// Other message types
-		logPrintf("%02x %02x%02x\n", buffer[0], buffer[1], buffer[2]);
+		SEGGER_RTT_printf(0, "Other %02x %02x%02x\r\n", buffer[0], buffer[2], buffer[1]);
+	}
 }
 
 
