@@ -125,6 +125,8 @@ void snifferMain(void)
     		}
     		else {
     			log("Bad CRC.\n");
+    			// buffer can be dumped despite bad CRC
+    			logMessage();
     			ledLogger.toggleLED(3);
     		}
     		break;
