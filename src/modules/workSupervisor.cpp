@@ -1,10 +1,12 @@
 
+#include <nRF5x.h>
 
 #include "workSupervisor.h"
 #include "worker.h"
 #include "groupWork.h"
 
-#include "nRF5x.h"
+#include "fireflyConfig.h"
+
 
 
 /*
@@ -36,21 +38,21 @@ void simpleManagePowerWithWork() {
 	case VoltageRange::Excess:
 		/* e.g. > 2.7V.
 		 * Self MUST work locally to keep voltage from exceeding Vmax
-		 * Not sent to group.
+		 * Send to group.
 		 */
 		worker.increaseAmount();
-		groupWork.workInIsolation();
+		groupWork.initiateGroupWork();
 		break;
 
 	case VoltageRange::High:
 		/* e.g. 2.5V - 2.7V
-		 * I could work.
+		 * I could work (enough power) but I don't need to work to manage excess power.
 		 */
 		worker.decreaseAmount();
 
 		/*
 		 * This may cause local work.
-		 * Thus is can be that we do two local works in consecutive calls.
+		 * Thus we might do two local works in consecutive calls.
 		 * I.E. For Excess, then for High
 		 * I.E. For High, then High (when both random results are true.)
 		 */
@@ -135,8 +137,9 @@ void WorkSupervisor::manageVoltageByWork() {
  *
  * (The solar cells can produce a max of 4.8V, which is not exceedingly dangerous to the chips.)
  */
-#ifdef NRF52	// Really this means: power supply is unlimited
-
+#ifdef POWER_IS_SOLAR
+	simpleManagePowerWithWork();
+#else
 	/*
 	 * Default amount of work is enough to perceive,
 	 * but to make it more visible...
@@ -144,8 +147,6 @@ void WorkSupervisor::manageVoltageByWork() {
 	worker.setAmountPerceivable();
 
 	groupWork.randomlyInitiateGroupWork();
-#else
-	simpleManagePowerWithWork();
 #endif
 
 

@@ -40,6 +40,12 @@ void GroupWork::init(Mailbox* aMailbox, Worker* aLocalWorker){
 
 void GroupWork::initiateGroupWork() {
 	localWorker->work();
+	/*
+	 * Local work might exhaust power (not usual.)
+	 * Assert queue will be non-empty (queuing takes no power)
+	 * If on the previous cycle, we also queued but there wasn't enough power to xmit, then queue was not empty.
+	 * Sending might not happen (not enough power for radio).
+	 */
 	sendWork();		// tell group to work
 }
 
@@ -53,3 +59,6 @@ void GroupWork::workInIsolation() {
 	// work on this unit, but don't tell group
 	localWorker->work();
 }
+
+
+

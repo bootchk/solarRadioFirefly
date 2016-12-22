@@ -72,3 +72,7 @@ Eclipse manages the build (you edit Build and Debug Configurations, not Makefile
 This is for two target embedded chips, the nRF52 having an ARM M4 mcu and the nRF51 having an ARM M0 mcu.  Many resources are named with 51 or 52 when they are specific to a target.
 
 You can set a build configuration active.  Then you edit it in the project's Properties.  See nRFCounter project for more explanation.  That was the original project where I used Eclipse managed builds instead of hand managed Makefiles.
+
+TODO
+-
+There is a library ordering issue: the ISR handlers that override defaults are in the nRF5x library so the default handler in startup.c is already resolved weak before the strong override is seen.  Move startup to nRF5x library.
