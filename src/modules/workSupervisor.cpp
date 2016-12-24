@@ -5,7 +5,7 @@
 #include "worker.h"
 #include "groupWork.h"
 
-#include "fireflyConfig.h"
+#include "../fireflyConfig.h"
 
 
 
