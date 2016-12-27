@@ -32,7 +32,7 @@ LongClockTimer longClockTimer;
 Nvic nvic;
 
 PowerSupply powerSupply;
-HfClock hfClock;
+HfCrystalClock hfClock;
 
 WorkSupervisor workSupervisor;
 
@@ -109,6 +109,9 @@ int powerManagedMain() {
 			&powerSupply,
 			&hfClock);
 	// sleepSyncAgent will connect msgReceivedCallback and handle all messages
+
+	// !!! HfCrystalClock uses nvic
+	hfClock.init(&nvic);
 
 	workSupervisor.init(&myOutMailbox, &longClockTimer);
 

@@ -39,7 +39,7 @@ LEDLogger ledLogger;
 LongClockTimer longClockTimer;
 Nvic nvic;
 PowerSupply powerSupply;
-HfClock hfClock;
+HfCrystalClock hfClock;
 
 
 void onRcvMsgCallback() {
@@ -81,6 +81,7 @@ void snifferMain(void)
 	initLogging();
 
 	longClockTimer.init(&nvic);
+	hfClock.init(&nvic);
 
 	sleeper.init(200000, &longClockTimer);	// requires initialized TimerService
 
@@ -100,6 +101,7 @@ void snifferMain(void)
     log("Sniffer starts\r\n");
 
     // Radio always on
+    radio.hfCrystalClock->startAndSleepUntilRunning();	// radio requires
     radio.powerOnAndConfigure();	// Configures for fixed length messages
 
     while (true)
