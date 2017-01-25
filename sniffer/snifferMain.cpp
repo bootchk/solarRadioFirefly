@@ -101,7 +101,12 @@ void snifferMain(void)
     log("Sniffer starts\r\n");
 
     // Radio always on
+    logLongLong(longClockTimer.nowTime());
     radio.hfCrystalClock->startAndSleepUntilRunning();	// radio requires
+    //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
+    logLongLong(longClockTimer.nowTime());
+    log("<hfclock\n");
+
     radio.powerOnAndConfigure();	// Configures for fixed length messages
 
     while (true)

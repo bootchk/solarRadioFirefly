@@ -85,7 +85,7 @@ void onSyncPoint() {
 
 
 
-int powerManagedMain() {
+void powerManagedMain() {
 	// assert embedded system startup is done and calls main.
 	// assert platform initialized radio
 
@@ -117,7 +117,6 @@ int powerManagedMain() {
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
 	sleepSyncAgent.loopOnEvents();	// never returns
-	return 0;
 }
 
 

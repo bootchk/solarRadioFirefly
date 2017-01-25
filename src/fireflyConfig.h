@@ -15,4 +15,4 @@
  * then you should uncomment this, else nRF52 can be stressed by Vcc above Vmax
  * (lowers lifetime but doesn't burn up the chip immediately.)
  */
-// #define POWER_IS_SOLAR 1
+#define POWER_IS_SOLAR 1

@@ -1,5 +1,6 @@
 Files in this directory
 
+	define ISR vector tables and other startup functions
 	are specific to a target 52
 	are source files to be compiled
 	are copied from the SDK (they could be linked instead)
