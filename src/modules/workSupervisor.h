@@ -24,7 +24,7 @@
 
 class WorkSupervisor {
 public:
-	static void init(Mailbox*, LongClockTimer*);
+	static void init(Mailbox*, LongClockTimer*, LEDService*);
 
 	/*
 	 * Initiate group work that also manages power.

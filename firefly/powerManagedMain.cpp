@@ -35,6 +35,7 @@ PowerSupply powerSupply;
 HfCrystalClock hfClock;
 
 WorkSupervisor workSupervisor;
+LEDService ledService;
 
 } // namespace
 
@@ -77,9 +78,6 @@ void onWorkMsg(WorkPayload work) {
  */
 void onSyncPoint() {
 	workSupervisor.manageVoltageByWork();
-
-	// debug indication, when power supply is not constrained
-	// ledLogger.toggleLED(1);
 }
 
 
@@ -89,6 +87,15 @@ void powerManagedMain() {
 	// assert embedded system startup is done and calls main.
 	// assert platform initialized radio
 
+	/*
+	 * Compile time test to ensure that macro __FPU_USED is not set.
+	 * If it were set, then system_nrf52.c enables FPU hw,
+	 * consuming power that
+	 */
+	#ifdef __FPU_USED
+
+	#error "FPU used: ensure that FPU exceptions do not prevent sleep."
+	#endif
 
 	/*
 	 * Stitch things together: objects use each other.  Order is important.
@@ -104,6 +111,9 @@ void powerManagedMain() {
 	// nvic, powerSupply, hfClock not need init
 	longClockTimer.init(&nvic);
 
+	// On this board, one LED, isSunk, P0.29
+	ledService.init(1, true, 29, 0, 0, 0);
+
 	radio.init(
 			&nvic,
 			&powerSupply,
@@ -113,7 +123,7 @@ void powerManagedMain() {
 	// !!! HfCrystalClock uses nvic
 	hfClock.init(&nvic);
 
-	workSupervisor.init(&myOutMailbox, &longClockTimer);
+	workSupervisor.init(&myOutMailbox, &longClockTimer, &ledService);
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
 	sleepSyncAgent.loopOnEvents();	// never returns

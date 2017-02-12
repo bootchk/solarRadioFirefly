@@ -16,8 +16,8 @@ unsigned int amount = 1;
 
 }
 
-void Worker::init(LongClockTimer* aLCT) {
-	ledFlasher.init(aLCT);
+void Worker::init(LongClockTimer* aLCT, LEDService* aLEDService) {
+	ledFlasher.init(aLCT, aLEDService);
 	setLeastAmount();
 }
 

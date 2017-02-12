@@ -91,12 +91,21 @@ void simpleManagePowerWithWork() {
 	}
 }
 
+void doRandomhWork() {
+	//Default amount of work is enough to perceive, but make it more visible...
+	worker.setAmountPerceivable();
+
+	groupWork.randomlyInitiateGroupWork();
+}
+
+
+
 } // namespace
 
 
 
-void WorkSupervisor::init(Mailbox* aMailbox, LongClockTimer* aLCT) {
-	worker.init(aLCT);
+void WorkSupervisor::init(Mailbox* aMailbox, LongClockTimer* aLCT, LEDService* aLEDService) {
+	worker.init(aLCT, aLEDService);
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// self owns worker, but groupWorker also uses it
@@ -140,13 +149,7 @@ void WorkSupervisor::manageVoltageByWork() {
 #ifdef POWER_IS_SOLAR
 	simpleManagePowerWithWork();
 #else
-	/*
-	 * Default amount of work is enough to perceive,
-	 * but to make it more visible...
-	 */
-	worker.setAmountPerceivable();
-
-	groupWork.randomlyInitiateGroupWork();
+	doRandomhWork();
 #endif
 
 
