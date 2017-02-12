@@ -20,6 +20,9 @@
 #include "modules/groupWork.h"
 #include "modules/workSupervisor.h"
 
+#include "fireflyConfig.h"
+
+
 
 namespace {
 
@@ -111,8 +114,20 @@ void powerManagedMain() {
 	// nvic, powerSupply, hfClock not need init
 	longClockTimer.init(&nvic);
 
-	// On this board, one LED, isSunk, P0.29
+#ifdef BOARD_UBLOX
+	// On uBlox board, one LED, isSunk, P0.29
 	ledService.init(1, true, 29, 0, 0, 0);
+#endif
+
+#ifdef BOARD_NRF52DK
+	// nRF52DK board (from pca10040.h)
+	ledService.init(4, true, 17, 18, 19, 20);
+#endif
+
+#ifdef BOARD_REDBEAR_NANO
+	//
+	ledService.init(1, true, 19, 0, 0, 0);
+#endif
 
 	radio.init(
 			&nvic,

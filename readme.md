@@ -53,6 +53,10 @@ Start the build:  click on the hammer icon, or choose *Project>Build All*
 
 The project uses libraries and headers from other projects.  You might need to build those projects and copy the libraries and headers into this project.  If you are using a version of the NRF\_SDK other than v12, you might need to build the libraries on that base.
 
+There are two apps here: firefly and a sniffer for the firefly protocol.
+There are three build configurations: firefly on nrf51, firefly on nrf52, sniffer on nrf52.
+The build configurations do NOT yet properly configure LED's for each board, see Configuration below.
+
 Debugging
 -
 
@@ -72,6 +76,8 @@ Eclipse manages the build (you edit Build and Debug Configurations, not Makefile
 This is for two target embedded chips, the nRF52 having an ARM M4 mcu and the nRF51 having an ARM M0 mcu.  Many resources are named with 51 or 52 when they are specific to a target.
 
 You can set a build configuration active.  Then you edit it in the project's Properties.  See nRFCounter project for more explanation.  That was the original project where I used Eclipse managed builds instead of hand managed Makefiles.
+
+Before you build firefly, edit fireFlyConfig.h and uncomment the proper definitions.
 
 TODO
 -
