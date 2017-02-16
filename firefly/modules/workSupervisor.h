@@ -24,7 +24,10 @@
 
 class WorkSupervisor {
 public:
-	static void init(Mailbox*, LongClockTimer*, LEDService*);
+	static void init(Mailbox*, 	// Sends work via mailbox
+			LongClockTimer*,	// uses timer for flashing led
+			LEDService*,		// flashes LED to consume power
+			PowerManager*);		// accesses power levels
 
 	/*
 	 * Initiate group work that also manages power.

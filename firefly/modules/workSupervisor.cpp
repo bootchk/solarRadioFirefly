@@ -19,7 +19,9 @@
  */
 namespace {
 
-PowerManager powerManager;
+PowerManager* powerManager;
+
+// owns
 Worker worker;
 GroupWork groupWork;
 
@@ -34,7 +36,7 @@ void simpleManagePowerWithWork() {
 	 * on consecutive calls, the VoltageRange's are not adjacent,
 	 * i.e. pass from Excess to Medium or worse.
 	 */
-	switch (powerManager.getVoltageRange()) {
+	switch (powerManager->getVoltageRange()) {
 	case VoltageRange::Excess:
 		/* e.g. > 2.7V.
 		 * Self MUST work locally to keep voltage from exceeding Vmax
@@ -104,7 +106,11 @@ void doRandomhWork() {
 
 
 
-void WorkSupervisor::init(Mailbox* aMailbox, LongClockTimer* aLCT, LEDService* aLEDService) {
+void WorkSupervisor::init(Mailbox* aMailbox,
+		LongClockTimer* aLCT,
+		LEDService* aLEDService,
+		PowerManager* aPowerManager) {
+	powerManager = aPowerManager;
 	worker.init(aLCT, aLEDService);
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
@@ -157,7 +163,7 @@ void WorkSupervisor::manageVoltageByWork() {
 
 
 void WorkSupervisor::tryWorkInIsolation() {
-	if (powerManager.isPowerForWork()) {
+	if (powerManager->isPowerForWork()) {
 		// do work at the managed amount
 		groupWork.workInIsolation();
 	}

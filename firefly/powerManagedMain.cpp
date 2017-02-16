@@ -29,6 +29,7 @@ namespace {
 SleepSyncAgent sleepSyncAgent;
 
 // Objects from nRF5x library i.e. platform
+PowerManager powerManager;
 Radio radio;
 Mailbox myOutMailbox;
 LongClockTimer longClockTimer;
@@ -39,6 +40,31 @@ HfCrystalClock hfClock;
 
 WorkSupervisor workSupervisor;
 LEDService ledService;
+
+InstructionCache instructionCache;
+
+
+
+void initLEDs() {
+#ifdef BOARD_UBLOX_SUNK
+	// On uBlox board, one LED, isSunk, P0.29
+	ledService.init(1, true, 29, 0, 0, 0);
+#endif
+#ifdef BOARD_UBLOX_SOURCED
+	// uBlox, one LED, source, P0.28
+	ledService.init(1, false, 28, 0, 0, 0);
+#endif
+#ifdef BOARD_NRF52DK
+	// nRF52DK board (from pca10040.h)
+	ledService.init(4, true, 17, 18, 19, 20);
+#endif
+#ifdef BOARD_REDBEAR_NANO
+	//
+	ledService.init(1, true, 19, 0, 0, 0);
+#endif
+}
+
+
 
 } // namespace
 
@@ -96,9 +122,12 @@ void powerManagedMain() {
 	 * consuming power that
 	 */
 	#ifdef __FPU_USED
-
 	#error "FPU used: ensure that FPU exceptions do not prevent sleep."
 	#endif
+
+	instructionCache.enable();
+
+	initLEDs();
 
 	/*
 	 * Stitch things together: objects use each other.  Order is important.
@@ -114,24 +143,6 @@ void powerManagedMain() {
 	// nvic, powerSupply, hfClock not need init
 	longClockTimer.init(&nvic);
 
-#ifdef BOARD_UBLOX
-	// On uBlox board, one LED, isSunk, P0.29
-	//ledService.init(1, true, 29, 0, 0, 0);
-	
-	// uBlox, one LED, source, P0.28
-	ledService.init(1, false, 28, 0, 0, 0);
-
-#endif
-
-#ifdef BOARD_NRF52DK
-	// nRF52DK board (from pca10040.h)
-	ledService.init(4, true, 17, 18, 19, 20);
-#endif
-
-#ifdef BOARD_REDBEAR_NANO
-	//
-	ledService.init(1, true, 19, 0, 0, 0);
-#endif
 
 	radio.init(
 			&nvic,
@@ -142,7 +153,7 @@ void powerManagedMain() {
 	// !!! HfCrystalClock uses nvic
 	hfClock.init(&nvic);
 
-	workSupervisor.init(&myOutMailbox, &longClockTimer, &ledService);
+	workSupervisor.init(&myOutMailbox, &longClockTimer, &ledService, &powerManager);
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
 	sleepSyncAgent.loopOnEvents();	// never returns
