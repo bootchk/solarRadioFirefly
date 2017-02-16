@@ -24,4 +24,11 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>nrf52/gcc_startup_nrf52.S</name>
+			<type>1</type>
+			<location>/home/bootch/nrfsdk12.2/components/toolchain/gcc/gcc_startup_nrf52.S</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -117,7 +117,10 @@ void powerManagedMain() {
 #ifdef BOARD_UBLOX
 	// On uBlox board, one LED, isSunk, P0.29
 	//ledService.init(1, true, 29, 0, 0, 0);
-	ledService.init(1, false, 28, 0, 0, 0);	// sourced
+	
+	// uBlox, one LED, source, P0.28
+	ledService.init(1, false, 28, 0, 0, 0);
+
 #endif
 
 #ifdef BOARD_NRF52DK
