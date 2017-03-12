@@ -35,7 +35,7 @@
 
 Radio radio;
 Sleeper sleeper;
-LEDLogger ledLogger;
+LEDService ledLogger;
 LongClockTimer longClockTimer;
 Nvic nvic;
 PowerSupply powerSupply;
@@ -95,8 +95,9 @@ void snifferMain(void)
 
 	radio.powerOff();	// for case not reset i.e. using debugger
 
-    ledLogger.init();
-    ledLogger.toggleLEDs();	// off
+	// LED config for nrf52DK board
+    ledLogger.init(4, true, 17, 18, 19, 20);
+    ledLogger.toggleLEDsInOrder();	// off
 
     log("Sniffer starts\r\n");
 

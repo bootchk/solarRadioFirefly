@@ -29,8 +29,19 @@ void Worker::setLeastAmount() {
 	amount = 1;
 }
 void Worker::increaseAmount() {
+	/*
+	 * Since we flash at sync points,
+	 * we should not flash longer than a sync period,
+	 * else LED still on next time we want to flash.
+	 *
+	 * Typical: sync period is 0.7 sec.
+	 *
+	 * But here we increment amount up to the limit of LEDFlasher.
+	 */
+
 	if (amount < LEDFlasher::MaxFlashAmount) amount++;
 }
+
 void Worker::decreaseAmount() {
 	if (amount > 1) amount--;
 }

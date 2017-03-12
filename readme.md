@@ -53,9 +53,17 @@ Start the build:  click on the hammer icon, or choose *Project>Build All*
 
 The project uses libraries and headers from other projects.  You might need to build those projects and copy the libraries and headers into this project.  If you are using a version of the NRF\_SDK other than v12, you might need to build the libraries on that base.
 
+The library nrf5x must be built with LOGGING defined to build sniffer?
+
+Sniffer
+-
+
 There are two apps here: firefly and a sniffer for the firefly protocol.
 There are three build configurations: firefly on nrf51, firefly on nrf52, sniffer on nrf52.
-The build configurations do NOT yet properly configure LED's for each board, see Configuration below.
+The build configurations do NOT configure LED's for each board using board.h.
+LED's are configured in the call to LEDService.init() and different configurations are configured according to fireflyConfig.h
+
+Sniffer might be broken now in upgrade to nrf sdk 12.2??
 
 Debugging
 -
@@ -68,7 +76,7 @@ To see the log, open a terminal and run JLinkRTTClient, which you can download f
 
 You should see a sequence of events scroll by.
 
-Reconfiguring
+Configuration
 -
 
 Eclipse manages the build (you edit Build and Debug Configurations, not Makefiles).
@@ -81,4 +89,4 @@ Before you build firefly, edit fireFlyConfig.h and uncomment the proper definiti
 
 TODO
 -
-There is a library ordering issue: the ISR handlers that override defaults are in the nRF5x library so the default handler in startup.c is already resolved weak before the strong override is seen.  Move startup to nRF5x library.
+There is a library ordering issue: the ISR handlers that override defaults are in the nRF5x library so the default handler in startup.c is already resolved weak before the strong override is seen.  Did I reorder the libraries?  Move startup to nRF5x library.

@@ -9,6 +9,7 @@
  * we flash LED to save power instead of leaving it on
  */
 
+#include <cassert>
 
 // Project has include path to nRF5x library
 #include <nRF5x.h>
@@ -21,7 +22,6 @@
 #include "modules/workSupervisor.h"
 
 #include "fireflyConfig.h"
-
 
 
 namespace {
@@ -42,6 +42,7 @@ WorkSupervisor workSupervisor;
 LEDService ledService;
 
 InstructionCache instructionCache;
+MCU mcu;
 
 
 
@@ -64,7 +65,18 @@ void initLEDs() {
 #endif
 }
 
+void onTimerExpire() { return; }
 
+/*
+ * Sleep, waking periodically, until power is sufficient for radio.
+ */
+void sleepUntilRadioPower() {
+	while (!powerManager.isPowerForRadio()){
+		longClockTimer.startTimer((TimerIndex) 0, 40000, onTimerExpire);	// 40k == 1.2seconds
+		assertUltraLowPower();
+		mcu.sleep();
+	}
+}
 
 } // namespace
 
@@ -143,6 +155,7 @@ void powerManagedMain() {
 	// nvic, powerSupply, hfClock not need init
 	longClockTimer.init(&nvic);
 
+	sleepUntilRadioPower();
 
 	radio.init(
 			&nvic,
@@ -152,11 +165,12 @@ void powerManagedMain() {
 
 	// !!! HfCrystalClock uses nvic
 	hfClock.init(&nvic);
+	assert(! hfClock.isRunning());	// xtal not running
 
 	workSupervisor.init(&myOutMailbox, &longClockTimer, &ledService, &powerManager);
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
-	sleepSyncAgent.loopOnEvents();	// never returns
+	sleepSyncAgent.loopOnEvents(&powerManager);	// never returns
 }
 
 
