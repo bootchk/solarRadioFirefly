@@ -25,10 +25,15 @@
  * The numbers are GPIO numbers (ordinals of the bits in the GPIO register)  ???
  * Not pin numbers on the chip.
  */
-// change the next line to choose a custom board
-//#define BOARD_REDBEAR_NANO 1
-//#define BOARD_UBLOX_NINA_SOURCE_LED 1
-#define BOARD_UBLOX_NINA_SINK_LED 1
+
+
+
+
+// change def in fireflyConfig to choose a custom board
+#include "fireflyConfig.h"
+
+
+
 
 #ifdef BOARD_REDBEAR_NANO
 

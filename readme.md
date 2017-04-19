@@ -76,7 +76,7 @@ To see the log, open a terminal and run JLinkRTTClient, which you can download f
 
 You should see a sequence of events scroll by.
 
-Configuration
+Build Configuration
 -
 
 Eclipse manages the build (you edit Build and Debug Configurations, not Makefiles).
@@ -85,7 +85,11 @@ This is for two target embedded chips, the nRF52 having an ARM M4 mcu and the nR
 
 You can set a build configuration active.  Then you edit it in the project's Properties.  See nRFCounter project for more explanation.  That was the original project where I used Eclipse managed builds instead of hand managed Makefiles.
 
-Before you build firefly, edit fireFlyConfig.h and uncomment the proper definitions.
+Board configuration
+-
+
+Before you build, edit fireFlyConfig.h and uncomment the definition corresponding to your board (so that LED's work.)
+Also uncomment the definition about power supply (to enable power management functions: if power is battery or USB, no power management.)
 
 TODO
 -

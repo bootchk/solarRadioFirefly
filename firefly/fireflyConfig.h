@@ -15,15 +15,22 @@
  * then you should uncomment this, else nRF52 can be stressed by Vcc above Vmax
  * (lowers lifetime but doesn't burn up the chip immediately.)
  */
-// #define POWER_IS_SOLAR 1
+#define POWER_IS_SOLAR 1
 
 
 
 /*
  * Which board (what GPIO are the LED's on)?
  */
-//#define BOARD_UBLOX_SUNK 1
-//#define BOARD_UBLOX_SOURCED 1
-#define BOARD_NRF52DK 1
+//#define BOARD_UBLOX_NINA_SINK_LED 1
+
+//#define BOARD_UBLOX_NINA_SOURCE_LED 1
+
+// #define BOARD_NRF52DK 1
+
 // #define BOARD_REDBEAR_NANO 1
+// #define BOARD_WAVESHARE 1
 // My breadboard with Waveshare module also uses RedBear Nano config of LED (P19)
+
+// led on P30
+#define BOARD_WAVESHARE2 1
