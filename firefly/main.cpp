@@ -1,4 +1,6 @@
 
+#include <inttypes.h>
+
 
 void powerManagedMain() __attribute__ ((noreturn));
 
@@ -8,6 +10,9 @@ void powerManagedMain() __attribute__ ((noreturn));
 __attribute__((noreturn))
 int main() {
 	// assert embedded system startup is done and calls main.
+
+	// Write to odd address
+	*(uint32_t *)(1) = 0;
 
 	// Choose corresponding build configuration
 	powerManagedMain();
