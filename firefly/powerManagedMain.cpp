@@ -182,8 +182,6 @@ void powerManagedMain() {
 #if NRF52
 	MCU::enableInstructionCache();
 #endif
-	// atexit(foo);
-	assert(false);
 
 	longClockTimer.init(&nvic);	// sleep needs timer
 

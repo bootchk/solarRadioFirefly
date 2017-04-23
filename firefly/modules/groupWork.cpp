@@ -39,7 +39,7 @@ void GroupWork::init(Mailbox* aMailbox, Worker* aLocalWorker){
 }
 
 void GroupWork::initiateGroupWork() {
-	localWorker->work();
+	localWorker->workManagedAmount();
 	/*
 	 * Local work might exhaust power (not usual.)
 	 * Assert queue will be non-empty (queuing takes no power)
@@ -57,7 +57,7 @@ void GroupWork::randomlyInitiateGroupWork() {
 
 void GroupWork::workInIsolation() {
 	// work on this unit, but don't tell group
-	localWorker->work();
+	localWorker->workManagedAmount();
 }
 
 

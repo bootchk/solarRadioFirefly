@@ -25,6 +25,22 @@ PowerManager* powerManager;
 Worker worker;
 GroupWork groupWork;
 
+
+/*
+ * Work locally until power is not excess.
+ *
+ * We must reduce voltage to keep from exceeding Vmax of chip.
+ */
+void workLocallyToShedPower() {
+	while (powerManager->getVoltageRange() == VoltageRange::Excess) {
+		worker.workAmount(200);
+		// assert LED on and timer started
+		MCU::sleep();
+	}
+}
+
+
+
 /*
  * A very simple approach, not very effective?
  */
@@ -44,13 +60,16 @@ void simpleManagePowerWithWork() {
 		 */
 		worker.increaseAmount();
 		groupWork.initiateGroupWork();
+
+		workLocallyToShedPower();
+		// assert power is not excess
 		break;
 
 	case VoltageRange::High:
 		/* e.g. 2.5V - 2.7V
 		 * I could work (enough power) but I don't need to work to manage excess power.
 		 */
-		worker.decreaseAmount();
+		worker.maintainAmount();
 
 		/*
 		 * This may cause local work.

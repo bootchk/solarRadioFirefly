@@ -18,10 +18,15 @@
 class Worker {
 public:
 	static void init(LongClockTimer*, LEDService*);
-	static void work();
+
+	static void workManagedAmount();
+	static void workAmount(unsigned int aAmount);
+
 
 	static void setLeastAmount();
+
 	static void increaseAmount();
+	static void maintainAmount();
 	static void decreaseAmount();
 
 	/*

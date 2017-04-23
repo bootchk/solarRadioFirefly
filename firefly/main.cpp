@@ -1,5 +1,5 @@
 
-
+#include <cassert>
 #include <nRF5x.h>
 
 void testMain();
@@ -14,6 +14,7 @@ int main() {
 
 	// Choose corresponding build configuration
 	// testMain();
+	assert(false);
 	powerManagedMain();
 }
 
