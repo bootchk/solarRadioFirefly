@@ -24,7 +24,7 @@
  */
 //#define BOARD_UBLOX_NINA_SINK_LED 1
 
-//#define BOARD_UBLOX_NINA_SOURCE_LED 1
+#define BOARD_UBLOX_NINA_SOURCE_LED 1
 
 // #define BOARD_NRF52DK 1
 
@@ -33,4 +33,4 @@
 // My breadboard with Waveshare module also uses RedBear Nano config of LED (P19)
 
 // led on P30
-#define BOARD_WAVESHARE2 1
+//#define BOARD_WAVESHARE2 1
