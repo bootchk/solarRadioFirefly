@@ -14,7 +14,6 @@ int main() {
 
 	// Choose corresponding build configuration
 	// testMain();
-	// assert(false);
 	powerManagedMain();
 }
 
