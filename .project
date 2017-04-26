@@ -3,6 +3,7 @@
 	<name>firefly</name>
 	<comment></comment>
 	<projects>
+		<project>nRF5x</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -31,4 +32,10 @@
 			<location>/home/bootch/nrfsdk12.2/components/toolchain/gcc/gcc_startup_nrf52.S</location>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>nRF52lib</name>
+			<value>file:/home/bootch/git/nRF5x/DebugnRF52/libnRF5x52.a</value>
+		</variable>
+	</variableList>
 </projectDescription>

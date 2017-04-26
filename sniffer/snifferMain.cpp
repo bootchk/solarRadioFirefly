@@ -93,10 +93,8 @@ void snifferMain(void)
 	// Radio callback to Sleeper to set reasonForWake
 	radio.setMsgReceivedCallback(sleeper.msgReceivedCallback);
 
-	radio.powerOff();	// for case not reset i.e. using debugger
-
 	// LED config for nrf52DK board
-    ledLogger.init(4, true, 17, 18, 19, 20);
+    ledLogger.init(4, McuSinks, 17, 18, 19, 20);
     ledLogger.toggleLEDsInOrder();	// off
 
     log("Sniffer starts\r\n");
@@ -108,11 +106,9 @@ void snifferMain(void)
     logLongLong(longClockTimer.nowTime());
     log("<hfclock\n");
 
-    radio.powerOnAndConfigure();	// Configures for fixed length messages
-
     while (true)
     {
-    	assert(radio.isDisabledState());	// powerOn (initial entry) and stopReceiver (loop) ensures this
+    	assert(!radio.isInUse());	// powerOn (initial entry) and stopReceiver (loop) ensures this
 
     	sleeper.clearReasonForWake();
     	radio.receiveStatic();
