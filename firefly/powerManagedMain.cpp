@@ -36,19 +36,28 @@ namespace {
 SleepSyncAgent sleepSyncAgent;
 
 // Objects from nRF5x library i.e. platform
+
+// devices
 PowerManager powerManager;
 Radio radio;
-Mailbox myOutMailbox;
 LongClockTimer longClockTimer;
 Nvic nvic;
 
 PowerSupply powerSupply;
 HfCrystalClock hfClock;
 
-WorkSupervisor workSupervisor;
 LEDService ledService;
 
 MCU mcu;
+
+// Not devices
+Mailbox myOutMailbox;
+Mailbox myInMailbox;
+
+
+// My objects
+WorkSupervisor workSupervisor;
+
 
 
 
@@ -107,14 +116,13 @@ void sleepUntilRadioPower() {
  * SleepSyncAgent received and queued a work msg.
  * I.E. other units are working, in sync, so self should work if it can.
  *
- * This method is realtime constrained.
+ * This method is realtime constrained: it is called in middle of a sync slot.
  *
  * FUTURE schedule low priority work thread/task to do work.
  */
 void onWorkMsg(WorkPayload work) {
-	(void) work;	// Unused
-
-	workSupervisor.tryWorkInIsolation();
+	// Queue work to be done later (at next sync point)
+	myInMailbox.put(work);
 }
 
 
@@ -127,8 +135,31 @@ void onWorkMsg(WorkPayload work) {
  * Must be short duration, else interferes with sync.
  * FUTURE make this a thread and yield to higher priority sleep sync thread
  */
+/*
+ * Here all work is done at they sync point since goal is synchronized work (firefly flashing.)
+ * Work itself need not be synchronized, only the SyncAgents.
+ * I.E. we could do work at some other time in the sync period,
+ * or accumulate work, etc.
+ */
 void onSyncPoint() {
 	workSupervisor.manageVoltageByWork();
+	/*
+	 * Might have queued work out:
+	 * - randomly, if power is good but not excess
+	 * - if power is excess
+	 *
+	 * Might have done local work just to shed power.
+	 * In that case, we flashed now, and will try to flash again
+	 * when our outgoing work bounces back at next sync point.
+	 * If the now flash is still in progress at next sync point,
+	 * the try will fail (just one long flash.) ???
+	 */
+
+	if (myInMailbox.isMail()) {
+		// Do work bounced (that I sent) or received in previous sync slot
+		WorkPayload work = myInMailbox.fetch();
+		workSupervisor.tryWorkInIsolation();
+	}
 }
 
 /*
