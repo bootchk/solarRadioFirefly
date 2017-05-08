@@ -14,6 +14,10 @@
 #pragma once
 
 /*
+ * Obsolete:  now LedService takes parameters instead of using these macros,
+ */
+
+/*
  * lkk
  * The Eclipse build configuration (in Properties>C/C++ Build>Settings>Preprocessor>Defined Symbols:)
  * defines either BOARD_PCA10040 or BOARD_CUSTOM.

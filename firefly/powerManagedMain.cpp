@@ -42,12 +42,9 @@ PowerManager powerManager;
 Radio radio;
 LongClockTimer longClockTimer;
 Nvic nvic;
-
 PowerSupply powerSupply;
 HfCrystalClock hfClock;
-
 LEDService ledService;
-
 MCU mcu;
 
 // Not devices
