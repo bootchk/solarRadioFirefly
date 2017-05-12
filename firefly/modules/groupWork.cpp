@@ -3,10 +3,8 @@
 #include <cstdlib>	// rand
 
 #include "groupWork.h"
-#include "worker.h"
 
-
-#include "nRF5x.h"
+#include "nRF5x.h"	// Mailbox
 
 
 // dummy workpayload represents version of code
@@ -16,9 +14,9 @@
 namespace {
 
 Mailbox* myOutMailbox;
-Worker* localWorker;
+Mailbox* myInMailbox;
 
-void sendWork() {
+void tellOthersInGroupToWork() {
 	if (myOutMailbox->isMail() ){
 		// My last mail didn't go out yet
 		log("Mail still in mailbox\n");
@@ -29,35 +27,47 @@ void sendWork() {
 	}
 }
 
+void queueLocalWork() {
+	if (myInMailbox->isMail() ){
+			// Work already pending from others
+			log("Mail still in mailbox\n");
+		}
+		else {
+			myInMailbox->put(WORK_VERSION);
+			log("App put work\n");
+		}
+}
+
 } // namespace
 
 
 
-void GroupWork::init(Mailbox* aMailbox, Worker* aLocalWorker){
-	myOutMailbox = aMailbox;
-	localWorker = aLocalWorker;
+void GroupWork::init(Mailbox* aOutMailbox, Mailbox* aInMailbox){
+	myOutMailbox = aOutMailbox;
+	myInMailbox = aInMailbox;
+
 }
 
 void GroupWork::initiateGroupWork() {
-	localWorker->workManagedAmount();
+	// assert I have enough power to work
+
+	tellOthersInGroupToWork();
+
+	// Power may have been exhausted by transmission
+
 	/*
-	 * Local work might exhaust power (not usual.)
-	 * Assert queue will be non-empty (queuing takes no power)
-	 * If on the previous cycle, we also queued but there wasn't enough power to xmit, then queue was not empty.
-	 * Sending might not happen (not enough power for radio).
+	 * But we don't receive our own transmission.
+	 * So tell self to work.
+	 * Work may occur later.
+	 * Might not be enough power for local work.
 	 */
-	sendWork();		// tell group to work
+	queueLocalWork();
 }
 
 void GroupWork::randomlyInitiateGroupWork() {
 	if (rand() % 10 == 1) {
 		initiateGroupWork();
 	}
-}
-
-void GroupWork::workInIsolation() {
-	// work on this unit, but don't tell group
-	localWorker->workManagedAmount();
 }
 
 

@@ -80,7 +80,7 @@ assert(ledService.wasInit());
 }
 
 
-
+// callback from LongClockTimer
 void onTimerExpire() { return; }
 
 /*
@@ -88,6 +88,7 @@ void onTimerExpire() { return; }
  */
 void sleepUntilRadioPower() {
 	while (!powerManager.isPowerForRadio()){
+		// Use Timer 0, later used by SleepSync
 		longClockTimer.startTimer((TimerIndex) 0, 40000, onTimerExpire);	// 40k == 1.2seconds
 		assertUltraLowPower();
 		mcu.sleep();
@@ -139,7 +140,10 @@ void onWorkMsg(WorkPayload work) {
  * or accumulate work, etc.
  */
 void onSyncPoint() {
+	// If voltage is excess, this may not return immediately,
+	// and disturbs sync
 	workSupervisor.manageVoltageByWork();
+
 	/*
 	 * Might have queued work out:
 	 * - randomly, if power is good but not excess
@@ -186,7 +190,7 @@ void initObjects() {
 	hfClock.init(&nvic);
 	assert(! hfClock.isRunning());	// xtal not running
 
-	workSupervisor.init(&myOutMailbox, &longClockTimer, &ledService, &powerManager);
+	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &powerManager);
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
 }
@@ -211,7 +215,14 @@ void powerManagedMain() {
 	MCU::enableInstructionCache();
 #endif
 
+	clearResetReason();
+
+	// assert interrupts globally enabled i.e. PRIMASK
+
 	longClockTimer.init(&nvic);	// sleep needs timer
+	// assert counter is perpetually running
+	// assert counter interrupt enabled for overflow
+	// assert RTC0_IRQ is enabled (for Counter overflow and any Timers)
 
 	sleepUntilRadioPower();
 

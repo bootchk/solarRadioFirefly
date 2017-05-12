@@ -35,6 +35,9 @@ void workLocallyToShedPower() {
 	while (powerManager->getVoltageRange() == VoltageRange::Excess) {
 		worker.workAmount(200);
 		// assert LED on and timer started
+
+		// TODO no sleep here, this is at sync point, should return to sync loop
+		// any interrupt may wake a sync sleep, but it will continue
 		MCU::sleep();
 	}
 }
@@ -125,16 +128,19 @@ void doRandomhWork() {
 
 
 
-void WorkSupervisor::init(Mailbox* aMailbox,
+void WorkSupervisor::init(
+		Mailbox* aOutMailbox,
+		Mailbox* aInMailbox,
 		LongClockTimer* aLCT,
 		LEDService* aLEDService,
-		PowerManager* aPowerManager) {
+		PowerManager* aPowerManager)
+{
 	powerManager = aPowerManager;
 	worker.init(aLCT, aLEDService);
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// self owns worker, but groupWorker also uses it
-	groupWork.init(aMailbox, &worker);
+	groupWork.init(aOutMailbox, aInMailbox);
 
 	// PowerManager needs no init
 }
@@ -183,16 +189,9 @@ void WorkSupervisor::manageVoltageByWork() {
 
 void WorkSupervisor::tryWorkInIsolation() {
 	if (powerManager->isPowerForWork()) {
-		// do work at the managed amount
-		groupWork.workInIsolation();
+		worker.workManagedAmount();
 	}
 	// else omit work, not enough power
-}
-
-
-void WorkSupervisor::workInIsolation() {
-	// do work at the managed amount
-	groupWork.workInIsolation();
 }
 
 

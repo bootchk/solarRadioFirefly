@@ -24,7 +24,9 @@
 
 class WorkSupervisor {
 public:
-	static void init(Mailbox*, 	// Sends work via mailbox
+	static void init(
+			Mailbox*, 	        // Sends work out
+			Mailbox*, 	        // Sends work local
 			LongClockTimer*,	// uses timer for flashing led
 			LEDService*,		// flashes LED to consume power
 			PowerManager*);		// accesses power levels
@@ -38,9 +40,4 @@ public:
 	 * Work on this unit if power allows.
 	 */
 	static void tryWorkInIsolation();
-
-	/*
-	 * Definitely work on this unit to shed power.
-	 */
-	static void workInIsolation();
 };

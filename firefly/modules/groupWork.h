@@ -7,11 +7,12 @@
 /*
  * Coordinates synchronous work.
  *
+ * Does not know the worker, only a queue to local worker
  */
 
 class GroupWork {
 public:
-	static void init(Mailbox* aMailbox, Worker* aLocalWorker);
+	static void init(Mailbox* aOutMailbox, Mailbox* aInMailbox);
 	/*
 	 * Definitely work local, and tell group to work if power permits.
 	 */
@@ -22,8 +23,4 @@ public:
 	 */
 	static void randomlyInitiateGroupWork();
 
-	/*
-	 * Work locally, don't tell others.
-	 */
-	static void workInIsolation();
 };
