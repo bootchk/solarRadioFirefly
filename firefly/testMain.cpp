@@ -5,6 +5,7 @@
 #include "nRF5x.h"
 #include "/home/bootch/git/nRF5x/src/drivers/customFlash.h"
 
+void testMain();
 
 
 /*
@@ -41,5 +42,5 @@ void testMain() {
 
 
 	// Test writing UICR
-	CustomFlash::writeZeroAtIndex(0);
+	CustomFlash::writeZeroAtIndex(BootedEventFlagIndex);
 }

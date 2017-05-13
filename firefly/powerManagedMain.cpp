@@ -140,12 +140,23 @@ void onWorkMsg(WorkPayload work) {
  * or accumulate work, etc.
  */
 void onSyncPoint() {
-	// If voltage is excess, this may not return immediately,
-	// and disturbs sync
+
+	if (myInMailbox.isMail()) {
+		// Do work bounced (that I sent) or received in previous sync slot
+		// For now, ignore work specifics
+		(void) myInMailbox.fetch();
+		workSupervisor.tryWorkInIsolation();
+	}
+	/*
+	 * Work from others might have depleted my power.
+	 * But I might have enough power to initiate work again.
+	 */
+
+	// If voltage is excess, this may not return immediately, and disturbs sync
 	workSupervisor.manageVoltageByWork();
 
 	/*
-	 * Might have queued work out:
+	 * Might have queued work out and in:
 	 * - randomly, if power is good but not excess
 	 * - if power is excess
 	 *
@@ -155,12 +166,6 @@ void onSyncPoint() {
 	 * If the now flash is still in progress at next sync point,
 	 * the try will fail (just one long flash.) ???
 	 */
-
-	if (myInMailbox.isMail()) {
-		// Do work bounced (that I sent) or received in previous sync slot
-		WorkPayload work = myInMailbox.fetch();
-		workSupervisor.tryWorkInIsolation();
-	}
 }
 
 /*
@@ -228,6 +233,9 @@ void powerManagedMain() {
 
 	// Should be a small reserve of power
 	initObjects();
+
+	// Record that we got this far
+	CustomFlash::writeZeroAtIndex(EnterSyncLoopEventFlagIndex);
 
 	sleepSyncAgent.loopOnEvents(&powerManager);	// never returns
 }

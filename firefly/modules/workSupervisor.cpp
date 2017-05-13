@@ -31,15 +31,17 @@ GroupWork groupWork;
  *
  * We must reduce voltage to keep from exceeding Vmax of chip.
  */
+// TODO should start another timer to check again, no while loop here.
 void workLocallyToShedPower() {
-	while (powerManager->getVoltageRange() == VoltageRange::Excess) {
+	do {
 		worker.workAmount(200);
-		// assert LED on and timer started
+		// assert LED on and timer 2 started
 
 		// TODO no sleep here, this is at sync point, should return to sync loop
 		// any interrupt may wake a sync sleep, but it will continue
 		MCU::sleep();
 	}
+	while (powerManager->isPowerExcess());
 }
 
 
@@ -64,8 +66,11 @@ void simpleManagePowerWithWork() {
 		worker.increaseAmount();
 		groupWork.initiateGroupWork();
 
+		CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
+
 		workLocallyToShedPower();
-		// assert power is not excess
+		// assert power is not excess?
+		// TODO if change ShedPower, Vcc might still be excess
 		break;
 
 	case VoltageRange::High:
@@ -110,17 +115,20 @@ void simpleManagePowerWithWork() {
 		 * It is possible for power levels to drop so precipitously that
 		 * we didnt' pass through case above for Low.
 		 */
+		CustomFlash::writeZeroAtIndex(BrownoutPowerEventFlagIndex);
 		worker.setLeastAmount();
 		break;
 	}
 }
 
+/*
 void doRandomhWork() {
 	//Default amount of work is enough to perceive, but make it more visible...
 	worker.setAmountPerceivable();
 
 	groupWork.randomlyInitiateGroupWork();
 }
+*/
 
 
 
