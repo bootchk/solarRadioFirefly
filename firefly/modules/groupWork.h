@@ -16,11 +16,19 @@ public:
 	/*
 	 * Definitely work local, and tell group to work if power permits.
 	 */
-	static void initiateGroupWork();
+	static void initiateGroupWork(WorkPayload work);
 
 	/*
 	 * At random, work local and tell group to work if power permits.
 	 */
-	static void randomlyInitiateGroupWork();
+	static void randomlyInitiateGroupWork(WorkPayload work);
 
+	/*
+	 * Queue work to be done locally.
+	 * This is the only place that puts to the In queue.
+	 * Called:
+	 * - when work is heard
+	 * - when work is initiated locally
+	 */
+	static void queueLocalWork(WorkPayload work);
 };

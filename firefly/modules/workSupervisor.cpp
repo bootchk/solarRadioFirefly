@@ -7,6 +7,9 @@
 
 #include "../fireflyConfig.h"
 
+// dummy workpayload represents version of code
+#define WORK_VERSION 34
+
 
 
 /*
@@ -64,7 +67,7 @@ void simpleManagePowerWithWork() {
 		 * Send to group.
 		 */
 		worker.increaseAmount();
-		groupWork.initiateGroupWork();
+		groupWork.initiateGroupWork(WORK_VERSION);
 
 		CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
 
@@ -85,7 +88,7 @@ void simpleManagePowerWithWork() {
 		 * I.E. For Excess, then for High
 		 * I.E. For High, then High (when both random results are true.)
 		 */
-		groupWork.randomlyInitiateGroupWork();
+		groupWork.randomlyInitiateGroupWork(WORK_VERSION);
 		break;
 
 	case VoltageRange::Medium:
@@ -121,14 +124,18 @@ void simpleManagePowerWithWork() {
 	}
 }
 
+
 /*
-void doRandomhWork() {
+ * For testing, when not solar powered.
+ * Periodically, when called back by SyncAgent, initiate work.
+ */
+void doRandomWork() {
 	//Default amount of work is enough to perceive, but make it more visible...
 	worker.setAmountPerceivable();
 
-	groupWork.randomlyInitiateGroupWork();
+	groupWork.randomlyInitiateGroupWork(WORK_VERSION);
 }
-*/
+
 
 
 
@@ -188,7 +195,7 @@ void WorkSupervisor::manageVoltageByWork() {
 #ifdef POWER_IS_SOLAR
 	simpleManagePowerWithWork();
 #else
-	doRandomhWork();
+	doRandomWork();
 #endif
 
 
@@ -197,9 +204,22 @@ void WorkSupervisor::manageVoltageByWork() {
 
 void WorkSupervisor::tryWorkInIsolation() {
 	if (powerManager->isPowerForWork()) {
+
+		// Record that we worked at least once.
+		CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
+
+		log("Do work\n");
 		worker.workManagedAmount();
 	}
-	// else omit work, not enough power
+	else {
+		// omit work, not enough power
+		log("Not enough power to work\n");
+	}
+
 }
 
+
+void WorkSupervisor::queueLocalWork(WorkPayload work) {
+	groupWork.queueLocalWork(work);
+}
 

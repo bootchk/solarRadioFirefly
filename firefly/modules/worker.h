@@ -23,6 +23,9 @@ public:
 	static void workAmount(unsigned int aAmount);
 
 
+	/*
+	 * Amount the least that is visible with careful observation, i.e. 1 flash of 0.6 mSec.
+	 */
 	static void setLeastAmount();
 
 	static void increaseAmount();

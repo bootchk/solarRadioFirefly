@@ -40,4 +40,6 @@ public:
 	 * Work on this unit if power allows.
 	 */
 	static void tryWorkInIsolation();
+
+	static void queueLocalWork(WorkPayload work);
 };

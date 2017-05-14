@@ -7,8 +7,7 @@
 #include "nRF5x.h"	// Mailbox
 
 
-// dummy workpayload represents version of code
-#define WORK_VERSION 34
+
 
 
 namespace {
@@ -16,30 +15,30 @@ namespace {
 Mailbox* myOutMailbox;
 Mailbox* myInMailbox;
 
-void tellOthersInGroupToWork() {
+void tellOthersInGroupToWork(WorkPayload work) {
 	if (myOutMailbox->isMail() ){
 		// My last mail didn't go out yet
-		log("Mail still in mailbox\n");
+		log("Mail still in Out mailbox\n");
 	}
 	else {
-		myOutMailbox->put(WORK_VERSION);
+		myOutMailbox->put(work);
 		log("App put work\n");
 	}
 }
 
-void queueLocalWork() {
-	if (myInMailbox->isMail() ){
-			// Work already pending from others
-			log("Mail still in mailbox\n");
-		}
-		else {
-			myInMailbox->put(WORK_VERSION);
-			log("App put work\n");
-		}
-}
-
 } // namespace
 
+
+void GroupWork::queueLocalWork(WorkPayload work) {
+	if (myInMailbox->isMail() ){
+		// Work already pending from others
+		log("Mail still in In mailbox\n");
+	}
+	else {
+		myInMailbox->put(work);	// WORK_VERSION);
+		log("App queue received or initiated work\n");
+	}
+}
 
 
 void GroupWork::init(Mailbox* aOutMailbox, Mailbox* aInMailbox){
@@ -48,10 +47,10 @@ void GroupWork::init(Mailbox* aOutMailbox, Mailbox* aInMailbox){
 
 }
 
-void GroupWork::initiateGroupWork() {
+void GroupWork::initiateGroupWork(WorkPayload work) {
 	// assert I have enough power to work
 
-	tellOthersInGroupToWork();
+	tellOthersInGroupToWork(work);
 
 	// Power may have been exhausted by transmission
 
@@ -61,12 +60,12 @@ void GroupWork::initiateGroupWork() {
 	 * Work may occur later.
 	 * Might not be enough power for local work.
 	 */
-	queueLocalWork();
+	queueLocalWork(work);
 }
 
-void GroupWork::randomlyInitiateGroupWork() {
+void GroupWork::randomlyInitiateGroupWork(WorkPayload work) {
 	if (rand() % 10 == 1) {
-		initiateGroupWork();
+		initiateGroupWork(work);
 	}
 }
 

@@ -16,7 +16,7 @@
 #include <nRF5x.h>
 
 // Project has include path to sleepSyncAgent project
-#include <sleepSyncAgent.h>
+#include <syncAgent/syncAgent.h>
 
 // project local
 #include "modules/groupWork.h"
@@ -33,7 +33,7 @@ __attribute__ ((noreturn)) void powerManagedMain();
 
 namespace {
 
-SleepSyncAgent sleepSyncAgent;
+SyncAgent sleepSyncAgent;
 
 // Objects from nRF5x library i.e. platform
 
@@ -111,7 +111,7 @@ void sleepUntilRadioPower() {
 
 
 /*
- * SleepSyncAgent received and queued a work msg.
+ * SleepSyncAgent received a work msg.
  * I.E. other units are working, in sync, so self should work if it can.
  *
  * This method is realtime constrained: it is called in middle of a sync slot.
@@ -120,7 +120,7 @@ void sleepUntilRadioPower() {
  */
 void onWorkMsg(WorkPayload work) {
 	// Queue work to be done later (at next sync point)
-	myInMailbox.put(work);
+	workSupervisor.queueLocalWork(work);
 }
 
 
@@ -237,7 +237,7 @@ void powerManagedMain() {
 	// Record that we got this far
 	CustomFlash::writeZeroAtIndex(EnterSyncLoopEventFlagIndex);
 
-	sleepSyncAgent.loopOnEvents(&powerManager);	// never returns
+	sleepSyncAgent.loop(&powerManager);	// never returns
 }
 
 
