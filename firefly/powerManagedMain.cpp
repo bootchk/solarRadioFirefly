@@ -9,6 +9,8 @@
  * we flash LED to save power instead of leaving it on
  */
 
+// Config depends on BOARD_xxx defined in build configuration
+
 #include <cassert>
 
 
@@ -22,7 +24,6 @@
 #include "modules/groupWork.h"
 #include "modules/workSupervisor.h"
 
-#include "fireflyConfig.h"
 
 
 void onWorkMsg(WorkPayload work);

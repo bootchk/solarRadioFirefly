@@ -1,11 +1,13 @@
 
+// Config depends on POWER_IS_SOLAR in build config
+
+
 #include <nRF5x.h>
 
 #include "workSupervisor.h"
 #include "worker.h"
 #include "groupWork.h"
 
-#include "../fireflyConfig.h"
 
 // dummy workpayload represents version of code
 #define WORK_VERSION 34

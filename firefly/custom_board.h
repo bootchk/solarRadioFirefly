@@ -34,7 +34,7 @@
 
 
 // change def in fireflyConfig to choose a custom board
-#include "fireflyConfig.h"
+#include <fireflyConfig.txt>
 
 
 

@@ -78,6 +78,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.511755313" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.616488570" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF52"/>
+									<listOptionValue builtIn="false" value="BOARD_NRF52DK"/>
 									<listOptionValue builtIn="false" value="NRF52832"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.742844118" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
@@ -242,7 +243,7 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 		<cconfiguration id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016" moduleId="org.eclipse.cdt.core.settings" name="Debug51">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016" moduleId="org.eclipse.cdt.core.settings" name="Debug51aa">
 				<macros>
 					<stringMacro name="MY_SDK" type="VALUE_TEXT" value="/home/bootch/git"/>
 					<stringMacro name="NRF_SDK" type="VALUE_TEXT" value="/home/bootch/nrfsdk12.2"/>
@@ -258,7 +259,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}51" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016" name="Debug51" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug">
+				<configuration artifactName="${ProjName}51" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="Redbear" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016" name="Debug51aa" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug">
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016." name="/" resourcePath="">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1212174839" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.254342135" name="Optimization Level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.none" valueType="enumerated"/>
@@ -299,6 +300,8 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.704853800" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.1929463247" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF51"/>
+									<listOptionValue builtIn="false" value="BOARD_REDBEAR_NANO"/>
+									<listOptionValue builtIn="false" value="POWER_IS_SOLAR"/>
 									<listOptionValue builtIn="false" value="LOGGING"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.1003712411" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
@@ -433,6 +436,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1317058438" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.1364922487" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF52"/>
+									<listOptionValue builtIn="false" value="BOARD_NRF52DK"/>
 									<listOptionValue builtIn="false" value="NRF52832"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.1911898941" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
@@ -575,7 +579,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1210916265" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.882569104" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF51"/>
-									<listOptionValue builtIn="false" value="NDEBUG"/>
+									<listOptionValue builtIn="false" value="BOARD_WAVESHARE2"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.858617349" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>

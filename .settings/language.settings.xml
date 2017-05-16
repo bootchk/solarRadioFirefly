@@ -22,7 +22,7 @@
 			</provider>
 		</extension>
 	</configuration>
-	<configuration id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016" name="Debug51">
+	<configuration id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.1327311016" name="Debug51aa">
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
