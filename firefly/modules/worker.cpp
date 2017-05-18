@@ -14,7 +14,7 @@ namespace {
 
 LEDFlasher ledFlasher;
 
-unsigned int amount = 1;
+unsigned int managedAmount = 1;
 
 }
 
@@ -24,7 +24,7 @@ void Worker::init(LongClockTimer* aLCT, LEDService* aLEDService) {
 }
 
 void Worker::workManagedAmount() {
-	ledFlasher.flashLEDByAmount(1, amount);
+	ledFlasher.flashLEDByAmount(1, managedAmount);
 }
 
 void Worker::workAmount(unsigned int aAmount) {
@@ -32,7 +32,7 @@ void Worker::workAmount(unsigned int aAmount) {
 }
 
 void Worker::setLeastAmount() {
-	amount = 1;
+	managedAmount = 1;
 }
 void Worker::increaseAmount() {
 	/*
@@ -43,18 +43,18 @@ void Worker::increaseAmount() {
 	 * But here we increment amount up to the limit of LEDFlasher.
 	 */
 
-	if (amount < LEDFlasher::MaxFlashAmount) amount++;
+	if (managedAmount < LEDFlasher::MaxFlashAmount) managedAmount++;
 }
 
 void Worker::maintainAmount() {
-
+	// No change to managedAmount
 }
 
 void Worker::decreaseAmount() {
-	if (amount > 1) amount--;
+	if (managedAmount > 1) managedAmount--;
 }
 
 void Worker::setAmountPerceivable() {
-	amount = 200; 	// for 0.6mSec unit, 20 gives 12mSec flash, 200 gives 0.12Sec
+	managedAmount = 200; 	// for 0.6mSec unit, 20 gives 12mSec flash, 200 gives 0.12Sec
 }
 

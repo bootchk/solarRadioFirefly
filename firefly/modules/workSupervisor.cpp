@@ -7,6 +7,7 @@
 #include "workSupervisor.h"
 #include "worker.h"
 #include "groupWork.h"
+#include "powerShedder.h"
 
 
 // dummy workpayload represents version of code
@@ -29,25 +30,10 @@ PowerManager* powerManager;
 // owns
 Worker worker;
 GroupWork groupWork;
+PowerShedder powerShedder;
 
 
-/*
- * Work locally until power is not excess.
- *
- * We must reduce voltage to keep from exceeding Vmax of chip.
- */
-// TODO should start another timer to check again, no while loop here.
-void workLocallyToShedPower() {
-	do {
-		worker.workAmount(200);
-		// assert LED on and timer 2 started
 
-		// TODO no sleep here, this is at sync point, should return to sync loop
-		// any interrupt may wake a sync sleep, but it will continue
-		MCU::sleep();
-	}
-	while (powerManager->isPowerExcess());
-}
 
 
 
@@ -73,7 +59,7 @@ void simpleManagePowerWithWork() {
 
 		CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
 
-		workLocallyToShedPower();
+		powerShedder.shedPowerUntilVccLessThanVmax();
 		// assert power is not excess?
 		// TODO if change ShedPower, Vcc might still be excess
 		break;
@@ -154,6 +140,7 @@ void WorkSupervisor::init(
 {
 	powerManager = aPowerManager;
 	worker.init(aLCT, aLEDService);
+	powerShedder.init(aPowerManager, &worker);
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// self owns worker, but groupWorker also uses it

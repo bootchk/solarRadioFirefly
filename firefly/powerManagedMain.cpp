@@ -196,6 +196,8 @@ void initObjects() {
 	hfClock.init(&nvic);
 	assert(! hfClock.isRunning());	// xtal not running
 
+	powerManager.init();
+
 	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &powerManager);
 
 	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
