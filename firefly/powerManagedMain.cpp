@@ -82,7 +82,9 @@ assert(ledService.wasInit());
 
 
 // callback from LongClockTimer
-void onTimerExpire() { return; }
+void onTimerExpire(TimerInterruptReason reason) {
+	assert(reason == Expired);
+}
 
 /*
  * Sleep, waking periodically, until power is sufficient for radio.
@@ -90,7 +92,7 @@ void onTimerExpire() { return; }
 void sleepUntilRadioPower() {
 	while (!powerManager.isPowerForRadio()){
 		// Use Timer 0, later used by SleepSync
-		longClockTimer.startTimer((TimerIndex) 0, 40000, onTimerExpire);	// 40k == 1.2seconds
+		longClockTimer.startTimer(First, 40000, onTimerExpire);	// 40k == 1.2seconds
 		assertUltraLowPower();
 		mcu.sleep();
 	}
@@ -200,7 +202,7 @@ void initObjects() {
 
 	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &powerManager);
 
-	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, onWorkMsg, onSyncPoint);
+	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, &powerManager, onWorkMsg, onSyncPoint);
 }
 
 
@@ -240,7 +242,7 @@ void powerManagedMain() {
 	// Record that we got this far
 	CustomFlash::writeZeroAtIndex(EnterSyncLoopEventFlagIndex);
 
-	sleepSyncAgent.loop(&powerManager);	// never returns
+	sleepSyncAgent.loop();	// never returns
 }
 
 
