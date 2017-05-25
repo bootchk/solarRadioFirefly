@@ -49,8 +49,8 @@ void simpleManagePowerWithWork() {
 	 * i.e. pass from Excess to Medium or worse.
 	 */
 	switch (powerManager->getVoltageRange()) {
-	case VoltageRange::Excess:
-		/* e.g. > 2.7V.
+	case VoltageRange::AboveExcess:
+		/* e.g. > 3.6V.
 		 * Self MUST work locally to keep voltage from exceeding Vmax
 		 * Send to group.
 		 */
@@ -64,8 +64,8 @@ void simpleManagePowerWithWork() {
 		// TODO if change ShedPower, Vcc might still be excess
 		break;
 
-	case VoltageRange::High:
-		/* e.g. 2.5V - 2.7V
+	case VoltageRange::HighToExcess:
+		/* e.g. 2.7--3.6V
 		 * I could work (enough power) but I don't need to work to manage excess power.
 		 */
 		worker.maintainAmount();
@@ -79,17 +79,20 @@ void simpleManagePowerWithWork() {
 		groupWork.randomlyInitiateGroupWork(WORK_VERSION);
 		break;
 
-	case VoltageRange::Medium:
+	case VoltageRange::MediumToHigh:
+		// e.g. 2.5--2.7V
+		worker.maintainAmount();
+		break;
+
+	case VoltageRange::LowToMedium:
 		/* e.g. 2.3-2.5V
-		 * Decrease amount of work
-		 *
 		 * not initiate work.
 		 * Others may ask me to work, see elsewhere.
 		 */
 		worker.decreaseAmount();
 		break;
 
-	case VoltageRange::Low:
+	case VoltageRange::UltraLowToLow:
 		/* e.g. 2.1-2.3V
 		 * Not enough power to work, and power getting low.
 		 * Next work done (if ever) is least amount.
@@ -97,8 +100,8 @@ void simpleManagePowerWithWork() {
 		worker.setLeastAmount();
 		break;
 
-	case VoltageRange::UltraLow:
-		/* e.g. <2.1-2.3V
+	case VoltageRange::BelowUltraLow:
+		/* e.g. <2.1V
 		 * Not enough power to work.
 		 * Power nearing brownout.
 		 * Next work done (if ever) is least amount.

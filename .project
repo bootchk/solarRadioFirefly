@@ -34,6 +34,10 @@
 	</linkedResources>
 	<variableList>
 		<variable>
+			<name>GIT</name>
+			<value>file:/home/bootch/git</value>
+		</variable>
+		<variable>
 			<name>nRF52lib</name>
 			<value>file:/home/bootch/git/nRF5x/DebugnRF52/libnRF5x52.a</value>
 		</variable>

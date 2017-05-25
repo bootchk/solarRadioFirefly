@@ -234,9 +234,13 @@ void powerManagedMain() {
 	// assert counter interrupt enabled for overflow
 	// assert RTC0_IRQ is enabled (for Counter overflow and any Timers)
 
+	/*
+	 * Sleep until power builds up: boot is at a voltage (a low power reserve)
+	 * and there is a small hysteresis on the voltage monitor IC that boots us.
+	 */
 	sleepUntilRadioPower();
-
 	// Should be a small reserve of power
+
 	initObjects();
 
 	// Record that we got this far

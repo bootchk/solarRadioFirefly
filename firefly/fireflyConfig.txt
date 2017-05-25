@@ -1,7 +1,7 @@
 
 This was an include file.
 Now it is just documentation.
-These vars are now defined in the build configurations.
+These vars are now defined in the Eclipse build configurations.
 
 /*
  * Is the power supply solar?

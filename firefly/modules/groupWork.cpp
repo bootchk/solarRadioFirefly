@@ -35,7 +35,7 @@ void GroupWork::queueLocalWork(WorkPayload work) {
 		log("Mail still in In mailbox\n");
 	}
 	else {
-		myInMailbox->put(work);	// WORK_VERSION);
+		myInMailbox->put(work);
 		log("App queue received or initiated work\n");
 	}
 }

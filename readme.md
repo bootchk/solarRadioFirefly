@@ -85,6 +85,13 @@ This is for two target embedded chips, the nRF52 having an ARM M4 mcu and the nR
 
 You can set a build configuration active.  Then you edit it in the project's Properties.  See nRFCounter project for more explanation.  That was the original project where I used Eclipse managed builds instead of hand managed Makefiles.
 
+Libraries
+-
+
+Depends on nRF5x library and sleepSyncAgent library (built for the architecture Arm M0 or M4.)
+Both are specified in the Eclipse build configuration with paths to your local copy.
+
+
 Board configuration
 -
 
