@@ -37,7 +37,7 @@ SyncAgent sleepSyncAgent;
 
 // devices
 PowerManager powerManager;
-LongClockTimer longClockTimer;	// used by WorkSupervisor and SleepSyncAgent
+LongClockTimer longClockTimer;	// !!! Widely used by WorkSupervisor, SleepSyncAgent
 Radio radio;
 Nvic nvic;
 PowerSupply powerSupply;
@@ -181,7 +181,7 @@ void initObjects() {
 
 	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &powerManager);
 
-	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &powerManager, onWorkMsg, onSyncPoint);
+	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &powerManager, &longClockTimer, onWorkMsg, onSyncPoint);
 }
 
 
