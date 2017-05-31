@@ -24,6 +24,10 @@ void Worker::init(LongClockTimer* aLCT, LEDService* aLEDService) {
 }
 
 void Worker::workManagedAmount() {
+	// Record that we worked at least once.
+	CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
+
+	// TEMP not actually flash
 	ledFlasher.flashLEDByAmount(1, managedAmount);
 }
 

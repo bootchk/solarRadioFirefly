@@ -194,12 +194,8 @@ void WorkSupervisor::manageVoltageByWork() {
 }
 
 
-void WorkSupervisor::tryWorkInIsolation() {
+void WorkSupervisor::tryWorkLocally() {
 	if (powerManager->isPowerForWork()) {
-
-		// Record that we worked at least once.
-		CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
-
 		log("Do work\n");
 		worker.workManagedAmount();
 	}

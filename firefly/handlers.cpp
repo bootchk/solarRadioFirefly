@@ -31,7 +31,7 @@ void __assert_func(const char * fileName,
 		int lineNumber,
 		const char * functionName,
 		const char * expression) {
-	genericAssertionFaultHandler(functionName, lineNumber);
+	genericAssertionFaultHandler(fileName, lineNumber);
 }
 
 

@@ -13,11 +13,8 @@
 
 #include <cassert>
 
-
-// Project has include path to nRF5x library
+// Uses nRF5x and SleepSync libraries.  Projects build configs have path to these
 #include <nRF5x.h>
-
-// Project has include path to sleepSyncAgent project
 #include <syncAgent/syncAgent.h>
 
 // project local
@@ -40,8 +37,8 @@ SyncAgent sleepSyncAgent;
 
 // devices
 PowerManager powerManager;
+LongClockTimer longClockTimer;	// used by WorkSupervisor and SleepSyncAgent
 Radio radio;
-LongClockTimer longClockTimer;
 Nvic nvic;
 PowerSupply powerSupply;
 HfCrystalClock hfClock;
@@ -80,25 +77,9 @@ void initLEDs() {
 assert(ledService.wasInit());
 }
 
-
-// callback from LongClockTimer
-void onTimerExpire(TimerInterruptReason reason) {
-	assert(reason == Expired);
-}
-
-/*
- * Sleep, waking periodically, until power is sufficient for radio.
- */
-void sleepUntilRadioPower() {
-	while (!powerManager.isPowerForRadio()){
-		// Use Timer 0, later used by SleepSync
-		longClockTimer.startTimer(First, 40000, onTimerExpire);	// 40k == 1.2seconds
-		assertUltraLowPower();
-		mcu.sleep();
-	}
-}
-
 } // namespace
+
+
 
 
 /*
@@ -148,7 +129,7 @@ void onSyncPoint() {
 		// Do work bounced (that I sent) or received in previous sync slot
 		// For now, ignore work specifics
 		(void) myInMailbox.fetch();
-		workSupervisor.tryWorkInIsolation();
+		workSupervisor.tryWorkLocally();
 	}
 	/*
 	 * Work from others might have depleted my power.
@@ -198,11 +179,9 @@ void initObjects() {
 	hfClock.init(&nvic);
 	assert(! hfClock.isRunning());	// xtal not running
 
-	powerManager.init();
-
 	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &powerManager);
 
-	sleepSyncAgent.init(&radio, &myOutMailbox, &longClockTimer, &powerManager, onWorkMsg, onSyncPoint);
+	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &powerManager, onWorkMsg, onSyncPoint);
 }
 
 
@@ -229,22 +208,24 @@ void powerManagedMain() {
 
 	// assert interrupts globally enabled i.e. PRIMASK
 
-	longClockTimer.init(&nvic);	// sleep needs timer
-	// assert counter is perpetually running
-	// assert counter interrupt enabled for overflow
-	// assert RTC0_IRQ is enabled (for Counter overflow and any Timers)
+	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
+	powerManager.init();
+	longClockTimer.init(&nvic);
+
+	sleepSyncAgent.initSleepers(&powerManager, &longClockTimer);
+	// SleepSyncAgent prepared to sleep
 
 	/*
 	 * Sleep until power builds up: boot is at a voltage (a low power reserve)
 	 * and there is a small hysteresis on the voltage monitor IC that boots us.
 	 */
-	sleepUntilRadioPower();
-	// Should be a small reserve of power
+	sleepSyncAgent.sleepUntilSyncPower();
 
 	initObjects();
+	// sleepSyncAgent prepared to loop
 
-	// Record that we got this far
-	CustomFlash::writeZeroAtIndex(EnterSyncLoopEventFlagIndex);
+	sleepSyncAgent.sleepUntilSyncPower();
+	// sleepSyncAgent has enough power to start
 
 	sleepSyncAgent.loop();	// never returns
 }

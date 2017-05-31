@@ -39,7 +39,7 @@ public:
 	/*
 	 * Work on this unit if power allows.
 	 */
-	static void tryWorkInIsolation();
+	static void tryWorkLocally();
 
 	static void queueLocalWork(WorkPayload work);
 };

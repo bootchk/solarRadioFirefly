@@ -11,7 +11,7 @@ Files in this directory
 	In older SDKv12 the suffixes are hacked (.c=>.cpp, .s=>.S)
 	are conditionally compiled by a C/C++ General>Paths and Symbols>Source Location (path) in a build configuration
 	
-	When LOGGING defined need:
+	When LOGGING defined need local copy of SDK file:
 	app_util_platform.c => .cpp
 	
 	and add include paths to ".h and app_error.h and nrf_error.h
