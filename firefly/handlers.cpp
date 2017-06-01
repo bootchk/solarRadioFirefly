@@ -16,15 +16,21 @@
 extern "C" {
 
 void HardFault_Handler();
+void NMI_Handler();
+void SVC_Handler();
+void PendSV_Handler();
+void SysTick_Handler();
 void _exit();
 
-void HardFault_Handler() {
-	genericHardFaultHandler();
-}
+// Log distinguished flag
+void HardFault_Handler() { genericHardFaultHandler(); }
 
-void _exit() {
-	genericExitFaultHandler();
-}
+// Log undistinguished flag
+void NMI_Handler()    { genericExitHandler(); }
+void SVC_Handler()    { genericExitHandler(); }
+void PendSV_Handler() { genericExitHandler(); }
+void SysTick_Handler(){ genericExitHandler(); }
+void _exit()          { genericExitHandler(); }
 
 
 void __assert_func(const char * fileName,

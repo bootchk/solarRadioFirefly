@@ -42,5 +42,5 @@ void testMain() {
 
 
 	// Test writing UICR
-	CustomFlash::writeZeroAtIndex(BootedEventFlagIndex);
+	CustomFlash::writeZeroAtIndex(ExitFlagIndex);
 }
