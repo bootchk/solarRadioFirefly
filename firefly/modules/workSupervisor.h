@@ -29,7 +29,7 @@ public:
 			Mailbox*, 	        // Sends work local
 			LongClockTimer*,	// uses timer for flashing led
 			LEDService*,		// flashes LED to consume power
-			PowerManager*);		// accesses power levels
+			SyncPowerManager*);	// accesses power levels
 
 	/*
 	 * Initiate group work that also manages power.

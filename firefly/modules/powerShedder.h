@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <nRF5x.h>	// PowerManager
+#include <syncAgent/modules/syncPowerManager.h>
 #include "worker.h"
 
 /*
@@ -11,6 +11,6 @@
 
 class PowerShedder {
 public:
-	static void init(PowerManager* aPowerManager, Worker* aWorker);
+	static void init(SyncPowerManager* aSyncPowerManager, Worker* aWorker);
 	static void shedPowerUntilVccLessThanVmax();
 };

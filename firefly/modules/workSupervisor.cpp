@@ -2,7 +2,9 @@
 // Config depends on POWER_IS_SOLAR in build config
 
 
-#include <nRF5x.h>
+#include <nRF5x.h>	// CustomFlash
+#include <syncAgent/syncAgent.h>
+#include <syncAgent/modules/syncPowerManager.h>
 
 #include "workSupervisor.h"
 #include "worker.h"
@@ -25,7 +27,7 @@
  */
 namespace {
 
-PowerManager* powerManager;
+SyncPowerManager* syncPowerManager;
 
 // owns
 Worker worker;
@@ -48,7 +50,7 @@ void simpleManagePowerWithWork() {
 	 * on consecutive calls, the VoltageRange's are not adjacent,
 	 * i.e. pass from Excess to Medium or worse.
 	 */
-	switch (powerManager->getVoltageRange()) {
+	switch (syncPowerManager->getVoltageRange()) {
 	case VoltageRange::AboveExcess:
 		/* e.g. > 3.6V.
 		 * Self MUST work locally to keep voltage from exceeding Vmax
@@ -139,11 +141,11 @@ void WorkSupervisor::init(
 		Mailbox* aInMailbox,
 		LongClockTimer* aLCT,
 		LEDService* aLEDService,
-		PowerManager* aPowerManager)
+		SyncPowerManager* aSyncPowerManager)
 {
-	powerManager = aPowerManager;
+	syncPowerManager = aSyncPowerManager;
 	worker.init(aLCT, aLEDService);
-	powerShedder.init(aPowerManager, &worker);
+	powerShedder.init(aSyncPowerManager, &worker);
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// self owns worker, but groupWorker also uses it
@@ -195,7 +197,7 @@ void WorkSupervisor::manageVoltageByWork() {
 
 
 void WorkSupervisor::tryWorkLocally() {
-	if (powerManager->isPowerForWork()) {
+	if (syncPowerManager->isPowerForWork()) {
 		log("Do work\n");
 		worker.workManagedAmount();
 	}

@@ -5,13 +5,13 @@
 
 
 namespace {
-	PowerManager* powerManager;
+	SyncPowerManager* syncPowerManager;
 	Worker* worker;
 }
 
 
-void PowerShedder::init(PowerManager* aPowerManager, Worker* aWorker) {
-	powerManager = aPowerManager;
+void PowerShedder::init(SyncPowerManager* aSyncPowerManager, Worker* aWorker) {
+	syncPowerManager = aSyncPowerManager;
 	worker = aWorker;
 }
 
@@ -37,7 +37,7 @@ void PowerShedder::shedPowerUntilVccLessThanVmax(){
 		// any interrupt may wake a sync sleep, but it will continue
 		MCU::sleep();
 	}
-	while (powerManager->isPowerExcess());
+	while (syncPowerManager->isPowerExcess());
 
 	// Power could have climbed above Vmax since the loop ended.
 }

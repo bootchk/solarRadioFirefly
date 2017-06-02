@@ -31,12 +31,13 @@ __attribute__ ((noreturn)) void powerManagedMain();
 
 namespace {
 
+// Objects from sleepSyncAgent library
+SyncPowerManager syncPowerManager;
 SyncAgent sleepSyncAgent;
 
 // Objects from nRF5x library i.e. platform
 
 // devices
-PowerManager powerManager;
 LongClockTimer longClockTimer;	// !!! Widely used by WorkSupervisor, SleepSyncAgent
 Radio radio;
 Nvic nvic;
@@ -179,9 +180,9 @@ void initObjects() {
 	hfClock.init(&nvic);
 	assert(! hfClock.isRunning());	// xtal not running
 
-	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &powerManager);
+	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &syncPowerManager);
 
-	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &powerManager, &longClockTimer, onWorkMsg, onSyncPoint);
+	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &syncPowerManager, &longClockTimer, onWorkMsg, onSyncPoint);
 }
 
 
@@ -209,10 +210,10 @@ void powerManagedMain() {
 	// assert interrupts globally enabled i.e. PRIMASK
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
-	powerManager.init();
+	syncPowerManager.init();
 	longClockTimer.init(&nvic);
 
-	sleepSyncAgent.initSleepers(&powerManager, &longClockTimer);
+	sleepSyncAgent.initSleepers(&syncPowerManager, &longClockTimer);
 	// SleepSyncAgent prepared to sleep
 
 	/*
