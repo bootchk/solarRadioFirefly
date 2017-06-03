@@ -12,9 +12,9 @@ __attribute__((noreturn))
 int main() {
 	// assert embedded system startup is done and calls main.
 
-	// Choose corresponding build configuration
-	// testMain();
-	powerManagedMain();
+	// Choose a main
+	// testMain();	// test harness
+	powerManagedMain();	// main for Firefly app
 }
 
 

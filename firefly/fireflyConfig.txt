@@ -3,6 +3,9 @@ This was an include file.
 Now it is just documentation.
 These vars are now defined in the Eclipse build configurations.
 
+There is no build configuration that uses testMain.cpp:
+instead just modify main.c to call testMain
+
 /*
  * Is the power supply solar?
  * Else it is a battery, essentially unlimited and regulated.

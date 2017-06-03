@@ -36,11 +36,21 @@ void testMain() {
 	//int foo = *(uint32_t *)(0x20010004);
 
 	/*
-	 * Test assertion
+	 * Test assertion wites to flash,
+	 * since redefined __assert_func() in handlers.cpp calls genericAssertionFaultHandler()
 	 */
-	assert(false);
+	//assert(false);
 
 
-	// Test writing UICR
-	CustomFlash::writeZeroAtIndex(ExitFlagIndex);
+	/*
+	 * Test writing UICR
+	 */
+	//CustomFlash::writeZeroAtIndex(ExitFlagIndex);
+
+	/*
+	 * Test DebugHandler writes PC to flash
+	 * When hardfault occurs
+	 * (Since HardFault_Handler is alias for DebugHandler (asm) which calls ExceptionHandlerWritePCToFlash
+	 */
+	int foo = *(uint32_t *)(0x20010004);	// addr out of range
 }

@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include "nRF5x.h"
+#include <nRF5x.h>
 
 
 /*
