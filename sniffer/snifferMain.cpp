@@ -83,7 +83,8 @@ void snifferMain(void)
 	longClockTimer.init(&nvic);
 	hfClock.init(&nvic);
 
-	sleeper.init(200000, &longClockTimer);	// requires initialized TimerService
+	sleeper.init(&longClockTimer);	// requires initialized TimerService
+	// use maxSaneTimeout default
 
 	radio.init(
 			&nvic,
@@ -135,7 +136,7 @@ void snifferMain(void)
     		}
     		break;
 
-    	case TimerExpired:
+    	case SleepTimerExpired:
     		// Indicate alive but no message.
     		log(".");
     		ledLogger.toggleLED(1);
@@ -143,7 +144,7 @@ void snifferMain(void)
     		radio.stopReceive();
     		break;
 
-    	case None:
+    	case NotSetByIRQ:
     	default:
     		log("Unexpected wake reason\n");
     		logInt(sleeper.getReasonForWake());
