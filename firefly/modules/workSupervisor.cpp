@@ -111,7 +111,7 @@ void simpleManagePowerWithWork() {
 		 * It is possible for power levels to drop so precipitously that
 		 * we didnt' pass through case above for Low.
 		 */
-		CustomFlash::writeZeroAtIndex(BrownoutPowerEventFlagIndex);
+		/* See also brownout detector should find this case asynchronously. */
 		worker.setLeastAmount();
 		break;
 	}

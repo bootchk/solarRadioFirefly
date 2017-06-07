@@ -2,6 +2,7 @@
 #include <cassert>
 #include <nRF5x.h>
 
+
 void testMain();
 void powerManagedMain() __attribute__ ((noreturn));
 
@@ -16,13 +17,3 @@ int main() {
 	// testMain();	// test harness
 	powerManagedMain();	// main for Firefly app
 }
-
-
-#ifdef FOO
-extern "C" {
-
-_start() {
-	main();
-}
-}
-#endif
