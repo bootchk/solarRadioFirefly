@@ -28,6 +28,9 @@ void onSyncPoint();
 void initObjects();
 __attribute__ ((noreturn)) void powerManagedMain();
 
+// global referenced by nRF5x IRQHandler
+BrownoutManager brownoutManager;
+
 
 namespace {
 
@@ -46,10 +49,10 @@ HfCrystalClock hfClock;
 LEDService ledService;
 MCU mcu;
 
+
 // Not devices
 Mailbox myOutMailbox;
 Mailbox myInMailbox;
-
 
 // My objects
 WorkSupervisor workSupervisor;
@@ -182,7 +185,8 @@ void initObjects() {
 
 	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &syncPowerManager);
 
-	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &syncPowerManager, &longClockTimer, onWorkMsg, onSyncPoint);
+	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &syncPowerManager, &longClockTimer, &brownoutManager,
+			onWorkMsg, onSyncPoint);
 }
 
 
