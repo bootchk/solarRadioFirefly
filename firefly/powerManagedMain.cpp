@@ -44,7 +44,7 @@ SyncAgent sleepSyncAgent;
 LongClockTimer longClockTimer;	// !!! Widely used by WorkSupervisor, SleepSyncAgent
 Radio radio;
 Nvic nvic;
-PowerSupply powerSupply;
+DCDCPowerSupply dcdcPowerSupply;
 HfCrystalClock hfClock;
 LEDService ledService;
 MCU mcu;
@@ -175,7 +175,7 @@ void initObjects() {
 
 	radio.init(
 			&nvic,
-			&powerSupply,
+			&dcdcPowerSupply,
 			&hfClock);
 	// sleepSyncAgent will connect msgReceivedCallback and handle all messages
 
