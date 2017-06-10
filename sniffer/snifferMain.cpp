@@ -38,8 +38,9 @@ Sleeper sleeper;
 LEDService ledLogger;
 LongClockTimer longClockTimer;
 Nvic nvic;
-PowerSupply powerSupply;
+DCDCPowerSupply powerSupply;
 HfCrystalClock hfClock;
+BrownoutManager brownoutManager;
 
 
 void onRcvMsgCallback() {
@@ -144,14 +145,16 @@ void snifferMain(void)
     		radio.stopReceive();
     		break;
 
-    	case NotSetByIRQ:
-    	default:
+    	case Unknown:
     		log("Unexpected wake reason\n");
     		logInt(sleeper.getReasonForWake());
     		//assert(false); // Unexpected
     		;
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();
+    		break;
+    	case Cleared:
+    		assert(false);
     	}
 
     	// assert radio still on but not receiving
