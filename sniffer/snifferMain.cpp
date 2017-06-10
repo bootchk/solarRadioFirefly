@@ -110,6 +110,7 @@ void snifferMain(void)
 
     while (true)
     {
+    	// This is not isPowerOn() because we leave radio power on
     	assert(!radio.isInUse());	// powerOn (initial entry) and stopReceiver (loop) ensures this
 
     	sleeper.clearReasonForWake();
@@ -130,7 +131,7 @@ void snifferMain(void)
     			logMessage();
     		}
     		else {
-    			log("Bad CRC.\n");
+    			log("Bad CRC: ");
     			// buffer can be dumped despite bad CRC
     			logMessage();
     			ledLogger.toggleLED(3);
@@ -146,7 +147,7 @@ void snifferMain(void)
     		break;
 
     	case Unknown:
-    		log("Unexpected wake reason\n");
+    		log("Unexpected: ISR called but no events.\n");
     		logInt(sleeper.getReasonForWake());
     		//assert(false); // Unexpected
     		;
@@ -154,7 +155,9 @@ void snifferMain(void)
     		radio.stopReceive();
     		break;
     	case Cleared:
-    		assert(false);
+    		log("Unexpected: sleep ended but no ISR called.\n");
+    		// Put radio in state that next iteration expects.
+    		radio.stopReceive();
     	}
 
     	// assert radio still on but not receiving
