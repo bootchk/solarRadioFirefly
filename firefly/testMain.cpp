@@ -2,6 +2,8 @@
 #include <cassert>
 #include <inttypes.h>
 
+#include "nrf.h"	// WEV
+
 #include "nRF5x.h"
 #include "/home/bootch/git/nRF5x/src/drivers/customFlash.h"
 
@@ -52,5 +54,16 @@ void testMain() {
 	 * When hardfault occurs
 	 * (Since HardFault_Handler is alias for DebugHandler (asm) which calls ExceptionHandlerWritePCToFlash
 	 */
-	int foo = *(uint32_t *)(0x20010004);	// addr out of range
+	//int foo = *(uint32_t *)(0x20010004);	// addr out of range
+
+	/*
+	 * Test WFE, SEV sequence
+	 *
+	 * Determined that arm gdb will not step through this???
+	 */
+	while(true) {
+		__SEV();
+		__WFE();
+		__WFE();
+	}
 }

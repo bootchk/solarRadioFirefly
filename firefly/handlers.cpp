@@ -20,6 +20,8 @@
 
 extern "C" {
 
+// HardFault_Handler overridden by library nRf5x
+
 void NMI_Handler();
 void SVC_Handler();
 void PendSV_Handler();

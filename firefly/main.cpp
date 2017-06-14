@@ -14,6 +14,6 @@ int main() {
 	// assert embedded system startup is done and calls main.
 
 	// Choose a main
-	// testMain();	// test harness
+	//testMain();	// test harness
 	powerManagedMain();	// main for Firefly app
 }
