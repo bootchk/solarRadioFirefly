@@ -19,6 +19,8 @@
 
 // project local
 #include "modules/groupWork.h"
+
+// Uses pure classes
 #include "modules/workSupervisor.h"
 
 
@@ -32,10 +34,15 @@ __attribute__ ((noreturn)) void powerManagedMain();
 BrownoutManager brownoutManager;
 
 
+/*
+ * Uses pure classes:
+ * sleepSyncAgent::SyncPowerManager
+ */
+
 namespace {
 
 // Objects from sleepSyncAgent library
-SyncPowerManager syncPowerManager;
+
 SyncAgent sleepSyncAgent;
 
 // Objects from nRF5x library i.e. platform
@@ -55,7 +62,8 @@ Mailbox myOutMailbox;
 Mailbox myInMailbox;
 
 // My objects
-WorkSupervisor workSupervisor;
+//WorkSupervisor WorkSupervisor::;
+SyncPowerManager syncPowerManager;
 
 
 
@@ -108,7 +116,7 @@ assert(ledService.wasInit());
  */
 void onWorkMsg(WorkPayload work) {
 	// Queue work to be done later (at next sync point)
-	workSupervisor.queueLocalWork(work);
+	WorkSupervisor::queueLocalWork(work);
 }
 
 
@@ -122,10 +130,13 @@ void onWorkMsg(WorkPayload work) {
  * FUTURE make this a thread and yield to higher priority sleep sync thread
  */
 /*
- * Here all work is done at they sync point since goal is synchronized work (firefly flashing.)
+ * Here we start work at the SyncPoint since goal is synchronized work (firefly flashing.)
  * Work itself need not be synchronized, only the SyncAgents.
- * I.E. we could do work at some other time in the sync period,
- * or accumulate work, etc.
+ * I.E. we could do work at some other time in the sync period, or accumulate work, etc.
+ *
+ * !!! If doing work (as opposed to just starting it) takes a long time,
+ * it should be done in the work slot.
+ * Doing work at the SyncPoint will disrupt sync if it takes too long.
  */
 void onSyncPoint() {
 
@@ -133,7 +144,7 @@ void onSyncPoint() {
 		// Do work bounced (that I sent) or received in previous sync slot
 		// For now, ignore work specifics
 		(void) myInMailbox.fetch();
-		workSupervisor.tryWorkLocally();
+		WorkSupervisor::tryWorkLocally();
 	}
 	/*
 	 * Work from others might have depleted my power.
@@ -141,7 +152,7 @@ void onSyncPoint() {
 	 */
 
 	// If voltage is excess, this may not return immediately, and disturbs sync
-	workSupervisor.manageVoltageByWork();
+	WorkSupervisor::manageVoltageAndWork();
 
 	/*
 	 * Might have queued work out and in:
@@ -183,7 +194,7 @@ void initObjects() {
 	hfClock.init(&nvic);
 	assert(! hfClock.isRunning());	// xtal not running
 
-	workSupervisor.init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService, &syncPowerManager);
+	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService);
 
 	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &syncPowerManager, &longClockTimer, &brownoutManager,
 			onWorkMsg, onSyncPoint);

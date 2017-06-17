@@ -3,7 +3,7 @@
 
 
 #include <nRF5x.h>
-
+#include <syncAgent/modules/syncPowerManager.h>
 
 /*
  * Knows:
@@ -28,13 +28,13 @@ public:
 			Mailbox*, 	        // Sends work out
 			Mailbox*, 	        // Sends work local
 			LongClockTimer*,	// uses timer for flashing led
-			LEDService*,		// flashes LED to consume power
-			SyncPowerManager*);	// accesses power levels
+			LEDService*		// flashes LED to consume power
+			);	// also uses SyncPowerManager
 
 	/*
-	 * Initiate group work that also manages power.
+	 * Invoke some strategy.
 	 */
-	static void manageVoltageByWork();
+	static void manageVoltageAndWork();
 
 	/*
 	 * Work on this unit if power allows.

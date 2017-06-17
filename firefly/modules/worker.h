@@ -12,6 +12,8 @@
  * Amount of work is settable.
  * Units are defined in the implementation (typically units of 0.6mSec LED flash.)
  * So that work can be used to shed power.
+ *
+ * Pure class: no instances.
  */
 
 

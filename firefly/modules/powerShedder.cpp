@@ -3,17 +3,9 @@
 
 #include "powerShedder.h"
 
-
-namespace {
-	SyncPowerManager* syncPowerManager;
-	Worker* worker;
-}
-
-
-void PowerShedder::init(SyncPowerManager* aSyncPowerManager, Worker* aWorker) {
-	syncPowerManager = aSyncPowerManager;
-	worker = aWorker;
-}
+// Uses pure classes
+#include "worker.h"
+#include <syncAgent/modules/syncPowerManager.h>
 
 
 /*
@@ -27,17 +19,18 @@ void PowerShedder::shedPowerUntilVccLessThanVmax(){
 	 * A call when assert(powerManager->isPowerExcess()) is false is superfluous.
 	 * However, Vcc may have dropped after the decision to call
 	 */
+	// Requires Worker and PowerShedder init
 
 	do {
 		// Here we shed by flashing LED.  Better to use some other device?
-		worker->workAmount(200);
+		Worker::workAmount(200);
 		// assert LED on and timer 2 started
 
 		// TODO no sleep here, this is at sync point, should return to sync loop
 		// any interrupt may wake a sync sleep, but it will continue
 		MCU::sleep();
 	}
-	while (syncPowerManager->isPowerExcess());
+	while (SyncPowerManager::isPowerExcess());
 
 	// Power could have climbed above Vmax since the loop ended.
 }
