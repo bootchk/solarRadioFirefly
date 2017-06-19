@@ -18,11 +18,12 @@ unsigned int managedAmount = 1;
 
 }
 
-void Worker::init(LongClockTimer* aLCT, LEDService* aLEDService) {
-	ledFlasher.init(aLCT, aLEDService);
+void Worker::init(LEDService* aLEDService) {
+	ledFlasher.init(aLEDService);
 	setLeastAmount();
 }
 
+#if REAL_WORK
 void Worker::workManagedAmount() {
 	// Record that we worked at least once.
 	CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
@@ -34,6 +35,10 @@ void Worker::workManagedAmount() {
 void Worker::workAmount(unsigned int aAmount) {
 	ledFlasher.flashLEDByAmount(1, aAmount);
 }
+#else
+void Worker::workManagedAmount() {}
+void Worker::workAmount(unsigned int aAmount) {}
+#endif
 
 
 /*

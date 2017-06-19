@@ -27,7 +27,6 @@ public:
 	static void init(
 			Mailbox*, 	        // Sends work out
 			Mailbox*, 	        // Sends work local
-			LongClockTimer*,	// uses timer for flashing led
 			LEDService*		// flashes LED to consume power
 			);	// also uses SyncPowerManager
 

@@ -48,7 +48,7 @@ SyncAgent sleepSyncAgent;
 // Objects from nRF5x library i.e. platform
 
 // devices
-LongClockTimer longClockTimer;	// !!! Widely used by WorkSupervisor, SleepSyncAgent
+// Pure class LongClockTimer widely used by WorkSupervisor, SleepSyncAgent
 
 Nvic nvic;
 DCDCPowerSupply dcdcPowerSupply;
@@ -194,9 +194,9 @@ void initObjects() {
 	hfClock.init(&nvic);
 	assert(! hfClock.isRunning());	// xtal not running
 
-	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService);
+	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &ledService);
 
-	sleepSyncAgent.initSyncObjects(&myOutMailbox, &syncPowerManager, &longClockTimer, &brownoutManager,
+	sleepSyncAgent.initSyncObjects(&myOutMailbox, &syncPowerManager, &brownoutManager,
 			onWorkMsg, onSyncPoint);
 }
 
@@ -226,9 +226,9 @@ void powerManagedMain() {
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
 	syncPowerManager.init();
-	longClockTimer.init(&nvic);
+	LongClockTimer::init(&nvic);
 
-	sleepSyncAgent.initSleepers(&syncPowerManager, &longClockTimer);
+	sleepSyncAgent.initSleepers(&syncPowerManager);
 	// SleepSyncAgent prepared to sleep
 
 	/*
