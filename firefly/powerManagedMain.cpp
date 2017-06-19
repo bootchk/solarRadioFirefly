@@ -226,10 +226,12 @@ void powerManagedMain() {
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
 	syncPowerManager.init();
-	LongClockTimer::init(&nvic);
+	LongClockTimer::start(&nvic);
+	// Started but may not be running.  Can still sleep, just won't be accurate?
+	// Takes 0.6mSec to start
+
 
 	sleepSyncAgent.initSleepers(&syncPowerManager);
-	// SleepSyncAgent prepared to sleep
 
 	/*
 	 * Sleep until power builds up: boot is at a voltage (a low power reserve)
