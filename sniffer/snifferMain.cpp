@@ -125,7 +125,7 @@ void snifferMain(void)
     	// If using nrf52DK with many LED's show result
     	// Some interrupt ??? event woke us up and set reasonForWake
     	switch ( sleeper.getReasonForWake() ) {
-    	case MsgReceived:
+    	case ReasonForWake::MsgReceived:
     		// !!! Note toggling of LED 2 usually done in radio.c on every receive
     		if (radio.isPacketCRCValid()) {
     			logMessage();
@@ -138,7 +138,7 @@ void snifferMain(void)
     		}
     		break;
 
-    	case SleepTimerExpired:
+    	case ReasonForWake::SleepTimerExpired:
     		// Indicate alive but no message.
     		log(".");
     		ledLogger.toggleLED(1);
@@ -146,15 +146,15 @@ void snifferMain(void)
     		radio.stopReceive();
     		break;
 
-    	case Unknown:
+    	case ReasonForWake::Unknown:
     		log("Unexpected: ISR called but no events.\n");
-    		logInt(sleeper.getReasonForWake());
+    		logInt((uint32_t) sleeper.getReasonForWake());
     		//assert(false); // Unexpected
     		;
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();
     		break;
-    	case Cleared:
+    	case ReasonForWake::Cleared:
     		log("Unexpected: sleep ended but no ISR called.\n");
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();

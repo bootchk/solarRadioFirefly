@@ -49,7 +49,7 @@ SyncAgent sleepSyncAgent;
 
 // devices
 LongClockTimer longClockTimer;	// !!! Widely used by WorkSupervisor, SleepSyncAgent
-Radio radio;
+
 Nvic nvic;
 DCDCPowerSupply dcdcPowerSupply;
 HfCrystalClock hfClock;
@@ -184,7 +184,7 @@ void initObjects() {
 
 	initLEDs();
 
-	radio.init(
+	Radio::init(
 			&nvic,
 			&dcdcPowerSupply,
 			&hfClock);
@@ -196,7 +196,7 @@ void initObjects() {
 
 	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &longClockTimer, &ledService);
 
-	sleepSyncAgent.initSyncObjects(&radio, &myOutMailbox, &syncPowerManager, &longClockTimer, &brownoutManager,
+	sleepSyncAgent.initSyncObjects(&myOutMailbox, &syncPowerManager, &longClockTimer, &brownoutManager,
 			onWorkMsg, onSyncPoint);
 }
 
