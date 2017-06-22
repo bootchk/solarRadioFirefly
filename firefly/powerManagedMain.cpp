@@ -22,6 +22,10 @@
 
 // Uses pure classes
 #include "modules/workSupervisor.h"
+/*
+ * Uses pure classes:
+ * sleepSyncAgent::SyncPowerManager
+ */
 
 
 
@@ -30,14 +34,8 @@ void onSyncPoint();
 void initObjects();
 __attribute__ ((noreturn)) void powerManagedMain();
 
-// global referenced by nRF5x IRQHandler
-BrownoutManager brownoutManager;
 
 
-/*
- * Uses pure classes:
- * sleepSyncAgent::SyncPowerManager
- */
 
 namespace {
 
@@ -60,12 +58,6 @@ MCU mcu;
 // Not devices
 Mailbox myOutMailbox;
 Mailbox myInMailbox;
-
-// My objects
-//WorkSupervisor WorkSupervisor::;
-SyncPowerManager syncPowerManager;
-
-
 
 
 
@@ -196,8 +188,7 @@ void initObjects() {
 
 	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &ledService);
 
-	sleepSyncAgent.initSyncObjects(&myOutMailbox, &syncPowerManager, &brownoutManager,
-			onWorkMsg, onSyncPoint);
+	sleepSyncAgent.initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 }
 
 
@@ -225,13 +216,13 @@ void powerManagedMain() {
 	// assert interrupts globally enabled i.e. PRIMASK
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
-	syncPowerManager.init();
+	SyncPowerManager::init();
 	LongClockTimer::start(&nvic);
 	// Started but may not be running.  Can still sleep, just won't be accurate?
 	// Takes 0.6mSec to start
 
 
-	sleepSyncAgent.initSleepers(&syncPowerManager);
+	sleepSyncAgent.initSleepers();
 
 	/*
 	 * Sleep until power builds up: boot is at a voltage (a low power reserve)
