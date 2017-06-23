@@ -217,7 +217,7 @@ void powerManagedMain() {
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
 	SyncPowerManager::init();
-	LongClockTimer::start(&nvic);
+	LongClockTimer::start();
 	// Started but may not be running.  Can still sleep, just won't be accurate?
 	// Takes 0.6mSec to start
 
