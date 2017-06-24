@@ -36,11 +36,10 @@
 Radio radio;
 Sleeper sleeper;
 LEDService ledLogger;
-LongClockTimer longClockTimer;
 Nvic nvic;
 DCDCPowerSupply powerSupply;
 HfCrystalClock hfClock;
-BrownoutManager brownoutManager;
+BrownoutRecorder brownoutManager;
 
 
 void onRcvMsgCallback() {
@@ -81,10 +80,10 @@ void snifferMain(void)
 {
 	initLogging();
 
-	longClockTimer.init(&nvic);
+	LongClock::start();
 	hfClock.init(&nvic);
 
-	sleeper.init(&longClockTimer);	// requires initialized TimerService
+	// Sleeper requires initialized TimerService
 	// use maxSaneTimeout default
 
 	radio.init(
@@ -102,10 +101,10 @@ void snifferMain(void)
     log("Sniffer starts\r\n");
 
     // Radio always on
-    logLongLong(longClockTimer.nowTime());
+    logLongLong(LongClock::nowTime());
     radio.hfCrystalClock->startAndSleepUntilRunning();	// radio requires
     //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
-    logLongLong(longClockTimer.nowTime());
+    logLongLong(LongClock::nowTime());
     log("<hfclock\n");
 
     while (true)
