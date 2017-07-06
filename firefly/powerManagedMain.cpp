@@ -16,6 +16,8 @@
 // Uses nRF5x and SleepSync libraries.  Projects build configs have path to these
 #include <nRF5x.h>
 #include <syncAgent/syncAgent.h>
+#include <syncAgent/state/phase.h>
+#include <syncAgent/sleepers/syncPowerSleeper.h>
 
 // project local
 #include "modules/groupWork.h"
@@ -52,7 +54,7 @@ Nvic nvic;
 DCDCPowerSupply dcdcPowerSupply;
 HfCrystalClock hfClock;
 LEDService ledService;
-MCU mcu;
+
 
 
 // Not devices
@@ -208,7 +210,7 @@ void powerManagedMain() {
 	#endif
 
 #if NRF52
-	MCU::enableInstructionCache();
+	// This is not crucial:  MCU::enableInstructionCache();
 #endif
 
 	clearResetReason();
@@ -219,16 +221,18 @@ void powerManagedMain() {
 	SyncPowerManager::init();
 	LongClock::start();
 	// Started but may not be running.  Can still sleep, just won't be accurate?
-	// Takes 0.6mSec to start
-
+	// Takes 0.6mSec for LFXO to be running
 
 	sleepSyncAgent.initSleepers();
 
+	Phase::set(PhaseEnum::sleepAfterBoot);
 	/*
 	 * Sleep until power builds up: boot is at a voltage (a low power reserve)
 	 * and there is a small hysteresis on the voltage monitor IC that boots us.
 	 */
-	sleepSyncAgent.sleepUntilSyncPower();
+	SyncPowerSleeper::sleepUntilSyncPower();
+
+	Phase::set(PhaseEnum::firstSyncPower);
 
 	initObjects();
 	// sleepSyncAgent prepared to loop

@@ -7,6 +7,9 @@
 #include "groupWork.h"
 #include "powerShedder.h"
 
+// Flags
+#include <syncAgent/flashIndex.h>
+
 
 
 // dummy workpayload represents version of code
