@@ -217,12 +217,17 @@ void powerManagedMain() {
 
 	// assert interrupts globally enabled i.e. PRIMASK
 
+	/* Start LFClock and LongClock, sleeping until.
+	 * Takes 0.6mSec for LFXO to be running
+	 *
+	 * Formerly just LongClock::start(); but didn't seem to insure Timer would work.
+	 */
+	ClockFacilitator::startLongClockWithSleepUntilRunning();
+
+	// Now we can use Timer
+
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
 	SyncPowerManager::init();
-	LongClock::start();
-	// Started but may not be running.  Can still sleep, just won't be accurate?
-	// Takes 0.6mSec for LFXO to be running
-
 	sleepSyncAgent.initSleepers();
 
 	Phase::set(PhaseEnum::sleepAfterBoot);
