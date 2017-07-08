@@ -26,7 +26,10 @@
 #include "modules/workSupervisor.h"
 /*
  * Uses pure classes:
- * sleepSyncAgent::SyncPowerManager
+ * SyncAgent
+ * SyncPowerManager
+ * LongClock
+ * Timer
  */
 
 
@@ -41,19 +44,15 @@ __attribute__ ((noreturn)) void powerManagedMain();
 
 namespace {
 
-// Objects from sleepSyncAgent library
-
-SyncAgent sleepSyncAgent;
-
 // Objects from nRF5x library i.e. platform
 
 // devices
-// Pure class LongClockTimer widely used by WorkSupervisor, SleepSyncAgent
+// Pure class  widely used by WorkSupervisor, SleepSyncAgent
 
 Nvic nvic;
 DCDCPowerSupply dcdcPowerSupply;
-HfCrystalClock hfClock;
 LEDService ledService;
+HfCrystalClock hfClock;
 
 
 
@@ -176,7 +175,9 @@ void onSyncPoint() {
  */
 void initObjects() {
 
-	initLEDs();
+	//temp broken?  stops counter?
+	// initLEDs();
+	// LongClock::waitOneTick();
 
 	Radio::init(
 			&nvic,
@@ -184,13 +185,12 @@ void initObjects() {
 			&hfClock);
 	// sleepSyncAgent will connect msgReceivedCallback and handle all messages
 
-	// !!! HfCrystalClock uses nvic
-	hfClock.init(&nvic);
+	hfClock.init();
 	assert(! hfClock.isRunning());	// xtal not running
 
 	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &ledService);
 
-	sleepSyncAgent.initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
+	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 }
 
 
@@ -215,10 +215,13 @@ void powerManagedMain() {
 
 	clearResetReason();
 
-	// assert interrupts globally enabled i.e. PRIMASK
+	/*
+	 * assert interrupts globally enabled i.e. PRIMASK
+	 * Starting clocks will enable IRQ and interrupt on event
+	 */
 
 	/* Start LFClock and LongClock, sleeping until.
-	 * Takes 0.6mSec for LFXO to be running
+	 * Takes 0.6mSec for LFRC to be running, .25seconds for LFXO
 	 *
 	 * Formerly just LongClock::start(); but didn't seem to insure Timer would work.
 	 */
@@ -228,7 +231,7 @@ void powerManagedMain() {
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
 	SyncPowerManager::init();
-	sleepSyncAgent.initSleepers();
+	SyncAgent::initSleepers();
 
 	Phase::set(PhaseEnum::sleepAfterBoot);
 	/*
@@ -242,10 +245,13 @@ void powerManagedMain() {
 	initObjects();
 	// sleepSyncAgent prepared to loop
 
-	sleepSyncAgent.sleepUntilSyncPower();
+	// Artifact of debugging to detect stopped counter
+	LongClock::waitOneTick();
+
+	SyncPowerSleeper::sleepUntilSyncPower();
 	// sleepSyncAgent has enough power to start
 
-	sleepSyncAgent.loop();	// never returns
+	SyncAgent::loop();	// never returns
 }
 
 
