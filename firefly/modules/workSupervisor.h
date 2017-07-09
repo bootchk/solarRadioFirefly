@@ -26,9 +26,9 @@ class WorkSupervisor {
 public:
 	static void init(
 			Mailbox*, 	        // Sends work out
-			Mailbox*, 	        // Sends work local
-			LEDService*		// flashes LED to consume power
-			);	// also uses SyncPowerManager
+			Mailbox* 	        // Sends work local
+			);
+	// also uses SyncPowerManager and LEDService to consume power
 
 	/*
 	 * Invoke some strategy.

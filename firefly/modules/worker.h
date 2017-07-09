@@ -19,7 +19,7 @@
 
 class Worker {
 public:
-	static void init(LEDService*);
+	static void init();
 
 	static void workManagedAmount();
 	static void workAmount(unsigned int aAmount);

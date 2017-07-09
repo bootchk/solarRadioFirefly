@@ -26,8 +26,10 @@
 #include "modules/workSupervisor.h"
 /*
  * Uses pure classes:
+ *
  * SyncAgent
  * SyncPowerManager
+ *
  * LongClock
  * Timer
  */
@@ -51,7 +53,6 @@ namespace {
 
 Nvic nvic;
 DCDCPowerSupply dcdcPowerSupply;
-LEDService ledService;
 HfCrystalClock hfClock;
 
 
@@ -66,20 +67,20 @@ void initLEDs() {
 
 #if BOARD_NRF52DK
 	// nRF52DK board (from pca10040.h)
-	ledService.init(4, McuSinks, 17, 18, 19, 20);
+	LEDService::init(4, McuSinks, 17, 18, 19, 20);
 #elif BOARD_REDBEAR_NANO || BOARD_WAVESHARE
-	ledService.init(1, McuSinks, 19, 0, 0, 0);
+	LEDService::init(1, McuSinks, 19, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SOURCE_LED
-	ledService.init(1, McuSources, 28, 0, 0, 0);
+	LEDService::init(1, McuSources, 28, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SINK_LED
 	// uBlox, one LED, source, P0.28
-	ledService.init(1, McuSinks, 29, 0, 0, 0);
+	LEDService::init(1, McuSinks, 29, 0, 0, 0);
 #elif BOARD_WAVESHARE2
-	ledService.init(1, McuSinks, 30, 0, 0, 0);
+	LEDService::init(1, McuSinks, 30, 0, 0, 0);
 #else
 #error "No board defined"
 #endif
-assert(ledService.wasInit());
+assert(LEDService::wasInit());
 }
 
 } // namespace
@@ -175,9 +176,8 @@ void onSyncPoint() {
  */
 void initObjects() {
 
-	//temp broken?  stops counter?
-	// initLEDs();
-	// LongClock::waitOneTick();
+	// WorkSupervisor uses LED's, pure classes LEDFlasher which uses LEDService and Timer
+	initLEDs();
 
 	Radio::init(
 			&nvic,
@@ -188,7 +188,7 @@ void initObjects() {
 	hfClock.init();
 	assert(! hfClock.isRunning());	// xtal not running
 
-	WorkSupervisor::init(&myOutMailbox, &myInMailbox, &ledService);
+	WorkSupervisor::init(&myOutMailbox, &myInMailbox);
 
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 }

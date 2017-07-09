@@ -3,37 +3,40 @@
 
 #include <nRF5x.h>
 
+//#include "syncAgent/flashIndex.h"
+
 
 /*
  * A Worker implementation where work is: flash an LED
+ *
+ * Uses pure class LEDFlasher
  */
 
 // TODO an exponential function of increasing/decreasing???
 
 namespace {
 
-LEDFlasher ledFlasher;
-
 unsigned int managedAmount = 1;
 
 }
 
-void Worker::init(LEDService* aLEDService) {
-	ledFlasher.init(aLEDService);
+
+void Worker::init() {
 	setLeastAmount();
 }
 
+// whether to work i.e. use LED's
+#define REAL_WORK 1
 #if REAL_WORK
 void Worker::workManagedAmount() {
 	// Record that we worked at least once.
-	CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
+	// CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
 
-	// TEMP not actually flash
-	ledFlasher.flashLEDByAmount(1, managedAmount);
+	LEDFlasher::flashLEDByAmount(1, managedAmount);
 }
 
 void Worker::workAmount(unsigned int aAmount) {
-	ledFlasher.flashLEDByAmount(1, aAmount);
+	LEDFlasher::flashLEDByAmount(1, aAmount);
 }
 #else
 void Worker::workManagedAmount() {}

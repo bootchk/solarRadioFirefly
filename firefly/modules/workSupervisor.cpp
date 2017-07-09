@@ -26,11 +26,10 @@
 
 void WorkSupervisor::init(
 		Mailbox* aOutMailbox,
-		Mailbox* aInMailbox,
-		LEDService* aLEDService
+		Mailbox* aInMailbox
 		)
 {
-	Worker::init(aLEDService);
+	Worker::init();
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// GroupWork also uses Worker
