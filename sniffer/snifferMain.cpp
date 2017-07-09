@@ -80,8 +80,9 @@ void snifferMain(void)
 {
 	initLogging();
 
-	LongClock::start();
-	hfClock.init(&nvic);
+	ClockFacilitator::startLongClockWithSleepUntilRunning();
+
+	hfClock.init();
 
 	// Sleeper requires initialized TimerService
 	// use maxSaneTimeout default

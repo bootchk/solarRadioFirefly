@@ -495,7 +495,7 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths.659803720" name="Library search path (-L)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/DebugnRF52&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/LoggingnRF52&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.201759729" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" useByScannerDiscovery="false" valueType="libs">
@@ -850,13 +850,15 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="sniffer52"/>
+		<configuration configurationName="Debug51ac"/>
 		<configuration configurationName="Debug51">
 			<resource resourceType="PROJECT" workspacePath="/firefly"/>
 		</configuration>
-		<configuration configurationName="Debug51ac"/>
+		<configuration configurationName="DebugUBlox"/>
 		<configuration configurationName="Debug52">
 			<resource resourceType="PROJECT" workspacePath="/firefly"/>
 		</configuration>
+		<configuration configurationName="Debug51aa"/>
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/firefly"/>
 		</configuration>
