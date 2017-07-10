@@ -22,6 +22,11 @@
  * - "Bad CRC" means message was received but CRC invalid.
  */
 
+/*
+ * Build notes:
+ * Requires libnRF52.1 built with logging enabled (build config named loggingnRF52)
+ * but the library in both configurations is named the same libnRF52.1  FIXME change names
+ */
 // c++ includes
 #include <cassert>
 
@@ -84,10 +89,15 @@ void snifferMain(void)
 	// Sleeper requires initialized TimerService
 	// use maxSaneTimeout default
 
+	// Radio ensemble
+	Ensemble::init(sleeper.msgReceivedCallback);
+
+#ifdef OLD
 	radio.init();
 
 	// Radio callback to Sleeper to set reasonForWake
 	radio.setMsgReceivedCallback(sleeper.msgReceivedCallback);
+#endif
 
 	// LED config for nrf52DK board
     ledLogger.init(4, McuSinks, 17, 18, 19, 20);
