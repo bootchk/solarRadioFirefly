@@ -51,9 +51,7 @@ namespace {
 // devices
 // Pure class  widely used by WorkSupervisor, SleepSyncAgent
 
-Nvic nvic;
-DCDCPowerSupply dcdcPowerSupply;
-HfCrystalClock hfClock;
+// Nvic , DCDCPowerSupply HfCrystalClock
 
 
 
@@ -179,17 +177,9 @@ void initObjects() {
 	// WorkSupervisor uses LED's, pure classes LEDFlasher which uses LEDService and Timer
 	initLEDs();
 
-	Radio::init(
-			&nvic,
-			&dcdcPowerSupply,
-			&hfClock);
-	// sleepSyncAgent will connect msgReceivedCallback and handle all messages
-
-	hfClock.init();
-	assert(! hfClock.isRunning());	// xtal not running
-
 	WorkSupervisor::init(&myOutMailbox, &myInMailbox);
 
+	// Initialize SyncAgent (Ensemble) and connect it to app
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 }
 

@@ -36,9 +36,6 @@
 Radio radio;
 Sleeper sleeper;
 LEDService ledLogger;
-Nvic nvic;
-DCDCPowerSupply powerSupply;
-HfCrystalClock hfClock;
 BrownoutRecorder brownoutManager;
 
 
@@ -82,15 +79,12 @@ void snifferMain(void)
 
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
-	hfClock.init();
+	HfCrystalClock::init();
 
 	// Sleeper requires initialized TimerService
 	// use maxSaneTimeout default
 
-	radio.init(
-			&nvic,
-			&powerSupply,
-			&hfClock);
+	radio.init();
 
 	// Radio callback to Sleeper to set reasonForWake
 	radio.setMsgReceivedCallback(sleeper.msgReceivedCallback);
@@ -103,7 +97,7 @@ void snifferMain(void)
 
     // Radio always on
     logLongLong(LongClock::nowTime());
-    radio.hfCrystalClock->startAndSleepUntilRunning();	// radio requires
+    HfCrystalClock::startAndSleepUntilRunning();	// radio requires
     //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
     logLongLong(LongClock::nowTime());
     log("<hfclock\n");
