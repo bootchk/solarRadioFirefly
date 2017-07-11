@@ -117,7 +117,7 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths.1146423332" name="Library search path (-L)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/sleepSyncAgent/ArchiveArmM4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/DebugnRF52&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/LoggingnRF52&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.637571428" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" useByScannerDiscovery="false" valueType="libs">
