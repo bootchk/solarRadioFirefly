@@ -50,12 +50,18 @@ void onRcvMsgCallback() {
 
 /*
  * Understands format of messages intended for SleepSync logical layer of protocol.
+ *
+ * To keep overhead on RTT low, we only print LSB substring of MasterID
+ *
+ * buffer[2], buffer[1] is LSB of MasterID
+ * buffer[10] (last byte of buffer) is the work byte
  */
 void logMessage() {
 	BufferPointer buffer;
 
 	buffer = radio.getBufferAddress();
 
+	// switch on message type
 	switch(buffer[0]){
 
 	case 17:
@@ -66,14 +72,14 @@ void logMessage() {
 		//log("Sync"); logByte(buffer[1]); log("\n");
 		break;
 	case 136:
-		SEGGER_RTT_printf(0, "WorkSync %02x%02x %02X\n",  buffer[2],buffer[1], buffer[10]);
+		SEGGER_RTT_printf(0, "WorkSync %02x%02x Work %02X\n",  buffer[2],buffer[1], buffer[10]);
 		break;
 	case 34:
 		SEGGER_RTT_printf(0, "MergeSync %02x%02x\n",  buffer[2],buffer[1]);
 		break;
 	default:
-		// Other message types
-		SEGGER_RTT_printf(0, "Other %02x %02x%02x\r\n", buffer[0], buffer[2], buffer[1]);
+		// Other unidentified i.e. garbled message types
+		SEGGER_RTT_printf(0, "Type %02x ID %02x%02x\r\n", buffer[0], buffer[2], buffer[1]);
 	}
 }
 
@@ -85,9 +91,6 @@ void snifferMain(void)
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
 	HfCrystalClock::init();
-
-	// Sleeper requires initialized TimerService
-	// use maxSaneTimeout default
 
 	// Radio ensemble
 	Ensemble::init(sleeper.msgReceivedCallback);
@@ -143,7 +146,10 @@ void snifferMain(void)
     		break;
 
     	case ReasonForWake::SleepTimerExpired:
-    		// Indicate alive but no message.
+    		/*
+    		 * Indicate alive but timer expired with no message.
+    		 * This is normal, it will print e.g.  ....WorkSync meaning 4 timer expirations and then a WorkSync message
+    		 */
     		log(".");
     		ledLogger.toggleLED(1);
     		// Put radio in state that next iteration expects.
