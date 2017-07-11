@@ -854,7 +854,9 @@
 		<configuration configurationName="Debug51">
 			<resource resourceType="PROJECT" workspacePath="/firefly"/>
 		</configuration>
-		<configuration configurationName="DebugUBlox"/>
+		<configuration configurationName="DebugUBlox">
+			<resource resourceType="FOLDER" workspacePath="/firefly/DebugUBlox"/>
+		</configuration>
 		<configuration configurationName="Debug52">
 			<resource resourceType="PROJECT" workspacePath="/firefly"/>
 		</configuration>

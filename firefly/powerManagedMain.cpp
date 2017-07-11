@@ -69,9 +69,11 @@ void initLEDs() {
 #elif BOARD_REDBEAR_NANO || BOARD_WAVESHARE
 	LEDService::init(1, McuSinks, 19, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SOURCE_LED
+	// uBlox, one LED, source, UBlox pin 16, NRF52 P0.28
 	LEDService::init(1, McuSources, 28, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SINK_LED
-	// uBlox, one LED, source, P0.28
+	// July 2017 my test board, this doesn't work.  Must be a board problem.
+	// uBlox, one LED, sunk, UBlox pin 17, NRF52 P0.29
 	LEDService::init(1, McuSinks, 29, 0, 0, 0);
 #elif BOARD_WAVESHARE2
 	LEDService::init(1, McuSinks, 30, 0, 0, 0);

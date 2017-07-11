@@ -76,7 +76,7 @@ To see the log, open a terminal and run JLinkRTTClient, which you can download f
 
 You should see a sequence of events scroll by.
 
-Build Configuration
+Build Configurations
 -
 
 Eclipse manages the build (you edit Build and Debug Configurations, not Makefiles).
@@ -84,6 +84,14 @@ Eclipse manages the build (you edit Build and Debug Configurations, not Makefile
 This is for two target embedded chips, the nRF52 having an ARM M4 mcu and the nRF51 having an ARM M0 mcu.  Many resources are named with 51 or 52 when they are specific to a target.
 
 You can set a build configuration active.  Then you edit it in the project's Properties.  See nRFCounter project for more explanation.  That was the original project where I used Eclipse managed builds instead of hand managed Makefiles.
+
+List of build configurations: (this list might be outdated, and the descriptions might differ from the build configuration)
+ - Debug51aa for RedBear Nano
+ - Debug51ac for Waveshare Core
+ - Debug52 for NRF52DK
+ - DebugUBlox for UBlox Nina
+ - sniffer52 for using NRF52DK as a sniffer of the Firefly protocol, logging events to JLinkRTTClient
+ All the build configurations are with debug symbols, with assertions enabled, and with no optimization
 
 Libraries
 -
