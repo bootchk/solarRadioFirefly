@@ -90,8 +90,6 @@ void snifferMain(void)
 
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
-	HfCrystalClock::init();
-
 	// Radio ensemble
 	Ensemble::init(sleeper.msgReceivedCallback);
 
@@ -110,7 +108,7 @@ void snifferMain(void)
 
     // Radio always on
     logLongLong(LongClock::nowTime());
-    HfCrystalClock::startAndSleepUntilRunning();	// radio requires
+    ClockFacilitator::startHFXOAndSleepUntilRunning();	// radio requires
     //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
     logLongLong(LongClock::nowTime());
     log("<hfclock\n");
@@ -118,7 +116,7 @@ void snifferMain(void)
     while (true)
     {
     	// This is not isPowerOn() because we leave radio power on
-    	assert(!radio.isInUse());	// powerOn (initial entry) and stopReceiver (loop) ensures this
+    	assert(!radio.isInUse());	// powerOn (initial entry) and stopReceive (loop) ensures this
 
     	sleeper.clearReasonForWake();
     	radio.receiveStatic();
@@ -156,18 +154,29 @@ void snifferMain(void)
     		radio.stopReceive();
     		break;
 
-    	case ReasonForWake::Unknown:
-    		log("Unexpected: ISR called but no events.\n");
-    		logInt((uint32_t) sleeper.getReasonForWake());
-    		//assert(false); // Unexpected
-    		;
-    		// Put radio in state that next iteration expects.
-    		radio.stopReceive();
-    		break;
+
     	case ReasonForWake::Cleared:
     		log("Unexpected: sleep ended but no ISR called.\n");
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();
+    		break;
+
+    	case ReasonForWake::CounterOverflowOrOtherTimerExpired:
+    		// Every nine minutes
+    		log("Clock overflow.\n");
+    		radio.stopReceive();
+    		break;
+
+    	case ReasonForWake::BrownoutWarning:
+    	case ReasonForWake::HFClockStarted:
+    	case ReasonForWake::LFClockStarted:
+    	case ReasonForWake::Unknown:	// log("Unexpected: ISR called but no events.\n");
+    		log("Unexpected reason for wake.\n");
+    		logInt((uint32_t) sleeper.getReasonForWake());
+    		//assert(false); // Unexpected
+    		// Put radio in state that next iteration expects.
+    		radio.stopReceive();
+    		break;
     	}
 
     	// assert radio still on but not receiving

@@ -50,7 +50,7 @@ void WorkStrategy::manageWorkOnly() {
  * Since it uses ADC, takes much time and should not be called at SyncPoint
  *
  * Here, if voltage is climbing, do more work.
- * Note work is asynchronous, more work does not require more time in this routine./*
+ * Note work is asynchronous, more work does not require more time in this routine.
  * A very simple approach, not very effective?
  */
 // TODO replace this with a state machine that is more effective
