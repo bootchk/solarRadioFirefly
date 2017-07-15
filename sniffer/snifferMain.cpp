@@ -48,6 +48,11 @@ void onRcvMsgCallback() {
 	;	// Do nothing, we get message in raw buffer elsewhere below
 }
 
+
+void logIDAndWork(BufferPointer buffer) {
+	SEGGER_RTT_printf(0, "ID %02x%02x Work %02x",  buffer[2],buffer[1], buffer[10]);
+}
+
 /*
  * Understands format of messages intended for SleepSync logical layer of protocol.
  *
@@ -66,20 +71,20 @@ void logMessage() {
 
 	case 17:
 		// Print two LSB's of MasterID
-		SEGGER_RTT_printf(0, "Sync %02x%02x\r\n", buffer[2], buffer[1]);
-
-		//logPrintf("Sync %02x%02x\r\n", buffer[1], buffer[2]);
-		//log("Sync"); logByte(buffer[1]); log("\n");
+		SEGGER_RTT_printf(0, "\n Sync ");
+		logIDAndWork(buffer);
 		break;
 	case 136:
-		SEGGER_RTT_printf(0, "WorkSync %02x%02x Work %02X\n",  buffer[2],buffer[1], buffer[10]);
+		SEGGER_RTT_printf(0, "\nWSync ");
+		logIDAndWork(buffer);
 		break;
 	case 34:
-		SEGGER_RTT_printf(0, "MergeSync %02x%02x\n",  buffer[2],buffer[1]);
+		SEGGER_RTT_printf(0, "\nMSync ");
+		logIDAndWork(buffer);
 		break;
 	default:
 		// Other unidentified i.e. garbled message types
-		SEGGER_RTT_printf(0, "Type %02x ID %02x%02x\r\n", buffer[0], buffer[2], buffer[1]);
+		SEGGER_RTT_printf(0, "\n T %02x ID %02x%02x", buffer[0], buffer[2], buffer[1]);
 	}
 }
 
@@ -136,9 +141,10 @@ void snifferMain(void)
     			logMessage();
     		}
     		else {
-    			log("Bad CRC: ");
     			// buffer can be dumped despite bad CRC
     			logMessage();
+    			// Print indicator to right of message printout
+    			log("<-crc");
     			ledLogger.toggleLED(3);
     		}
     		break;
@@ -156,14 +162,14 @@ void snifferMain(void)
 
 
     	case ReasonForWake::Cleared:
-    		log("Unexpected: sleep ended but no ISR called.\n");
+    		log("\nUnexpected: sleep ended but no ISR called.\n");
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();
     		break;
 
     	case ReasonForWake::CounterOverflowOrOtherTimerExpired:
     		// Every nine minutes
-    		log("Clock overflow.\n");
+    		log("Clock overflow.");
     		radio.stopReceive();
     		break;
 
@@ -171,7 +177,7 @@ void snifferMain(void)
     	case ReasonForWake::HFClockStarted:
     	case ReasonForWake::LFClockStarted:
     	case ReasonForWake::Unknown:	// log("Unexpected: ISR called but no events.\n");
-    		log("Unexpected reason for wake.\n");
+    		log("\nUnexpected reason for wake.\n");
     		logInt((uint32_t) sleeper.getReasonForWake());
     		//assert(false); // Unexpected
     		// Put radio in state that next iteration expects.
