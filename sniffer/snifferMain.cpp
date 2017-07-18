@@ -32,11 +32,15 @@
 
 // Project has include path to nRF5x library
 #include <nRF5x.h>
+
 // Build config include path NRF_SDK/external/segger_rtt
 #include <SEGGER_RTT.h>
 
+#include <services/logger.h>
+
 // I couldn't get logPrintf to work
 
+RTTLogger logger;
 
 Radio radio;
 Sleeper sleeper;
@@ -91,7 +95,7 @@ void logMessage() {
 
 void snifferMain(void)
 {
-	initLogging();
+	logger.init();
 
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
@@ -109,14 +113,14 @@ void snifferMain(void)
     ledLogger.init(4, McuSinks, 17, 18, 19, 20);
     ledLogger.toggleLEDsInOrder();	// off
 
-    log("Sniffer starts\r\n");
+    logger.log("Sniffer starts\r\n");
 
     // Radio always on
-    logLongLong(LongClock::nowTime());
+    logger.log(LongClock::nowTime());
     ClockFacilitator::startHFXOAndSleepUntilRunning();	// radio requires
     //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
-    logLongLong(LongClock::nowTime());
-    log("<hfclock\n");
+    logger.log(LongClock::nowTime());
+    logger.log("<hfclock\n");
 
     while (true)
     {
@@ -144,7 +148,7 @@ void snifferMain(void)
     			// buffer can be dumped despite bad CRC
     			logMessage();
     			// Print indicator to right of message printout
-    			log("<-crc");
+    			logger.log("<-crc");
     			ledLogger.toggleLED(3);
     		}
     		break;
@@ -154,7 +158,7 @@ void snifferMain(void)
     		 * Indicate alive but timer expired with no message.
     		 * This is normal, it will print e.g.  ....WorkSync meaning 4 timer expirations and then a WorkSync message
     		 */
-    		log(".");
+    		logger.log(".");
     		ledLogger.toggleLED(1);
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();
@@ -162,14 +166,14 @@ void snifferMain(void)
 
 
     	case ReasonForWake::Cleared:
-    		log("\nUnexpected: sleep ended but no ISR called.\n");
+    		logger.log("\nUnexpected: sleep ended but no ISR called.\n");
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();
     		break;
 
     	case ReasonForWake::CounterOverflowOrOtherTimerExpired:
     		// Every nine minutes
-    		log("Clock overflow.");
+    		logger.log("Clock overflow.");
     		radio.stopReceive();
     		break;
 
@@ -177,8 +181,8 @@ void snifferMain(void)
     	case ReasonForWake::HFClockStarted:
     	case ReasonForWake::LFClockStarted:
     	case ReasonForWake::Unknown:	// log("Unexpected: ISR called but no events.\n");
-    		log("\nUnexpected reason for wake.\n");
-    		logInt((uint32_t) sleeper.getReasonForWake());
+    		logger.log("\nUnexpected reason for wake.\n");
+    		logger.log((uint32_t) sleeper.getReasonForWake());
     		//assert(false); // Unexpected
     		// Put radio in state that next iteration expects.
     		radio.stopReceive();

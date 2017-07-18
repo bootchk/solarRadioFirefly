@@ -22,7 +22,7 @@ void tellOthersInGroupToWork(WorkPayload work) {
 	}
 	else {
 		myOutMailbox->put(work);
-		log("App put work\n");
+		//log("App put work\n");
 	}
 }
 
@@ -36,7 +36,7 @@ void GroupWork::queueLocalWork(WorkPayload work) {
 	}
 	else {
 		myInMailbox->put(work);
-		log("App queue received or initiated work\n");
+		//log("App queue received or initiated work\n");
 	}
 }
 
