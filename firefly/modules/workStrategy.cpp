@@ -8,7 +8,7 @@
 #include "powerShedder.h"
 
 // Flags
-#include <syncAgent/flashIndex.h>
+#include <syncAgent/logging/flashIndex.h>
 
 
 

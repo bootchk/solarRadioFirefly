@@ -2,13 +2,14 @@
 // Config depends on POWER_IS_SOLAR in build config
 
 
-//#include <nRF5x.h>	// CustomFlash
+//#include <services/logger.h>	// RTTLogger
 //#include <syncAgent/syncAgent.h>
 
 #include "workSupervisor.h"
 
 // Uses
 #include <syncAgent/modules/syncPowerManager.h>
+#include <syncAgent/logging/logger.h>
 #include "worker.h"
 #include "groupWork.h"
 #include "powerShedder.h"
@@ -81,12 +82,12 @@ void WorkSupervisor::manageVoltageAndWork() {
 
 void WorkSupervisor::tryWorkLocally() {
 	if (SyncPowerManager::isPowerForWork()) {
-		log("Do work\n");
+		Logger::log("Do work\n");
 		Worker::workManagedAmount();
 	}
 	else {
 		// omit work, not enough power
-		log("Not enough power to work\n");
+		Logger::log("Not enough power to work\n");
 	}
 
 }

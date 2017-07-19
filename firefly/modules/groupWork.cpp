@@ -4,7 +4,10 @@
 
 #include "groupWork.h"
 
-#include "nRF5x.h"	// Mailbox
+#include <nRF5x.h>	// Mailbox
+#include <services/logger.h>	// from nRF5x
+
+
 
 
 
@@ -18,7 +21,7 @@ Mailbox* myInMailbox;
 void tellOthersInGroupToWork(WorkPayload work) {
 	if (myOutMailbox->isMail() ){
 		// My last mail didn't go out yet
-		log("Mail still in Out mailbox\n");
+		RTTLogger::log("Mail still in Out mailbox\n");
 	}
 	else {
 		myOutMailbox->put(work);
@@ -32,7 +35,7 @@ void tellOthersInGroupToWork(WorkPayload work) {
 void GroupWork::queueLocalWork(WorkPayload work) {
 	if (myInMailbox->isMail() ){
 		// Work already pending from others
-		log("Mail still in In mailbox\n");
+		RTTLogger::log("Mail still in In mailbox\n");
 	}
 	else {
 		myInMailbox->put(work);
