@@ -82,7 +82,7 @@ void WorkSupervisor::manageVoltageAndWork() {
 
 void WorkSupervisor::tryWorkLocally() {
 	if (SyncPowerManager::isPowerForWork()) {
-		Logger::log("Do work\n");
+		Logger::log("App works.");
 		Worker::workManagedAmount();
 	}
 	else {
