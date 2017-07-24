@@ -87,7 +87,7 @@ void WorkSupervisor::tryWorkLocally() {
 	}
 	else {
 		// omit work, not enough power
-		Logger::log("Not enough power to work\n");
+		Logger::log("\nNo power to work.");
 	}
 
 }

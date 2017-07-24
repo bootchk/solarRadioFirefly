@@ -21,11 +21,11 @@ Mailbox* myInMailbox;
 void tellOthersInGroupToWork(WorkPayload work) {
 	if (myOutMailbox->isMail() ){
 		// My last mail didn't go out yet
-		RTTLogger::log("Mail still in Out mailbox\n");
+		RTTLogger::log("Mail still in OutBox\n");
 	}
 	else {
 		myOutMailbox->put(work);
-		//log("App put work\n");
+		RTTLogger::log("Que work out\n");
 	}
 }
 
@@ -35,7 +35,7 @@ void tellOthersInGroupToWork(WorkPayload work) {
 void GroupWork::queueLocalWork(WorkPayload work) {
 	if (myInMailbox->isMail() ){
 		// Work already pending from others
-		RTTLogger::log("Mail still in In mailbox\n");
+		RTTLogger::log("Mail still in InBox\n");
 	}
 	else {
 		myInMailbox->put(work);
