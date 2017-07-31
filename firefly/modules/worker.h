@@ -38,5 +38,10 @@ public:
 	 * Amount enough that tester can easily perceive, when power is line power and regulated.
 	 * For an LED or other transceiver.
 	 */
-	static void setAmountPerceivable();
+	static void setAmountEasilyPerceivable();
+
+	/*
+	 * Amount that requires viewer concentration to see.
+	 */
+	static void setAmountBarelyPerceivable();
 };

@@ -57,8 +57,20 @@ void Worker::maintainAmount() { } // No change to managedAmount
 
 void Worker::decreaseAmount() { if (managedAmount > 1) managedAmount--; }
 
-// for 0.6mSec unit, 20 gives 12mSec flash, 200 gives 0.12Sec
-void Worker::setAmountPerceivable() { managedAmount = 200; 	 }
+/*
+ * One unit is barely perceivable flash (0.6mSec, 20 ticks).  You must be staring directly at LED.
+ *
+ * Amount 20 gives 12mSec flash (400 ticks), more perceivable.  But still staring directly at LED.
+ *
+ * Amount 100 gives 60mSec flash (2000 ticks).
+ *
+ * Amount 200 gives 0.12Sec, more than perceivable.
+ *
+ * A sync slot is say 50 ticks @ 10mA = 500 tick*mA
+ * A LED flash of 2000 ticks @ 1mA (3V through 3K resistor) is 2000 tick*mA
+ */
+void Worker::setAmountBarelyPerceivable() { managedAmount = 1; }
+void Worker::setAmountEasilyPerceivable()   { managedAmount = 200; }
 
 void Worker::setLeastAmount() { managedAmount = 1; }
 

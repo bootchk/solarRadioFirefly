@@ -1,7 +1,5 @@
 
 
-#include <cstdlib>	// rand
-
 #include "groupWork.h"
 
 #include <nRF5x.h>	// Mailbox
@@ -66,11 +64,6 @@ void GroupWork::initiateGroupWork(WorkPayload work) {
 	queueLocalWork(work);
 }
 
-void GroupWork::randomlyInitiateGroupWork(WorkPayload work) {
-	if (rand() % 10 == 1) {
-		initiateGroupWork(work);
-	}
-}
 
 
 

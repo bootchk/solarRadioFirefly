@@ -71,7 +71,7 @@ void WorkSupervisor::manageVoltageAndWork() {
 	// WorkStrategy::simpleManagePowerWithWork();
 
 	// Solar cell Voc below SoC Vmax
-	WorkStrategy::manageWorkOnly();
+	WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
 #else
 	WorkStrategy::doRandomWork();
 #endif

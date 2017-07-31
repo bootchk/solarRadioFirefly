@@ -2,13 +2,16 @@
 #include "workStrategy.h"
 
 // Uses these pure class
-#include <syncAgent/modules/syncPowerManager.h>
+
 #include "worker.h"
 #include "groupWork.h"
 #include "powerShedder.h"
 
-// Flags
+// From SleepSyncAgent lib
+#include <syncAgent/modules/syncPowerManager.h>
 #include <syncAgent/logging/flashIndex.h>
+#include <augment/random.h>
+#include <syncAgent/syncAgent.h>
 
 
 
@@ -36,9 +39,11 @@
  * This should be faster than other strategies.
  * So it can be called at SyncPoint without disrupting sync???
  */
-void WorkStrategy::manageWorkOnly() {
-	if ( SyncPowerManager::isPowerForWork()) {
-		GroupWork::randomlyInitiateGroupWork(WORK_VERSION);
+void WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster() {
+	if (SyncAgent::isSelfMaster() and SyncPowerManager::isPowerForWork()) {
+		if (randomProbability(InverseProbabilityToWork)) {
+			GroupWork::initiateGroupWork(WORK_VERSION);
+		}
 	}
 }
 
@@ -89,7 +94,7 @@ void WorkStrategy::simpleManagePowerWithWork() {
 		 * I.E. For Excess, then for High
 		 * I.E. For High, then High (when both random results are true.)
 		 */
-		GroupWork::randomlyInitiateGroupWork(WORK_VERSION);
+		GroupWork::initiateGroupWork(WORK_VERSION);
 		break;
 
 	case VoltageRange::MediumToHigh:
@@ -134,8 +139,10 @@ void WorkStrategy::simpleManagePowerWithWork() {
  * Periodically, when called back by SyncAgent, initiate work.
  */
 void WorkStrategy::doRandomWork() {
-	//Default amount of work is enough to perceive, but make it more visible...
-	Worker::setAmountPerceivable();
+	//Default amount of work is barely perceiveable, but make it more visible...
+	Worker::setAmountEasilyPerceivable();
 
-	GroupWork::randomlyInitiateGroupWork(WORK_VERSION);
+	if (randomProbability(InverseProbabilityToWork)) {
+		GroupWork::initiateGroupWork(WORK_VERSION);
+	}
 }

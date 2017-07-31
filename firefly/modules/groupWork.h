@@ -13,15 +13,12 @@
 class GroupWork {
 public:
 	static void init(Mailbox* aOutMailbox, Mailbox* aInMailbox);
+
 	/*
 	 * Definitely work local, and tell group to work if power permits.
 	 */
 	static void initiateGroupWork(WorkPayload work);
 
-	/*
-	 * At random, work local and tell group to work if power permits.
-	 */
-	static void randomlyInitiateGroupWork(WorkPayload work);
 
 	/*
 	 * Queue work to be done locally.
