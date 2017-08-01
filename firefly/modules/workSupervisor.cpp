@@ -30,7 +30,7 @@ void WorkSupervisor::init(
 		Mailbox* aInMailbox
 		)
 {
-	Worker::init();
+	Worker::init(Worker::AmountEasilyPerceivable);
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// GroupWork also uses Worker

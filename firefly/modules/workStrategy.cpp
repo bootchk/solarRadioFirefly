@@ -139,8 +139,7 @@ void WorkStrategy::simpleManagePowerWithWork() {
  * Periodically, when called back by SyncAgent, initiate work.
  */
 void WorkStrategy::doRandomWork() {
-	//Default amount of work is barely perceiveable, but make it more visible...
-	Worker::setAmountEasilyPerceivable();
+	// assert amount is the default of easily perceivable
 
 	if (randomProbability(InverseProbabilityToWork)) {
 		GroupWork::initiateGroupWork(WORK_VERSION);
