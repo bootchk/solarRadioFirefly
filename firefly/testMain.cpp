@@ -5,7 +5,7 @@
 #include "nrf.h"	// WEV
 
 #include "nRF5x.h"
-#include "/home/bootch/git/nRF5x/src/drivers/customFlash.h"
+#include "/home/bootch/git/nRF5x/src/services/customFlash.h"
 
 void testMain();
 

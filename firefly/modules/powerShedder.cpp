@@ -7,6 +7,9 @@
 #include "worker.h"
 #include <syncAgent/modules/syncPowerManager.h>
 
+// FIXME should not use drivers directly
+#include "drivers/mcu.h"
+
 
 /*
  * Work locally until power is not excess.
