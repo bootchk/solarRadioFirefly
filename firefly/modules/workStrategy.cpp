@@ -18,6 +18,12 @@
 // dummy workpayload represents version of code
 #define WORK_VERSION 34
 
+namespace {
+unsigned int regularWorkCounter = 0;
+}
+
+
+
 
 /* WorkStrategy can conflate two things:
  * - adjusting workAmount if power permits more work
@@ -41,9 +47,9 @@
  */
 void WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster() {
 	if (SyncAgent::isSelfMaster() and SyncPowerManager::isPowerForWork()) {
-		if (randomProbability(InverseProbabilityToWork)) {
-			GroupWork::initiateGroupWork(WORK_VERSION);
-		}
+		// Choice here
+		// doRandomWork();
+		doRegularWork();
 	}
 }
 
@@ -135,13 +141,20 @@ void WorkStrategy::simpleManagePowerWithWork() {
 
 
 /*
- * For testing, when not solar powered.
- * Periodically, when called back by SyncAgent, initiate work.
+ * Can be called every SyncCallback for testing when not solar powered.
+ *
+ * When solar powered, only called when there is power.
  */
 void WorkStrategy::doRandomWork() {
-	// assert amount is the default of easily perceivable
-
 	if (randomProbability(InverseProbabilityToWork)) {
 		GroupWork::initiateGroupWork(WORK_VERSION);
 	}
+}
+
+void WorkStrategy::doRegularWork() {
+	if (regularWorkCounter==InverseProbabilityToWork) {
+		GroupWork::initiateGroupWork(WORK_VERSION);
+		regularWorkCounter = 0;
+	}
+	regularWorkCounter++;
 }
