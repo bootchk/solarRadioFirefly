@@ -71,7 +71,8 @@ void logMessage() {
 	buffer = radio.getBufferAddress();
 
 	// switch on message type
-	switch(buffer[0]){
+	// should include libSleepSyncAgent and cast (MessageType)
+	switch( buffer[0]){
 
 	case 17:
 		// Print two LSB's of MasterID
@@ -84,6 +85,10 @@ void logMessage() {
 		break;
 	case 34:
 		SEGGER_RTT_printf(0, "\nMSync ");
+		logIDAndWork(buffer);
+		break;
+	case 231:
+		SEGGER_RTT_printf(0, "\nInfo ");
 		logIDAndWork(buffer);
 		break;
 	default:
