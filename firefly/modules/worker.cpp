@@ -24,7 +24,7 @@ void Worker::init(unsigned int initialAmount) {
 }
 
 // whether work actually done
-#define REAL_WORK 1
+// #define REAL_WORK 1
 #if REAL_WORK
 void Worker::workManagedAmount() {
 	// Record that we worked at least once.
