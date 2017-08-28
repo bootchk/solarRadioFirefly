@@ -10,8 +10,11 @@
 // From SleepSyncAgent lib
 #include <syncAgent/modules/syncPowerManager.h>
 #include <syncAgent/logging/flashIndex.h>
-#include <augment/random.h>
+
 #include <syncAgent/syncAgent.h>
+
+// From embeddedMath
+#include <random.h>
 
 
 
