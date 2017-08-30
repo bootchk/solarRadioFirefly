@@ -1,7 +1,4 @@
 
-#include <cassert>
-#include <nRF5x.h>
-
 
 void testMain();
 void powerManagedMain() __attribute__ ((noreturn));

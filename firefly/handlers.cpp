@@ -16,7 +16,8 @@
  * - POWER_CLOCK_IRQHandler, etc. other device handlers
  * - HardFault_Handler
  */
-#include <nRF5x.h>
+
+#include <radioSoC.h>
 
 extern "C" {
 

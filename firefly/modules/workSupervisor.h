@@ -2,8 +2,7 @@
 #pragma once
 
 
-#include <nRF5x.h>
-#include <syncAgent/modules/syncPowerManager.h>
+#include <radioSoC.h>  // Mailbox, WorkPayload
 
 /*
  * Knows:
@@ -22,13 +21,15 @@
  * If work is digital, say sending sensor data, the goal doesn't make much sense.
  */
 
+// uses SyncPowerManager and LEDService to consume power
+
 class WorkSupervisor {
 public:
 	static void init(
 			Mailbox*, 	        // Sends work out
 			Mailbox* 	        // Sends work local
 			);
-	// also uses SyncPowerManager and LEDService to consume power
+
 
 	/*
 	 * Invoke some strategy.

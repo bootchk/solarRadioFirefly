@@ -1,7 +1,5 @@
 
-#include "nRF5x.h"
-
-#include "worker.h"
+#include <radioSoC.h>	// Mailbox
 
 
 /*

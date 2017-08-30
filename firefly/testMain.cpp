@@ -4,7 +4,7 @@
 
 #include "nrf.h"	// WEV
 
-#include "nRF5x.h"
+#include <radioSoC.h>
 //#include "/home/bootch/git/nRF5x/src/services/customFlash.h"
 
 void testMain();

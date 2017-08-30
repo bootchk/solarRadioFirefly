@@ -2,11 +2,8 @@
 
 #include "groupWork.h"
 
-#include <nRF5x.h>	// Mailbox
-#include <services/logger.h>	// from nRF5x
-
-
-
+// radioSoC
+#include <services/logger.h>
 
 
 

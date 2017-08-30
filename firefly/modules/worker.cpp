@@ -1,7 +1,7 @@
 
 #include "worker.h"
 
-#include <nRF5x.h>	// LEDFlasher
+#include <radioSoC.h>	// LEDFlasher
 
 
 /*

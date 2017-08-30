@@ -13,11 +13,12 @@
 
 #include <cassert>
 
-// Uses nRF5x and SleepSync libraries.  Projects build configs have path to these
-#include <nRF5x.h>
+// Uses radioSoC and SleepSync libraries.  Projects build configs have path to these
+#include <radioSoC.h>
 #include <syncAgent/syncAgent.h>
 #include <syncAgent/state/phase.h>
 #include <syncAgent/sleepers/syncPowerSleeper.h>
+#include <syncAgent/modules/syncPowerManager.h>
 
 // project local
 #include "modules/groupWork.h"
@@ -65,7 +66,7 @@ void initLEDs() {
 
 #if BOARD_NRF52DK
 	// nRF52DK board (from pca10040.h)
-	LEDService::init(4, McuSinks, 17, 18, 19, 20);
+	LEDService::init(4, true, 17, 18, 19, 20);
 #elif BOARD_REDBEAR_NANO || BOARD_WAVESHARE
 	LEDService::init(1, McuSinks, 19, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SOURCE_LED
@@ -76,7 +77,7 @@ void initLEDs() {
 	// uBlox, one LED, sunk, UBlox pin 17, NRF52 P0.29
 	LEDService::init(1, McuSinks, 29, 0, 0, 0);
 #elif BOARD_WAVESHARE2
-	LEDService::init(1, McuSinks, 30, 0, 0, 0);
+	LEDService::init(1, true, 30, 0, 0, 0);
 #else
 #error "No board defined"
 #endif
