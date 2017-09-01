@@ -59,11 +59,8 @@ Sniffer
 -
 
 There are two apps here: firefly and a sniffer for the firefly protocol.
-There are three build configurations: firefly on nrf51, firefly on nrf52, sniffer on nrf52.
 The build configurations do NOT configure LED's for each board using board.h.
 LED's are configured in the call to LEDService.init() and different configurations are configured according to fireflyConfig.h
-
-Sniffer might be broken now in upgrade to nrf sdk 12.2??
 
 Debugging
 -
@@ -96,8 +93,15 @@ List of build configurations: (this list might be outdated, and the descriptions
 Libraries
 -
 
-Depends on nRF5x library and sleepSyncAgent library (built for the architecture Arm M0 or M4.)
-Both are specified in the Eclipse build configuration with paths to your local copy.
+Depends on libraries : (built for the architecture Arm M0 or M4, with suffix 51 or 52
+    
+    - sleepSyncAgent
+    - radioSoC
+    - embeddedMath
+    - nRF5x
+    
+All are specified in the Eclipse build configuration with paths to your local copy.
+Order of linking is important
 
 
 Board configuration

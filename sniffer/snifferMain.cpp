@@ -30,8 +30,8 @@
 // c++ includes
 #include <cassert>
 
-// Project has include path to nRF5x library
-#include <nRF5x.h>
+// Project has include path to this
+#include <radioSoC.h>
 
 // Build config include path NRF_SDK/external/segger_rtt
 #include <SEGGER_RTT.h>
@@ -115,7 +115,7 @@ void snifferMain(void)
 #endif
 
 	// LED config for nrf52DK board
-    ledLogger.init(4, McuSinks, 17, 18, 19, 20);
+    ledLogger.init(4, true, 17, 18, 19, 20);
     ledLogger.toggleLEDsInOrder();	// off
 
     logger.log("Sniffer starts\r\n");
