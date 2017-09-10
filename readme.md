@@ -15,8 +15,10 @@ Here, also electronic, but:
      communicate via radio
      power is solar power  
      
-Much of the difficulty is in sleep synchronization: making units wake at the same time.
-Also, managing a limited power budget.
+Much of the difficulty is:
+
+    sleep synchronization: making units wake at the same time.
+    managing a limited power budget.
 
     
 Environment
@@ -34,12 +36,7 @@ See Also
 
 The project derives from nRFRawProtocol which contains the original wireless protocol and main() for firefly.
 
-Uses libraries (also on Github):
-
-     sleepSyncAgent (ARM M0 and ARM M4 versions, does not depend on nRF5x chips except via nRF5x library)
-     nRF5x (nRF51 and nRF52 versions, specific to ARM mcu and peripherals unique to nRF5x chip family)
-     
-!!! Note the order of libraries is important (in the build configuration) because sleepSyncAgent uses nRF5x.
+The used libraries (also on Github) see Libraries below.
      
 
 Building
@@ -93,13 +90,15 @@ List of build configurations: (this list might be outdated, and the descriptions
 Libraries
 -
 
-Depends on libraries : (built for the architecture Arm M0 or M4, with suffix 51 or 52
+Depends on libraries : 
     
     - sleepSyncAgent
     - radioSoC
     - embeddedMath
     - nRF5x
-    
+  
+Libraries are built in versions for the architecture Arm M0 or M4, with suffix 51 or 52.
+Only nRF5x is intended to be specific to brand of radio chip (Nordic.)
 All are specified in the Eclipse build configuration with paths to your local copy.
 Order of linking is important
 
@@ -110,6 +109,3 @@ Board configuration
 Before you build, edit fireFlyConfig.h and uncomment the definition corresponding to your board (so that LED's work.)
 Also uncomment the definition about power supply (to enable power management functions: if power is battery or USB, no power management.)
 
-TODO
--
-There is a library ordering issue: the ISR handlers that override defaults are in the nRF5x library so the default handler in startup.c is already resolved weak before the strong override is seen.  Did I reorder the libraries?  Move startup to nRF5x library.

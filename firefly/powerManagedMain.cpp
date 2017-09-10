@@ -71,7 +71,7 @@ void initLEDs() {
 	LEDService::init(1, McuSinks, 19, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SOURCE_LED
 	// uBlox, one LED, source, UBlox pin 16, NRF52 P0.28
-	LEDService::init(1, McuSources, 28, 0, 0, 0);
+	LEDService::init(1, false, 28, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SINK_LED
 	// July 2017 my test board, this doesn't work.  Must be a board problem.
 	// uBlox, one LED, sunk, UBlox pin 17, NRF52 P0.29
