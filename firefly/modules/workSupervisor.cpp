@@ -73,8 +73,19 @@ void WorkSupervisor::manageVoltageAndWork() {
 	// Solar cell Voc below SoC Vmax
 	WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
 #else
+	/*
+	 * Choices here for testing
+	 */
+	// this is group work initiated by non-masters
 	//WorkStrategy::doRandomWork();
-	WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
+
+	// Group work initiated only by master
+	//WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
+
+	// Work regardless of mastership or power
+	// This will work even while sync is just being maintained (radio not in use)
+	// until brownout occurs.
+	WorkStrategy::doRegularLocalWork();
 #endif
 
 

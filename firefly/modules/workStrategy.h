@@ -21,4 +21,10 @@ public:
 	 * If self is Master and exists enough power, send work randomly.
 	 */
 	static void manageWorkOnlyRandomlyIfPowerAndMaster();
+
+	/*
+	 * Work locally regardless whether master or enough power.
+	 * For testing capacity of storage.
+	 */
+	static void doRegularLocalWork();
 };
