@@ -69,15 +69,20 @@ void initLEDs() {
 	LEDService::init(4, true, 17, 18, 19, 20);
 #elif BOARD_REDBEAR_NANO || BOARD_WAVESHARE
 	LEDService::init(1, McuSinks, 19, 0, 0, 0);
-#elif BOARD_UBLOX_NINA_SOURCE_LED
+#elif BOARD_UBLOX_NINA_SOURCE_LED_REV1
 	// uBlox, one LED, source, UBlox pin 16, NRF52 P0.28
 	LEDService::init(1, false, 28, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SINK_LED
 	// July 2017 my test board, this doesn't work.  Must be a board problem.
-	// uBlox, one LED, sunk, UBlox pin 17, NRF52 P0.29
 	LEDService::init(1, McuSinks, 29, 0, 0, 0);
-#elif BOARD_WAVESHARE2
+#elif BOARD_UBLOX_NINA_SINK_LED_REV2
+	// uBlox, one LED, sunk, my footprint pin 13, UBlox pin 29, NRF52 P0.10
+	LEDService::init(1, true, 8, 0, 0, 0);
+#elif BOARD_WAVESHARE2_REV1
 	LEDService::init(1, true, 30, 0, 0, 0);
+#elif BOARD_WAVESHARE2_REV2
+	LEDService::init(1, true, 8, 0, 0, 0);
+
 #else
 #error "No board defined"
 #endif
@@ -146,6 +151,7 @@ void onSyncPoint() {
 	 * But I might have enough power to initiate work again.
 	 */
 
+	// A choice is made inside, e.g. work regularly or work only if power
 	// If voltage is excess, this may not return immediately, and disturbs sync
 	WorkSupervisor::manageVoltageAndWork();
 

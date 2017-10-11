@@ -26,7 +26,7 @@ public:
 	 * The rest of these comments are for a high-efficiency LED with say 15 degree angle and 1 mA current.
 	 *
 	 * Amount 20 gives 12mSec flash (400 ticks), more perceivable.  But still staring directly at LED.
-	 *
+	 * Amount 50 gives 30mSec flash
 	 * Amount 100 gives 60mSec flash (2000 ticks).
 	 *
 	 * Amount 200 gives 0.12Sec, hard to miss, can see out of corner of eye even in bright ambient.
@@ -38,7 +38,7 @@ public:
 	 * TODO for a piezo buzzer?
 	 */
 
-	static const unsigned int AmountBarelyPerceivable = 1;
+	static const unsigned int AmountBarelyPerceivable = 2;
 	static const unsigned int AmountEasilyPerceivable = 50;
 	static const unsigned int AmountMoreThanPerceivable = 200;
 

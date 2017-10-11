@@ -50,12 +50,18 @@ unsigned int regularWorkCounter = 0;
  */
 void WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster() {
 	if (SyncAgent::isSelfMaster() and SyncPowerManager::isPowerForWork()) {
-		// Choice here
-		// doRandomWork();
-		doRegularWork();
+		// random duration between work
+		doRandomWork();
 	}
 }
 
+
+void WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster() {
+	if (SyncAgent::isSelfMaster() and SyncPowerManager::isPowerForWork()) {
+		// Fixed duration between work
+		doRegularWork();
+	}
+}
 
 
 /*
@@ -155,7 +161,7 @@ void WorkStrategy::doRandomWork() {
 }
 
 void WorkStrategy::doRegularWork() {
-	if (regularWorkCounter==InverseProbabilityToWork) {
+	if (regularWorkCounter==SyncPeriodsBetweenWork) {
 		GroupWork::initiateGroupWork(WORK_VERSION);
 		regularWorkCounter = 0;
 	}

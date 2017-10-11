@@ -792,7 +792,7 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.958977085" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF52"/>
 									<listOptionValue builtIn="false" value="POWER_IS_SOLAR"/>
-									<listOptionValue builtIn="false" value="BOARD_UBLOX_NINA_SOURCE_LED"/>
+									<listOptionValue builtIn="false" value="BOARD_UBLOX_NINA_SINK_LED_REV2"/>
 									<listOptionValue builtIn="false" value="NRF52832"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.1604413439" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="false" valueType="includePath">

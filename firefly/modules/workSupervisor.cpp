@@ -30,7 +30,9 @@ void WorkSupervisor::init(
 		Mailbox* aInMailbox
 		)
 {
+	//Worker::init(Worker::AmountBarelyPerceivable);
 	Worker::init(Worker::AmountEasilyPerceivable);
+	// AmountMoreThanPerceivable
 
 	// self doesn't use mailbox, merely passes mailbox to groupWorker
 	// GroupWork also uses Worker
@@ -70,11 +72,14 @@ void WorkSupervisor::manageVoltageAndWork() {
 	// Solar cell Voc exceed SoC Vmax
 	// WorkStrategy::simpleManagePowerWithWork();
 
-	// Solar cell Voc below SoC Vmax
-	WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
+	// Solar cell Voc always below SoC Vmax (no need to shed power.)
+	// WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
+
+	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
+
 #else
 	/*
-	 * Choices here for testing
+	 * Choices here for testing, when power supply is steady
 	 */
 	// this is group work initiated by non-masters
 	//WorkStrategy::doRandomWork();
