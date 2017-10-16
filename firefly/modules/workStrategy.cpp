@@ -23,6 +23,56 @@
 
 namespace {
 unsigned int regularWorkCounter = 0;
+
+
+/*
+ * A feedback loop.
+ * By increasing work amount, eventually settle at a work amount that keeps voltage below excess.
+ *
+ * Work also comes from others.
+ * This should settle at the work amount proper for work from others.
+ * Others should also be sending work at the same rate as self works (when not synced with others.)
+ */
+void increaseWorkAmountAndWorkLocally() {
+	/*
+	 * Not assert power is not excess.
+	 * Work generally drops Vcc, but is not guaranteed to drop it below Vmax.
+	 */
+	Worker::increaseAmount();
+
+	Worker::workManagedAmount();
+	/*
+	 * It might not make sense for others to work when we are working just to shed power.
+	 * E.g. we might not be master.
+	 * Here, we just work locally, meaning flash when others are not flashing.
+	 * We seem to have plenty of power, and so will also be able to flash when others flash.
+	 */
+	// GroupWork::initiateGroupWork(WORK_VERSION);
+}
+
+
+
+void increaseWorkAmountAndShedPower() {
+	Worker::increaseAmount();
+	PowerShedder::shedPowerUntilVccLessThanVmax();
+	// assert power is not excess
+}
+
+/*
+ * Design choices:
+ * Increase work amount?
+ * Work locally now?
+ * Send to group?
+ * Work until Vcc < Vmax (closed loop feedback)
+ */
+void onExcessVoltage() {
+	increaseWorkAmountAndWorkLocally();
+
+	// Debugging
+	// CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
+}
+
+
 }
 
 
@@ -67,7 +117,8 @@ void WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster() {
 /*
  * Strategy that avoids excess voltage AND tries to work as much as possible.
  *
- * Since it uses ADC, takes much time and should not be called at SyncPoint
+ * Since getVoltageRange uses ADC on some platforms,
+ * it might take >20uSec (>one tick) and should not be called at SyncPoint
  *
  * Here, if voltage is climbing, do more work.
  * Note work is asynchronous, more work does not require more time in this routine.
@@ -75,26 +126,15 @@ void WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster() {
  */
 // TODO replace this with a state machine that is more effective
 
-void WorkStrategy::simpleManagePowerWithWork() {
+void WorkStrategy::manageExcessPowerWithWork() {
 
 	/* It is possible for power levels to drop so precipitously that
 	 * on consecutive calls, the VoltageRange's are not adjacent,
 	 * i.e. pass from Excess to Medium or worse.
 	 */
 	switch (SyncPowerManager::getVoltageRange()) {
-	case VoltageRange::AboveExcess:
-		/* e.g. > 3.6V.
-		 * Self MUST work locally to keep voltage from exceeding Vmax
-		 * Send to group.
-		 */
-		Worker::increaseAmount();
-		GroupWork::initiateGroupWork(WORK_VERSION);
-
-		CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
-
-		PowerShedder::shedPowerUntilVccLessThanVmax();
-		// assert power is not excess?
-		// TODO if change ShedPower, Vcc might still be excess
+	case VoltageRange::AboveExcess: // e.g. > 3.6V.
+		onExcessVoltage();
 		break;
 
 	case VoltageRange::HighToExcess:

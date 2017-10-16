@@ -69,13 +69,15 @@ void WorkSupervisor::manageVoltageAndWork() {
  * The solar cells cannot produce >3.6V in any light level.
  */
 #ifdef POWER_IS_SOLAR
-	// Solar cell Voc exceed SoC Vmax
-	// WorkStrategy::simpleManagePowerWithWork();
 
+#ifdef SOLAR_EXCEEDS_VMAX
+	// Solar cell Voc exceed SoC Vmax
+	WorkStrategy::manageExcessPowerWithWork();
+#else
 	// Solar cell Voc always below SoC Vmax (no need to shed power.)
 	// WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
-
 	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
+#endif
 
 #else
 	/*

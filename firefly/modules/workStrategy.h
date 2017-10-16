@@ -15,10 +15,21 @@ private:
 	// work is regular: periods between work.
 	static const unsigned int SyncPeriodsBetweenWork = 3;
 
-public:
-	static void simpleManagePowerWithWork();
 	static void doRandomWork();
 	static void doRegularWork();
+
+public:
+	/*
+	 * WorkSupervisor chooses one of these alternatives.
+	 */
+
+	/*
+	 * Do work to reduce Vcc below Vmax,
+	 * and do work regularly otherwise.
+	 * Adjusts amount of work to help prevent Vcc above Vmax.
+	 * Used when solar cell has Voc greater than radioSoC Vmax.
+	 */
+	static void manageExcessPowerWithWork();
 
 	/*
 	 * If self is Master and exists enough power, send work randomly.

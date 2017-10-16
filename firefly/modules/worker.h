@@ -50,7 +50,10 @@ public:
 
 
 	/*
-	 * Amount the least that is visible with careful observation, i.e. 1 flash of 0.6 mSec.
+	 * Set amount to least that the application wants.
+	 * It might be much more than the least amount that is visible.
+	 * E.g. we might not even try to work unless work amount is easily visible.
+	 * I.e. what we set here is also affected by work strategy.
 	 */
 	static void setLeastAmount();
 

@@ -87,7 +87,25 @@ void onWorkMsg(WorkPayload work) {
 	WorkSupervisor::queueLocalWork(work);
 }
 
-
+/*
+ * Here we start work at the SyncPoint since goal is synchronized work (firefly flashing.)
+ * Work itself need not be synchronized, only the SyncAgents.
+ * I.E. we could do work at some other time in the sync period, or accumulate work, etc.
+ *
+ * Work requires no cpu (uses timer), i.e. is a separate task.
+ * But starting work task takes time.
+ * !!! If starting work takes a long time,
+ * work should be started elsewhere (not at the sync point, say in a work slot, or after sync slot.)
+ * Otherwise, starting work may disrupt sync if it takes too long.
+ */
+void doReceivedWork() {
+	if (myInMailbox.isMail()) {
+		// Do work bounced (that I sent) or received in previous sync slot
+		// For now, ignore work specifics
+		(void) myInMailbox.fetch();
+		WorkSupervisor::tryWorkLocally();
+	}
+}
 
 /*
  * Managing voltage requires periodic checking, this is a convenient place.
@@ -97,30 +115,20 @@ void onWorkMsg(WorkPayload work) {
  * Must be short duration, else interferes with sync.
  * FUTURE make this a thread and yield to higher priority sleep sync thread
  */
-/*
- * Here we start work at the SyncPoint since goal is synchronized work (firefly flashing.)
- * Work itself need not be synchronized, only the SyncAgents.
- * I.E. we could do work at some other time in the sync period, or accumulate work, etc.
- *
- * !!! If doing work (as opposed to just starting it) takes a long time,
- * it should be done in the work slot.
- * Doing work at the SyncPoint will disrupt sync if it takes too long.
- */
+
 void onSyncPoint() {
 
-	if (myInMailbox.isMail()) {
-		// Do work bounced (that I sent) or received in previous sync slot
-		// For now, ignore work specifics
-		(void) myInMailbox.fetch();
-		WorkSupervisor::tryWorkLocally();
-	}
+	doReceivedWork();
 	/*
-	 * Work from others might have depleted my power.
+	 * Received work from others might have depleted my power.
+	 * (But we just started a work task, it probably didn't use much power yet.)
 	 * But I might have enough power to initiate work again.
 	 */
 
-	// A choice is made inside, e.g. work regularly or work only if power
-	// If voltage is excess, this may not return immediately, and disturbs sync
+	/*
+	 * WorkSupervisor chooses a strategy:, e.g. work regularly or work only if power
+	 * One strategy: if voltage is excess, this may not return immediately, and disturbs sync
+	 */
 	WorkSupervisor::manageVoltageAndWork();
 
 	/*
@@ -135,6 +143,8 @@ void onSyncPoint() {
 	 * the try will fail (just one long flash.) ???
 	 */
 }
+
+
 
 /*
  * Stitch together objects that use each other.  Order is important.

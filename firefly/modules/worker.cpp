@@ -43,6 +43,14 @@ void Worker::workAmount(unsigned int aAmount) {}
 
 
 /*
+ * Here, to amount that is easily visible (the initial value.)
+ * If power is low, we won't be trying work.
+ */
+void Worker::setLeastAmount() {
+	setManagedAmount(AmountEasilyPerceivable);
+}
+
+/*
  * Since we work at sync points, we should not work longer than a sync period,
  * else work still being done at next time we want to work.
  * Typical: sync period is 0.7 sec.
