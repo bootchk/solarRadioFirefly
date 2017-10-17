@@ -152,7 +152,8 @@ void WorkStrategy::manageExcessPowerWithWork() {
 	 */
 	switch (SyncPowerManager::getVoltageRange()) {
 
-	case VoltageRange::AboveExcess: // e.g. > 3.6V.
+	case VoltageRange::AboveExcess: // e.g. > 3.6V
+	case VoltageRange::NearExcess: // e.g. > 3.4V
 		onExcessVoltage();
 		break;
 
@@ -169,15 +170,11 @@ void WorkStrategy::manageExcessPowerWithWork() {
 	 */
 
 	/* Targeted range, i.e. moderate. */
-	case VoltageRange::HighToExcess:  // e.g. 2.7--3.6V
-		Worker::maintainAmount();
-		doNestedWorkStrategy();
-		// WAS GroupWork::initiateGroupWork(WORK_VERSION);
-		break;
-
+	case VoltageRange::HighToNearExcess:  // e.g. 2.7--3.4V
 	case VoltageRange::MediumToHigh:   // e.g. 2.5--2.7V
 		Worker::maintainAmount();
 		doNestedWorkStrategy();
+		// WAS GroupWork::initiateGroupWork(WORK_VERSION);
 		break;
 
 
