@@ -51,17 +51,23 @@ void Worker::setLeastAmount() {
 }
 
 /*
- * Since we work at sync points, we should not work longer than a sync period,
+ * Since we work at sync points, we should not work (flash) longer than a sync period,
  * else work still being done at next time we want to work.
- * Typical: sync period is 0.7 sec.
+ * Typical: sync period is a second.
  *
  * But here we increment amount up to the limit of LEDFlasher.
  */
-void Worker::increaseAmount() { if (managedAmount < LEDFlasher::MaxFlashAmount) managedAmount++; }
+void Worker::increaseAmount() {
+	if (managedAmount < LEDFlasher::MaxFlashAmount) managedAmount += ChangeAmount;
+}
+
+void Worker::decreaseAmount() {
+	if (managedAmount > ChangeAmount) managedAmount -= ChangeAmount;
+}
+
+
 
 void Worker::maintainAmount() { } // No change to managedAmount
-
-void Worker::decreaseAmount() { if (managedAmount > 1) managedAmount--; }
 
 void Worker::setManagedAmount(unsigned int amount) { managedAmount = amount; }
 

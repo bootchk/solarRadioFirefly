@@ -42,6 +42,15 @@ public:
 	static const unsigned int AmountEasilyPerceivable = 50;
 	static const unsigned int AmountMoreThanPerceivable = 200;
 
+	/*
+	 * For managing excess Vcc, amount to change work.
+	 * Currently, an additive change.
+	 * TODO this could be a multiplier, for exponential change.
+	 *
+	 * Choice of value determined experimentally.
+	 */
+	static const unsigned int ChangeAmount = 20;
+
 
 	static void init(unsigned int initialAmount);
 

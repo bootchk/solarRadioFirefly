@@ -27,7 +27,17 @@ unsigned int regularWorkCounter = 0;
 
 /*
  * A feedback loop.
- * By increasing work amount, eventually settle at a work amount that keeps voltage below excess.
+ * By increasing work amount, eventually settle at a work amount that keeps voltage below excess
+ * and above minimum levels.
+ *
+ * Parameters:
+ * - how often we check (say every sync period, say every 2 seconds)
+ * - how much we increment/decrement
+ * - how much received work is done
+ * - how fast power is changing (light levels increasing.)
+ *
+ * This will probably NOT work for rapid changes in power i.e. taking unit from indoors to outdoors.
+ * When it doesn't work, Vcc may spike to Voc of solar cell (say >4.2V) much above Vmax (3.6V)
  *
  * Work also comes from others.
  * This should settle at the work amount proper for work from others.
@@ -70,6 +80,14 @@ void onExcessVoltage() {
 
 	// Debugging
 	// CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
+}
+
+void doNestedWorkStrategy() {
+	/*
+	 * Choice here of nested work strategy.
+	 * Similar to choice when outer strategy does not manage excess voltage.
+	 */
+	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
 }
 
 
@@ -115,7 +133,7 @@ void WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster() {
 
 
 /*
- * Strategy that avoids excess voltage AND tries to work as much as possible.
+ * Strategy that avoids excess voltage AND tries to work according to a nested strategy.
  *
  * Since getVoltageRange uses ADC on some platforms,
  * it might take >20uSec (>one tick) and should not be called at SyncPoint
@@ -133,48 +151,51 @@ void WorkStrategy::manageExcessPowerWithWork() {
 	 * i.e. pass from Excess to Medium or worse.
 	 */
 	switch (SyncPowerManager::getVoltageRange()) {
+
 	case VoltageRange::AboveExcess: // e.g. > 3.6V.
 		onExcessVoltage();
 		break;
 
-	case VoltageRange::HighToExcess:
-		/* e.g. 2.7--3.6V
-		 * I could work (enough power) but I don't need to work to manage excess power.
-		 */
-		Worker::maintainAmount();
+	/*
+	 * Rest of cases:
+	 * Adjust work amount.
+	 * Self not need to work to manage excess power.
+	 * Delegate to other work strategy to decide whether to work.
+	 *
+	 *
+	 * Delegated work strategy may cause local work.
+	 * Thus we might do two local works in consecutive calls.
+	 * I.E. For Excess, then for High
+	 */
 
+	/* Targeted range, i.e. moderate. */
+	case VoltageRange::HighToExcess:  // e.g. 2.7--3.6V
+		Worker::maintainAmount();
+		doNestedWorkStrategy();
+		// WAS GroupWork::initiateGroupWork(WORK_VERSION);
+		break;
+
+	case VoltageRange::MediumToHigh:   // e.g. 2.5--2.7V
+		Worker::maintainAmount();
+		doNestedWorkStrategy();
+		break;
+
+
+	case VoltageRange::LowToMedium:  // e.g. 2.3-2.5V
+		Worker::decreaseAmount();
+		doNestedWorkStrategy();
+		break;
+
+
+	case VoltageRange::UltraLowToLow:	// e.g. 2.1-2.3V
 		/*
-		 * This may cause local work.
-		 * Thus we might do two local works in consecutive calls.
-		 * I.E. For Excess, then for High
-		 * I.E. For High, then High (when both random results are true.)
-		 */
-		GroupWork::initiateGroupWork(WORK_VERSION);
-		break;
-
-	case VoltageRange::MediumToHigh:
-		// e.g. 2.5--2.7V
-		Worker::maintainAmount();
-		break;
-
-	case VoltageRange::LowToMedium:
-		/* e.g. 2.3-2.5V
-		 * not initiate work.
-		 * Others may ask me to work, see elsewhere.
+		 * Not enough power to work, and power getting low.
 		 */
 		Worker::decreaseAmount();
 		break;
 
-	case VoltageRange::UltraLowToLow:
-		/* e.g. 2.1-2.3V
-		 * Not enough power to work, and power getting low.
-		 * Next work done (if ever) is least amount.
-		 */
-		Worker::setLeastAmount();
-		break;
-
-	case VoltageRange::BelowUltraLow:
-		/* e.g. <2.1V
+	case VoltageRange::BelowUltraLow:	//  e.g. <2.1V
+		/*
 		 * Not enough power to work.
 		 * Power nearing brownout.
 		 * Next work done (if ever) is least amount.
