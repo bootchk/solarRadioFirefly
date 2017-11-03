@@ -57,6 +57,11 @@ void logIDAndWork(BufferPointer buffer) {
 	SEGGER_RTT_printf(0, "ID %02x%02x Work %02x",  buffer[2],buffer[1], buffer[10]);
 }
 
+void logRSSI() {
+	int rssi = radio.receivedSignalStrength();
+	SEGGER_RTT_printf(0, " RSSI %d", rssi);
+}
+
 /*
  * Understands format of messages intended for SleepSync logical layer of protocol.
  *
@@ -94,6 +99,17 @@ void logMessage() {
 	default:
 		// Other unidentified i.e. garbled message types
 		SEGGER_RTT_printf(0, "\n T %02x ID %02x%02x", buffer[0], buffer[2], buffer[1]);
+	}
+
+
+
+	if (radio.isPacketCRCValid()) {
+		logRSSI();
+	}
+	else {
+		// Print indicator to right of message printout
+		logger.log("<-crc");
+		ledLogger.toggleLED(3);
 	}
 }
 
@@ -146,16 +162,9 @@ void snifferMain(void)
     	switch ( sleeper.getReasonForWake() ) {
     	case ReasonForWake::MsgReceived:
     		// !!! Note toggling of LED 2 usually done in radio.c on every receive
-    		if (radio.isPacketCRCValid()) {
-    			logMessage();
-    		}
-    		else {
-    			// buffer can be dumped despite bad CRC
-    			logMessage();
-    			// Print indicator to right of message printout
-    			logger.log("<-crc");
-    			ledLogger.toggleLED(3);
-    		}
+
+    		// Even bad CRC messages can be logged.
+    		logMessage();
     		break;
 
     	case ReasonForWake::SleepTimerExpired:
