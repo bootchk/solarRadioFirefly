@@ -116,12 +116,17 @@ void logMessage() {
 
 void snifferMain(void)
 {
+	RadioUseCase radioUseCaseSleepSync;
+
+
 	logger.init();
 
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
-	// Radio ensemble
-	Ensemble::init(sleeper.msgReceivedCallback);
+	Ensemble::init(sleeper.msgReceivedCallback, &radioUseCaseSleepSync);
+
+	// For now superfluous, in future use case can be BLE
+	Ensemble::setRadioUseCase(&radioUseCaseSleepSync);
 
 #ifdef OLD
 	radio.init();
