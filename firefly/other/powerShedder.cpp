@@ -1,11 +1,10 @@
 
 #include <cassert>
 
-#include "powerShedder.h"
-
-// Uses pure classes
-#include "worker.h"
 #include <syncAgent/modules/syncPowerManager.h>
+
+#include "powerShedder.h"
+#include "../work/worker.h"
 
 // FIXME should not use drivers directly
 #include "drivers/mcu.h"

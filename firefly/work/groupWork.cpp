@@ -1,9 +1,8 @@
 
+// radioSoC library
+#include <services/logger.h>
 
 #include "groupWork.h"
-
-// radioSoC
-#include <services/logger.h>
 
 
 

@@ -1,7 +1,7 @@
 
-#include "worker.h"
-
 #include <radioSoC.h>	// LEDFlasher
+
+#include "worker.h"
 
 
 /*

@@ -1,13 +1,4 @@
 
-#include "workStrategy.h"
-
-// Uses these pure class
-
-#include "worker.h"
-#include "groupWork.h"
-#include "powerShedder.h"
-
-// From SleepSyncAgent lib
 #include <syncAgent/modules/syncPowerManager.h>
 #include <syncAgent/logging/flashIndex.h>
 
@@ -15,6 +6,12 @@
 
 // From embeddedMath
 #include <random.h>
+
+#include "groupWork.h"
+#include "worker.h"
+#include "workStrategy.h"
+
+#include "../other/powerShedder.h"
 
 
 

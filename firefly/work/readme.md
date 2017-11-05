@@ -1,5 +1,7 @@
 Files in this directory implement classes for a 'firefly' application.
 
+All related to notion of "work"
+
 Where:
 - units work in synch, usually
 - work is flashing an LED.

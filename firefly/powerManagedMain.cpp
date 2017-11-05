@@ -20,9 +20,10 @@
 #include <syncAgent/modules/syncPowerManager.h>
 
 
-#include "modules/groupWork.h"
-#include "modules/workSupervisor.h"
-#include "modules/boardManager.h"
+#include "other/boardManager.h"
+
+#include "work/groupWork.h"
+#include "work/workSupervisor.h"
 
 /*
  * Uses pure classes:

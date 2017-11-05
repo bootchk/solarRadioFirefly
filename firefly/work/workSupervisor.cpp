@@ -5,16 +5,15 @@
 //#include <services/logger.h>	// RTTLogger
 //#include <syncAgent/syncAgent.h>
 
-#include "workSupervisor.h"
-
-// Uses
 #include <syncAgent/modules/syncPowerManager.h>
 #include <syncAgent/logging/logger.h>
-#include "worker.h"
-#include "groupWork.h"
-#include "powerShedder.h"
-#include "workStrategy.h"
 
+#include "groupWork.h"
+#include "worker.h"
+#include "workStrategy.h"
+#include "workSupervisor.h"
+
+#include "../other/powerShedder.h"
 
 
 /*

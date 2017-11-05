@@ -2,7 +2,7 @@
 #include <cassert>
 #include <radioSoC.h>	// LEDService
 
-#include "boardManager.h"
+#include "../other/boardManager.h"
 
 // Config depends on BOARD_xxx defined in build configuration
 
