@@ -7,6 +7,7 @@
 // From embeddedMath
 #include <random.h>
 
+#include "workFactory.h"
 #include "groupWork.h"
 #include "worker.h"
 #include "workStrategy.h"
@@ -14,9 +15,6 @@
 #include "../other/powerShedder.h"
 
 
-
-// dummy workpayload represents version of code
-#define WORK_VERSION 34
 
 namespace {
 unsigned int regularWorkCounter = 0;
@@ -211,13 +209,13 @@ void WorkStrategy::manageExcessPowerWithWork() {
  */
 void WorkStrategy::doRandomWork() {
 	if (randomProbability(InverseProbabilityToWork)) {
-		GroupWork::initiateGroupWork(WORK_VERSION);
+		GroupWork::initiateGroupWork(WorkFactory::make());
 	}
 }
 
 void WorkStrategy::doRegularWork() {
 	if (regularWorkCounter==SyncPeriodsBetweenWork) {
-		GroupWork::initiateGroupWork(WORK_VERSION);
+		GroupWork::initiateGroupWork(WorkFactory::make());
 		regularWorkCounter = 0;
 	}
 	regularWorkCounter++;
