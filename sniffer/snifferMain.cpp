@@ -44,6 +44,7 @@
 // To control network, need SleepSync library and include paths to embeddedMath library
 #include <syncAgent/syncAgent.h>
 #include <syncAgent/modules/syncSender.h>
+#include <syncAgent/message/serializer.h>
 
 // I couldn't get logPrintf to work
 
@@ -184,12 +185,40 @@ void messageLoggingSleep() {
 	// continue loop to listen again
 }
 
+
+void sendControlMessage() {
+
+	/*
+	 * assert ensemble started but radio not in use
+	 */
+
+	/*
+	 * To ensure it is heard, send it for an entire sync period, 2.1 seconds.
+	 * So that it hits every unit's sync slot.
+	 * E.g. 1600 slots of 1.5mSec apart
+	 */
+	for (int i = 1600; i>0; i--) {
+		// Change xmit power
+		SyncSender::sendControlSetXmitPower(static_cast<WorkPayload>(TransmitPowerdBm::Minus8));
+
+		// delay 1.5 mSec
+		sleeper.clearReasonForWake();
+		sleeper.sleepUntilEventWithTimeout(50);
+
+	}
+}
+
+
+
 void snifferMain(void)
 {
 	RadioUseCase radioUseCaseSleepSync;
 
 
 	logger.init();
+
+	// Serializer required for xmit
+	Serializer::init(Radio::getBufferAddress(), Radio::FixedPayloadCount);
 
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
@@ -212,6 +241,9 @@ void snifferMain(void)
     logger.log("Sniffer starts\r\n");
 
     // Radio always on
+
+    // This could be: ensemble::startup();
+
     logger.log(LongClock::nowTime());
     ClockFacilitator::startHFXOAndSleepUntilRunning();	// radio requires
     //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
@@ -224,8 +256,7 @@ void snifferMain(void)
     	for (int i = 40; i>0; i--)
     		messageLoggingSleep();
 
-    	// Change xmit power
-    	SyncSender::sendControlSetXmitPower(static_cast<WorkPayload>(TransmitPowerdBm::Minus8));
+    	sendControlMessage();
     }
 }
 
