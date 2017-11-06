@@ -1,5 +1,7 @@
 /*
- * A main() that sniffs other unit broadcasts.
+ * Sniff other unit broadcasts.
+ * Control network.
+ * Specific to SleepSync protocol.
  *
  * Sniff: logs valid message types.
  *
@@ -37,6 +39,11 @@
 #include <SEGGER_RTT.h>
 
 #include <services/logger.h>
+
+
+// To control network, need SleepSync library and include paths to embeddedMath library
+#include <syncAgent/syncAgent.h>
+#include <syncAgent/modules/syncSender.h>
 
 // I couldn't get logPrintf to work
 
@@ -114,6 +121,69 @@ void logMessage() {
 }
 
 
+void messageLoggingSleep() {
+	// This is not isPowerOn() because we leave radio power on
+	assert(!radio.isInUse());	// powerOn (initial entry) and stopReceive (loop) ensures this
+
+	sleeper.clearReasonForWake();
+	radio.receiveStatic();
+	// Receiving with interrupt enabled.
+	assert(radio.isEnabledInterruptForMsgReceived());
+
+	// Sleep until msg received or timeout
+	// units of .03 uSec ticks, one second
+	sleeper.sleepUntilEventWithTimeout(30000);
+
+	// If using nrf52DK with many LED's show result
+	// Some interrupt ??? event woke us up and set reasonForWake
+	switch ( sleeper.getReasonForWake() ) {
+	case ReasonForWake::MsgReceived:
+		// !!! Note toggling of LED 2 usually done in radio.c on every receive
+
+		// Even bad CRC messages can be logged.
+		logMessage();
+		break;
+
+	case ReasonForWake::SleepTimerExpired:
+		/*
+		 * Indicate alive but timer expired with no message.
+		 * This is normal, it will print e.g.  ....WorkSync meaning 4 timer expirations and then a WorkSync message
+		 */
+		logger.log(".");
+		ledLogger.toggleLED(1);
+		// Put radio in state that next iteration expects.
+		radio.stopReceive();
+		break;
+
+
+	case ReasonForWake::Cleared:
+		logger.log("\nUnexpected: sleep ended but no ISR called.\n");
+		// Put radio in state that next iteration expects.
+		radio.stopReceive();
+		break;
+
+	case ReasonForWake::CounterOverflowOrOtherTimerExpired:
+		// Every nine minutes
+		logger.log("Clock overflow.");
+		radio.stopReceive();
+		break;
+
+	case ReasonForWake::BrownoutWarning:
+	case ReasonForWake::HFClockStarted:
+	case ReasonForWake::LFClockStarted:
+	case ReasonForWake::Unknown:	// log("Unexpected: ISR called but no events.\n");
+		logger.log("\nUnexpected reason for wake.\n");
+		logger.log((uint32_t) sleeper.getReasonForWake());
+		//assert(false); // Unexpected
+		// Put radio in state that next iteration expects.
+		radio.stopReceive();
+		break;
+	}
+
+	// assert radio still on but not receiving
+	// continue loop to listen again
+}
+
 void snifferMain(void)
 {
 	RadioUseCase radioUseCaseSleepSync;
@@ -148,68 +218,14 @@ void snifferMain(void)
     logger.log(LongClock::nowTime());
     logger.log("<hfclock\n");
 
-    while (true)
-    {
-    	// This is not isPowerOn() because we leave radio power on
-    	assert(!radio.isInUse());	// powerOn (initial entry) and stopReceive (loop) ensures this
+    while (true) {
 
-    	sleeper.clearReasonForWake();
-    	radio.receiveStatic();
-    	// Receiving with interrupt enabled.
-    	assert(radio.isEnabledInterruptForMsgReceived());
+    	// Listen for 40 messages at default xmit power
+    	for (int i = 40; i>0; i--)
+    		messageLoggingSleep();
 
-    	// Sleep until msg received or timeout
-    	// units of .03 uSec ticks, one second
-    	sleeper.sleepUntilEventWithTimeout(30000);
-
-    	// If using nrf52DK with many LED's show result
-    	// Some interrupt ??? event woke us up and set reasonForWake
-    	switch ( sleeper.getReasonForWake() ) {
-    	case ReasonForWake::MsgReceived:
-    		// !!! Note toggling of LED 2 usually done in radio.c on every receive
-
-    		// Even bad CRC messages can be logged.
-    		logMessage();
-    		break;
-
-    	case ReasonForWake::SleepTimerExpired:
-    		/*
-    		 * Indicate alive but timer expired with no message.
-    		 * This is normal, it will print e.g.  ....WorkSync meaning 4 timer expirations and then a WorkSync message
-    		 */
-    		logger.log(".");
-    		ledLogger.toggleLED(1);
-    		// Put radio in state that next iteration expects.
-    		radio.stopReceive();
-    		break;
-
-
-    	case ReasonForWake::Cleared:
-    		logger.log("\nUnexpected: sleep ended but no ISR called.\n");
-    		// Put radio in state that next iteration expects.
-    		radio.stopReceive();
-    		break;
-
-    	case ReasonForWake::CounterOverflowOrOtherTimerExpired:
-    		// Every nine minutes
-    		logger.log("Clock overflow.");
-    		radio.stopReceive();
-    		break;
-
-    	case ReasonForWake::BrownoutWarning:
-    	case ReasonForWake::HFClockStarted:
-    	case ReasonForWake::LFClockStarted:
-    	case ReasonForWake::Unknown:	// log("Unexpected: ISR called but no events.\n");
-    		logger.log("\nUnexpected reason for wake.\n");
-    		logger.log((uint32_t) sleeper.getReasonForWake());
-    		//assert(false); // Unexpected
-    		// Put radio in state that next iteration expects.
-    		radio.stopReceive();
-    		break;
-    	}
-
-    	// assert radio still on but not receiving
-    	// continue loop to listen again
+    	// Change xmit power
+    	SyncSender::sendControlSetXmitPower(static_cast<WorkPayload>(TransmitPowerdBm::Minus8));
     }
 }
 
