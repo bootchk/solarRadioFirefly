@@ -18,6 +18,7 @@
 #include <syncAgent/state/phase.h>
 #include <syncAgent/sleepers/syncPowerSleeper.h>
 #include <syncAgent/modules/syncPowerManager.h>
+#include <syncAgent/slots/fishing/fishPolicy.h>
 
 
 #include "other/boardManager.h"
@@ -222,6 +223,11 @@ void powerManagedMain() {
 
 	initObjects();
 	// sleepSyncAgent prepared to loop
+
+#ifndef POWER_IS_SOLAR
+	// Fish more if power is unconstrained.
+	SyncRecoveryTrollingPolicy::incrementFishSessionDuration(1000);
+#endif
 
 	// Artifact of debugging to detect stopped counter
 	LongClock::waitOneTick();
