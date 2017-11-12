@@ -19,7 +19,14 @@ public:
 	static void onExcessVoltage();
 
 	/*
-	 * Adjust energy usage
+	 * !!! These methods not called for certain build configurations
+	 * where power is unconstrained and voltage is regulated in HW,
+	 * e.g. on the dev kit (instead of the solar powered-target)
+	 * i.e. where we are not checking for Vcc exceed Vmax
+	 */
+	/*
+	 * Adjust energy usage.
+	 * Delegated to a strategy.
 	 */
 	static void increaseUsage();
 	static void decreaseUsage();

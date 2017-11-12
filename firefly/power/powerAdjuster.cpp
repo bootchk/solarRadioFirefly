@@ -1,11 +1,14 @@
 
+
 #include "powerAdjuster.h"
 
 // Strategies of adjusting power usage
-#include "workerOnlyEnergyStrategy.h"
+#include "workOnlyEnergyStrategy.h"
+#include "workAndFishEnergyStrategy.h"
 
 
-// Ways of adjusting power usage
+// ways.  Generally a strategy knows the ways
+// but here we also know these
 #include "../work/worker.h"
 #include "../power/powerShedder.h"
 #include <syncAgent/slots/fishing/fishPolicy.h>
@@ -32,7 +35,8 @@
 
 
 // Make strategy choice at compile time
-#define EnergyStrategy WorkerOnlyEnergyStrategy
+//#define EnergyStrategy WorkerOnlyEnergyStrategy
+#define EnergyStrategy WorkAndFishEnergyStrategy
 
 namespace {
 
@@ -69,6 +73,7 @@ void increasePowerUsageAndShedPower() {
 
 void PowerAdjuster::setUnconstrainedEnergy(){
 	// Fish more if power is unconstrained.
+	// 20 slots of 50 ticks
 	SyncRecoveryTrollingPolicy::incrementFishSessionDuration(1000);
 }
 
@@ -92,20 +97,7 @@ void PowerAdjuster::onExcessVoltage() {
 }
 
 
-/*
- * Balanced.
- *
- * Both at same voltage (say 3V)
- * One fish slot every sync period takes 6mA for 1.5mSec => 9uW per period
- * With a 5kohm resistor and 2.1Vf LED, LED takes 0.2mA
- * One easily perceivable LED blink every 3 periods takes 0.2mA for 50mSec / 3  => 5uW per period
- * An increment to LED blink every 3 periods takes 0.2mA for 12mSec / 3  => 0.8uW per period more
- *
- * Therefore, roughly speaking,
- * incrementing fishing by one slot
- * uses ten times more energy
- * than increasing LED blink by one increment.
- */
+
 
 void PowerAdjuster::increaseUsage() {
 	EnergyStrategy::increaseUsage();

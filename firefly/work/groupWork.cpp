@@ -19,7 +19,7 @@ void tellOthersInGroupToWork(WorkPayload work) {
 	}
 	else {
 		myOutMailbox->put(work);
-		RTTLogger::log("Que work out\n");
+		// RTTLogger::log("Que work out\n");
 	}
 }
 

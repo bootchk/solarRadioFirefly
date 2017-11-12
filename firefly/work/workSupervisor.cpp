@@ -73,7 +73,10 @@ void WorkSupervisor::manageVoltageAndWork() {
 #else
 	// Solar cell Voc always below SoC Vmax (no need to shed power.)
 	// WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
-	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
+	// WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
+
+	// TEMP testing energy strategy on DK
+	WorkStrategy::manageExcessPowerWithWork();
 #endif
 
 #else

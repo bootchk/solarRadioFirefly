@@ -5,7 +5,7 @@
  * Strategy for adjusting energy use that only uses Worker
  */
 
-class WorkerOnlyEnergyStrategy {
+class WorkOnlyEnergyStrategy {
 public:
 	static void increaseUsage();
 	static void decreaseUsage();
