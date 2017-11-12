@@ -80,18 +80,22 @@ void WorkSupervisor::manageVoltageAndWork() {
 
 #else
 	/*
-	 * Choices here for testing, when power supply is steady
+	 * Choices here.
+	 * For testing with DK or battery, when power supply is steady
 	 */
-	// this is group work initiated by non-masters
+	// Group work initiated by non-masters
 	//WorkStrategy::doRandomWork();
 
 	// Group work initiated only by master
 	//WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
 
-	// Work regardless of mastership or power
+	// Local work regardless of mastership or power
 	// This will work even while sync is just being maintained (radio not in use)
 	// until brownout occurs.
-	WorkStrategy::doRegularLocalWork();
+	// WorkStrategy::doRegularLocalWork();
+
+	// Group work
+	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
 #endif
 
 

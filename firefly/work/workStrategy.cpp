@@ -222,8 +222,5 @@ void WorkStrategy::doRegularWork() {
 }
 
 void WorkStrategy::doRegularLocalWork() {
-	/*
-	 * On every call, work locally, but don't tell others.
-	 */
 	Worker::workManagedAmount();
 }

@@ -43,7 +43,8 @@ public:
 	static void manageWorkOnlyRegularlyIfPowerAndMaster();
 
 	/*
-	 * Work locally regardless whether master or enough power.
+	 * On every call work locally regardless whether master or enough power.
+	 * But don't tell others.
 	 * For testing capacity of storage.
 	 */
 	static void doRegularLocalWork();
