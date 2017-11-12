@@ -57,7 +57,7 @@ void Worker::setLeastAmount() {
  *
  * But here we increment amount up to the limit of LEDFlasher.
  */
-void Worker::increaseAmount() {
+void Worker::increaseAmountWithoutExceedingTimerLimit() {
 	if (managedAmount < LEDFlasher::MaxFlashAmount) managedAmount += ChangeAmount;
 }
 

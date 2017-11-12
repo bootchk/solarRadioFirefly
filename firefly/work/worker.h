@@ -66,9 +66,15 @@ public:
 	 */
 	static void setLeastAmount();
 
-	static void increaseAmount();
-	static void maintainAmount();
+	/*
+	 * Increase by fixed increment up to TimerLimit (approx 10 seconds.)
+	 */
+	static void increaseAmountWithoutExceedingTimerLimit();
+	/*
+	 * Decrease by fixed amount down to nearly zero (within one increment of zero.)
+	 */
 	static void decreaseAmount();
+	static void maintainAmount();
 
 	static void setManagedAmount(unsigned int amount);
 };
