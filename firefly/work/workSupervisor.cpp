@@ -13,8 +13,6 @@
 #include "workStrategy.h"
 #include "workSupervisor.h"
 
-#include "../other/powerShedder.h"
-
 
 /*
  * Implementation notes:

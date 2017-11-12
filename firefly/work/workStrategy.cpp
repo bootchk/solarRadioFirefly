@@ -12,70 +12,14 @@
 #include "worker.h"
 #include "workStrategy.h"
 
-#include "../other/powerShedder.h"
+#include "../power/powerAdjuster.h"
+
 
 
 
 namespace {
 unsigned int regularWorkCounter = 0;
 
-
-/*
- * A feedback loop.
- * By increasing work amount, eventually settle at a work amount that keeps voltage below excess
- * and above minimum levels.
- *
- * Parameters:
- * - how often we check (say every sync period, say every 2 seconds)
- * - how much we increment/decrement
- * - how much received work is done
- * - how fast power is changing (light levels increasing.)
- *
- * This will probably NOT work for rapid changes in power i.e. taking unit from indoors to outdoors.
- * When it doesn't work, Vcc may spike to Voc of solar cell (say >4.2V) much above Vmax (3.6V)
- *
- * Work also comes from others.
- * This should settle at the work amount proper for work from others.
- * Others should also be sending work at the same rate as self works (when not synced with others.)
- */
-void increaseWorkAmountAndWorkLocally() {
-	/*
-	 * Not assert power is not excess.
-	 * Work generally drops Vcc, but is not guaranteed to drop it below Vmax.
-	 */
-	Worker::increaseAmount();
-
-	Worker::workManagedAmount();
-	/*
-	 * It might not make sense for others to work when we are working just to shed power.
-	 * E.g. we might not be master.
-	 * Here, we just work locally, meaning flash when others are not flashing.
-	 * We seem to have plenty of power, and so will also be able to flash when others flash.
-	 */
-	// GroupWork::initiateGroupWork(WORK_VERSION);
-}
-
-
-
-void increaseWorkAmountAndShedPower() {
-	Worker::increaseAmount();
-	PowerShedder::shedPowerUntilVccLessThanVmax();
-	// assert power is not excess
-}
-
-/*
- * Design choices:
- * Increase work amount?
- * Work locally now?
- * Send to group?
- * Work until Vcc < Vmax (closed loop feedback)
- */
-void onExcessVoltage() {
-	increaseWorkAmountAndWorkLocally();
-
-	// Debugging
-	// CustomFlash::writeZeroAtIndex(ExcessPowerEventFlagIndex);
-}
 
 void doNestedWorkStrategy() {
 	/*
@@ -86,7 +30,7 @@ void doNestedWorkStrategy() {
 }
 
 
-}
+}	// namespace
 
 
 
@@ -149,7 +93,7 @@ void WorkStrategy::manageExcessPowerWithWork() {
 
 	case VoltageRange::AboveExcess: // e.g. > 3.6V
 	case VoltageRange::NearExcess: // e.g. > 3.4V
-		onExcessVoltage();
+		PowerAdjuster::onExcessVoltage();
 		break;
 
 	/*
@@ -167,14 +111,14 @@ void WorkStrategy::manageExcessPowerWithWork() {
 	/* Targeted range, i.e. moderate. */
 	case VoltageRange::HighToNearExcess:  // e.g. 2.7--3.4V
 	case VoltageRange::MediumToHigh:   // e.g. 2.5--2.7V
-		Worker::maintainAmount();
+		PowerAdjuster::maintainUsage();
 		doNestedWorkStrategy();
 		// WAS GroupWork::initiateGroupWork(WORK_VERSION);
 		break;
 
 
 	case VoltageRange::LowToMedium:  // e.g. 2.3-2.5V
-		Worker::decreaseAmount();
+		PowerAdjuster::decreaseUsage();
 		doNestedWorkStrategy();
 		break;
 
@@ -183,7 +127,7 @@ void WorkStrategy::manageExcessPowerWithWork() {
 		/*
 		 * Not enough power to work, and power getting low.
 		 */
-		Worker::decreaseAmount();
+		PowerAdjuster::decreaseUsage();
 		break;
 
 	case VoltageRange::BelowUltraLow:	//  e.g. <2.1V
@@ -196,7 +140,7 @@ void WorkStrategy::manageExcessPowerWithWork() {
 		 * we didnt' pass through case above for Low.
 		 */
 		/* See also brownout detector should find this case asynchronously. */
-		Worker::setLeastAmount();
+		PowerAdjuster::setLeastUsage();
 		break;
 	}
 }

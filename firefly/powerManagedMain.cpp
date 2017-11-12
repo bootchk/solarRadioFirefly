@@ -18,13 +18,15 @@
 #include <syncAgent/state/phase.h>
 #include <syncAgent/sleepers/syncPowerSleeper.h>
 #include <syncAgent/modules/syncPowerManager.h>
-#include <syncAgent/slots/fishing/fishPolicy.h>
+
+
 
 
 #include "other/boardManager.h"
 
 #include "work/groupWork.h"
 #include "work/workSupervisor.h"
+#include "power/powerAdjuster.h"
 
 /*
  * Uses pure classes:
@@ -225,8 +227,7 @@ void powerManagedMain() {
 	// sleepSyncAgent prepared to loop
 
 #ifndef POWER_IS_SOLAR
-	// Fish more if power is unconstrained.
-	SyncRecoveryTrollingPolicy::incrementFishSessionDuration(1000);
+	PowerAdjuster::setUnconstrainedEnergy();
 #endif
 
 	// Artifact of debugging to detect stopped counter
