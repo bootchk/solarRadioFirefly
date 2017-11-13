@@ -83,41 +83,56 @@ void logMessage() {
 
 	buffer = radio.getBufferAddress();
 
+	/*
+	 * If packet is CRC error, append to line
+	 * else start a new line.
+	 */
+	if (! radio.isPacketCRCValid()) {
+		// Print indicator to left of message printout
+		logger.log(" crc:");
+		ledLogger.toggleLED(3);
+	}
+	else {
+		SEGGER_RTT_printf(0, "\n");
+	}
+
 	// switch on message type
 	// should include libSleepSyncAgent and cast (MessageType)
 	switch( buffer[0]){
 
 	case 17:
 		// Print two LSB's of MasterID
-		SEGGER_RTT_printf(0, "\n Sync ");
+		SEGGER_RTT_printf(0, " Sync ");
 		logIDAndWork(buffer);
 		break;
 	case 136:
-		SEGGER_RTT_printf(0, "\nWSync ");
+		SEGGER_RTT_printf(0, "WSync ");
 		logIDAndWork(buffer);
 		break;
 	case 34:
-		SEGGER_RTT_printf(0, "\nMSync ");
+		SEGGER_RTT_printf(0, "Entic ");
+		logIDAndWork(buffer);
+		break;
+	case 37:
+		SEGGER_RTT_printf(0, "MMAw ");
+		logIDAndWork(buffer);
+		break;
+	case 41:
+		SEGGER_RTT_printf(0, "SMAw ");
 		logIDAndWork(buffer);
 		break;
 	case 231:
-		SEGGER_RTT_printf(0, "\nInfo ");
+		SEGGER_RTT_printf(0, "Info ");
 		logIDAndWork(buffer);
 		break;
 	default:
 		// Other unidentified i.e. garbled message types
-		SEGGER_RTT_printf(0, "\n T %02x ID %02x%02x", buffer[0], buffer[2], buffer[1]);
+		SEGGER_RTT_printf(0, "Type %02x ID %02x%02x", buffer[0], buffer[2], buffer[1]);
 	}
-
 
 
 	if (radio.isPacketCRCValid()) {
 		logRSSI();
-	}
-	else {
-		// Print indicator to right of message printout
-		logger.log("<-crc");
-		ledLogger.toggleLED(3);
 	}
 }
 
@@ -256,7 +271,7 @@ void snifferMain(void)
     	for (int i = 40; i>0; i--)
     		messageLoggingSleep();
 
-    	sendControlMessage();
+    	// sendControlMessage();
     }
 }
 

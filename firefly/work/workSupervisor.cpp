@@ -105,7 +105,7 @@ void WorkSupervisor::manageVoltageAndWork() {
 
 void WorkSupervisor::tryWorkLocally() {
 	if (SyncPowerManager::isPowerForWork()) {
-		Logger::log("App works.");
+		Logger::log(" App LED.");
 		Worker::workManagedAmount();
 	}
 	else {
