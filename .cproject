@@ -5,7 +5,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534" moduleId="org.eclipse.cdt.core.settings" name="Debug52DK">
 				<macros>
 					<stringMacro name="MY_SDK" type="VALUE_TEXT" value="/home/bootch/git"/>
-					<stringMacro name="NRF_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_12.3.0"/>
+					<stringMacro name="NRF_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_14.2.0_17b948a"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
@@ -78,6 +78,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.511755313" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.616488570" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF52"/>
+									<listOptionValue builtIn="false" value="SOFTDEVICE_PRESENT"/>
 									<listOptionValue builtIn="false" value="BOARD_NRF52DK"/>
 									<listOptionValue builtIn="false" value="NRF52832"/>
 								</option>
@@ -85,11 +86,12 @@
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/embeddedMath/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/radioSoC/src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/drivers_nrf/nrf_soc_nosd&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/libraries/util&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/firefly}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/external/segger_rtt&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/softdevice/s132/headers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/drivers_nrf/nrf_soc_nosd&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/device&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/cmsis/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/nRF5x/src&quot;"/>

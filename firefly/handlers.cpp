@@ -21,7 +21,7 @@
 
 extern "C" {
 
-// HardFault_Handler overridden by library nRf5x
+// HardFault_Handler is overridden by library nRf5x
 
 void NMI_Handler();
 void SVC_Handler();
@@ -48,7 +48,9 @@ void SysTick_Handler(){ genericExitHandler(); }
 void _exit()          { genericExitHandler(); }
 
 
-
+/*
+ * Replace builtin
+ */
 void __assert_func(const char * fileName,
 		int lineNumber,
 		const char * functionName,
@@ -56,6 +58,16 @@ void __assert_func(const char * fileName,
 	genericAssertionFaultHandler(fileName, lineNumber);
 }
 
+
+
+/*
+ * Handler for Nordic app_error library.
+ * Replaces app_error_fault_handler in app_error_weak.c
+ */
+void app_error_fault_handler(uint32_t id, uint32_t pc, uint32_t info) {
+	// Dummy parameters
+	genericAssertionFaultHandler("app_errr", pc);
+}
 
 
 }	// extern C

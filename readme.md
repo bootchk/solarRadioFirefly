@@ -109,3 +109,22 @@ Board configuration
 Before you build, edit fireFlyConfig.h and uncomment the definition corresponding to your board (so that LED's work.)
 Also uncomment the definition about power supply (to enable power management functions: if power is battery or USB, no power management.)
 
+
+Multiprotocol
+-
+
+Multiprotocol: using two or more protocols (stacks.)
+
+Firefly uses SleepSync which has its own proprietary protocol.  It does not depend on Nordics Softdevice.
+
+Early versions are single protocol (used ONLY SleepSync protocol) and were incompatible with Softdevice.  
+Latest version is compatible with Softdevice and could be multiprotocol.
+The second protocol (Bluetooth BLE) can be used for control e.g. provisioning.
+
+It requires:
+
+       - versions of the libraries (nRF5X) that are compatbile with Softdevice.
+       - building Firefly with -DSOFTDEVICE_PRESENT.
+       - adding components/softdevice to include paths (early so that nrf_soc_nosd/nrf_nvic.h is not found)
+       
+To get those, build the libraries with 
