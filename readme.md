@@ -115,7 +115,7 @@ Multiprotocol
 
 Multiprotocol: using two or more protocols (stacks.)
 
-Firefly uses SleepSync which has its own proprietary protocol.  It does not depend on Nordics Softdevice.
+Firefly uses SleepSync which has its own proprietary protocol.  It does not depend on Nordic Softdevice.
 
 Early versions are single protocol (used ONLY SleepSync protocol) and were incompatible with Softdevice.  
 Latest version is compatible with Softdevice and could be multiprotocol.
@@ -127,4 +127,5 @@ It requires:
        - building Firefly with -DSOFTDEVICE_PRESENT.
        - adding components/softdevice to include paths (early so that nrf_soc_nosd/nrf_nvic.h is not found)
        
-To get those, build the libraries with 
+To get SD compatible versions of the libraries, build them with -DSOFTDEVICE_PRESENT.
+There is little penalty for always building them SD compatible.

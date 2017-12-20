@@ -205,10 +205,17 @@ void powerManagedMain() {
 	 * Takes 0.6mSec for LFRC to be running, .25seconds for LFXO
 	 *
 	 * Formerly just LongClock::start(); but didn't seem to insure Timer would work.
+	 * Formerly just ClockFacilitator::startLongClockWithSleepUntilRunning();
+	 * but that requires access to PowerClock, which is blocked by SD.
+	 *
+	 * Current code starts long clock (lfclock and rtc)
+	 * The timers will eventually work.
+	 * The first timeout is over long or inaccurate, until lfclock is stable.
 	 */
-	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
-	// Now we can use Timer
+	ClockFacilitator::startLongClockNoWaitUntilRunning();
+
+	// We can use Timer even though it is not accurate
 
 	// SyncPowerSleeper needs these objects before sleepUntilSyncPower()
 	SyncPowerManager::init();
