@@ -126,6 +126,8 @@ It requires:
        - versions of the libraries (nRF5X) that are compatbile with Softdevice.
        - building Firefly with -DSOFTDEVICE_PRESENT.
        - adding components/softdevice to include paths (early so that nrf_soc_nosd/nrf_nvic.h is not found)
+       - more source from the SDK, for nrf_drv_<foo> i.e. modules
+       - sdk_config.h to configure modules
        
 To get SD compatible versions of the libraries, build them with -DSOFTDEVICE_PRESENT.
 There is little penalty for always building them SD compatible.

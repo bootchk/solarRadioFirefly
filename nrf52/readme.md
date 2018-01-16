@@ -32,3 +32,7 @@ components/libraries/util/app_error.c
      When multiprotocol and BLE softdevice are used, need these
      (Also need app_error_weak unless we define our own app_error_fault_handler)
 
+
+nrf_drv_clock is used to coordinate clock access with Softdevice
+
+sdk_config.h is needed when Softdevice and modules are used (e.g. nrf_drv_clock)

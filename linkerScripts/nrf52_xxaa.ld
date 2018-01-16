@@ -1,5 +1,7 @@
 /* Linker script to configure memory regions. */
 
+/* lkk this takes all available, i.e. no provision for Softdevice. */
+
 SEARCH_DIR(.)
 GROUP(-lgcc -lc -lnosys)
 
