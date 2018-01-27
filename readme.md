@@ -29,7 +29,7 @@ I use:
      Ubuntu 16.04 LTS
      Eclipse Neon version
      Eclipse ARM GCC plugin
-     Nordic NRF_SDK v12
+     Nordic NRF_SDK v12, v14.3
     
 See Also
 -
@@ -58,6 +58,7 @@ Sniffer
 There are two apps here: firefly and a sniffer for the firefly protocol.
 The build configurations do NOT configure LED's for each board using board.h.
 LED's are configured in the call to LEDService.init() and different configurations are configured according to fireflyConfig.h
+
 
 Debugging
 -
@@ -93,13 +94,16 @@ Libraries
 Depends on libraries : 
     
     - sleepSyncAgent
+    - libBLEProvisionee
     - radioSoC
     - embeddedMath
     - nRF5x
+    - NRFDrivers
   
 Libraries are built in versions for the architecture Arm M0 or M4, with suffix 51 or 52.
 Only nRF5x is intended to be specific to brand of radio chip (Nordic.)
 All are specified in the Eclipse build configuration with paths to your local copy.
+
 Order of linking is important
 
 
@@ -115,19 +119,42 @@ Multiprotocol
 
 Multiprotocol: using two or more protocols (stacks.)
 
-Firefly uses SleepSync which has its own proprietary protocol.  It does not depend on Nordic Softdevice.
+Firefly can be built:
+
+    without provisioning
+    with provisioning over BLE (sequential multiprotocol)
+    
+Uses SleepSync which has its own proprietary protocol.
+SleepSync does not necessarily depend on Nordic Softdevice.
+It depends on Softdevice if "with provisioning"
 
 Early versions are single protocol (used ONLY SleepSync protocol) and were incompatible with Softdevice.  
-Latest version is compatible with Softdevice and could be multiprotocol.
-The second protocol (Bluetooth BLE) can be used for control e.g. provisioning.
+
+The second protocol (Bluetooth BLE) is used for control e.g. provisioning.
 
 It requires:
 
-       - versions of the libraries (nRF5X) that are compatbile with Softdevice.
+       - versions of the libraries (radioSoCwSD, sleepSyncwSD) that are compatbile with Softdevice.
        - building Firefly with -DSOFTDEVICE_PRESENT.
+   
+       - sdk_config.h to configure modules ???
+       - different linker script to load alongside the Softdevice
+       - Softdevice loaded to target
+       
+       ???
        - adding components/softdevice to include paths (early so that nrf_soc_nosd/nrf_nvic.h is not found)
        - more source from the SDK, for nrf_drv_<foo> i.e. modules
-       - sdk_config.h to configure modules
-       
+
+Most of the Nordic source is intended to be built into the facade libraries that use them.
+The only Nordic source in Firefly is intended to be the startup files for an embedded app.
+    
 To get SD compatible versions of the libraries, build them with -DSOFTDEVICE_PRESENT.
 There is little penalty for always building them SD compatible.
+
+
+CMake
+-
+
+The CMakeLists.txt for now only documents the build.
+It is intended to duplicate the Eclipse build configuration "Debug52DKwSD"
+Not now in use since using Eclipse managed make instead.

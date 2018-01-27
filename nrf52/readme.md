@@ -27,12 +27,16 @@ Also needed fpr app_util_critical<foo> when SOFTDEVICE_PRESENT
 	
 nrf_assert.h     ??? why copied
 
+sdk_config.h is needed when Softdevice and modules are used (e.g. nrf_drv_clock)
+
+OLD
+-
+
+TODO eliminate other files above, except for two startup files
+
+nrf_drv_clock is used to coordinate clock access with Softdevice.  Now it comes from libNRFDrivers
+
 components/libraries/util/app_error.c
 " app_error_weak.c    
      When multiprotocol and BLE softdevice are used, need these
      (Also need app_error_weak unless we define our own app_error_fault_handler)
-
-
-nrf_drv_clock is used to coordinate clock access with Softdevice
-
-sdk_config.h is needed when Softdevice and modules are used (e.g. nrf_drv_clock)
