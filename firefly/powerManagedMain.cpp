@@ -244,11 +244,7 @@ void powerManagedMain() {
 	// sleepSyncAgent has enough power to start
 
 	// never returns
-#ifdef SOFTDEVICE_PRESENT
-	SyncAgent::loopProvisioned();
-#else
 	SyncAgent::loop();
-#endif
 }
 
 
