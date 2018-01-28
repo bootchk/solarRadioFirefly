@@ -1160,6 +1160,7 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths.1048054386" name="Library search path (-L)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths" useByScannerDiscovery="false" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/radioSoC/Debug52wSD&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/libBLEProvisionee/Debug52&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/embeddedMath/Debug52&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/sleepSyncAgent/DebugProvisioned&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/nRF5x/Debug52&quot;"/>
@@ -1168,6 +1169,7 @@
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.1019737802" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" useByScannerDiscovery="false" valueType="libs">
 									<listOptionValue builtIn="false" value="sleepSyncAgentM4Provisioned"/>
+									<listOptionValue builtIn="false" value="BLEProvisionee"/>
 									<listOptionValue builtIn="false" value="radioSoC52wSD"/>
 									<listOptionValue builtIn="false" value="embeddedMath52"/>
 									<listOptionValue builtIn="false" value="nRF5x52"/>
