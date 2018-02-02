@@ -10,6 +10,7 @@
 
 #include "groupWork.h"
 #include "worker.h"
+#include "workAmount.h"
 #include "workStrategy.h"
 #include "workSupervisor.h"
 
@@ -27,11 +28,11 @@ void WorkSupervisor::init(
 		Mailbox* aInMailbox
 		)
 {
-	//Worker::init(Worker::AmountBarelyPerceivable);
-	Worker::init(Worker::AmountEasilyPerceivable);
+	//WorkAmount::init(WorkAmount::AmountBarelyPerceivable);
+	WorkAmount::init(WorkAmount::AmountEasilyPerceivable);
 	// AmountMoreThanPerceivable
 
-	// self doesn't use mailbox, merely passes mailbox to groupWorker
+	// self doesn't use mailbox, merely passes mailbox to groupWorkAmount
 	// GroupWork also uses Worker
 	GroupWork::init(aOutMailbox, aInMailbox);
 

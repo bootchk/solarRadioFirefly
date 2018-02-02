@@ -1,22 +1,22 @@
 
 
-#include "../work/worker.h"
+#include "../work/workAmount.h"
 
 #include "workOnlyEnergyStrategy.h"
 
 
 void WorkOnlyEnergyStrategy::increaseUsage() {
-	Worker::increaseAmountWithoutExceedingTimerLimit();
+	WorkAmount::increaseAmountWithoutExceedingTimerLimit();
 }
 
 void WorkOnlyEnergyStrategy::decreaseUsage(){
-	Worker::decreaseAmount();
+	WorkAmount::decreaseAmount();
 }
 
 void WorkOnlyEnergyStrategy::maintainUsage(){
-	Worker::maintainAmount();
+	WorkAmount::maintainAmount();
 }
 
 void WorkOnlyEnergyStrategy::setLeastUsage(){
-	Worker::setLeastAmount();
+	WorkAmount::setLeastAmount();
 }
