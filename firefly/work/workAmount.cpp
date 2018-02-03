@@ -7,7 +7,7 @@
 
 namespace {
 
-unsigned int managedAmount = 1;
+unsigned int _managedAmount = 1;
 
 }
 
@@ -32,15 +32,18 @@ void WorkAmount::setLeastAmount() {
  * But here we increment amount up to the limit of LEDFlasher.
  */
 void WorkAmount::increaseAmountWithoutExceedingTimerLimit() {
-	if (managedAmount < Worker::maxWorkAmount()) managedAmount += ChangeAmount;
+	if (_managedAmount < Worker::maxWorkAmount()) _managedAmount += ChangeAmount;
 }
 
 void WorkAmount::decreaseAmount() {
-	if (managedAmount > ChangeAmount) managedAmount -= ChangeAmount;
+	if (_managedAmount > ChangeAmount) _managedAmount -= ChangeAmount;
 }
 
 
 
-void WorkAmount::maintainAmount() { } // No change to managedAmount
+void WorkAmount::maintainAmount() { } // No change to _managedAmount
 
-void WorkAmount::setManagedAmount(unsigned int amount) { managedAmount = amount; }
+void WorkAmount::setManagedAmount(unsigned int amount) { _managedAmount = amount; }
+
+unsigned int WorkAmount::managedAmount() { return _managedAmount; }
+

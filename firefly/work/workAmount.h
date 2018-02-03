@@ -10,7 +10,7 @@
 
 
 class WorkAmount {
-public:
+
 	/*
 	 * For an LED:
 	 *
@@ -31,7 +31,7 @@ public:
 	 *
 	 * TODO for a piezo buzzer?
 	 */
-
+public:
 	static const unsigned int AmountBarelyPerceivable = 2;
 	static const unsigned int AmountEasilyPerceivable = 50;
 	static const unsigned int AmountMoreThanPerceivable = 200;
@@ -68,4 +68,6 @@ public:
 	static void maintainAmount();
 
 	static void setManagedAmount(unsigned int amount);
+
+	static unsigned int managedAmount();
 };

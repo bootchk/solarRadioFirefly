@@ -2,6 +2,7 @@
 #include <radioSoC.h>	// LEDFlasher
 
 #include "worker.h"
+#include "workAmount.h"
 
 
 /*
@@ -19,7 +20,13 @@ void Worker::workManagedAmount() {
 	// Record that we worked at least once.
 	// CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
 
-	LEDFlasher::flashLEDByAmount(1, managedAmount);
+	// Flash now, at fixed periodTime i.e.
+	// LEDFlasher::flashLEDByAmount(1, WorkAmount::managedAmount());
+
+	/*
+	 * Flash at an offset from syncPoint, i.e. at varying periodTime
+	 */
+	LEDFlasher::scheduleFlashLEDByAmount(1, WorkAmount::managedAmount(), 40);
 }
 
 void Worker::workAmount(unsigned int aAmount) {
