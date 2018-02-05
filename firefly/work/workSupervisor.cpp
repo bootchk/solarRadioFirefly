@@ -5,8 +5,9 @@
 //#include <services/logger.h>	// RTTLogger
 //#include <syncAgent/syncAgent.h>
 
-#include <syncAgent/modules/syncPowerManager.h>
-#include <syncAgent/logging/logger.h>
+// sleepSyncAgent
+#include <modules/syncPowerManager.h>
+#include <logging/logger.h>
 
 #include "groupWork.h"
 #include "worker.h"

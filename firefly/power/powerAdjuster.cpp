@@ -11,7 +11,9 @@
 // but here we also know these
 #include "../work/worker.h"
 #include "../power/powerShedder.h"
-#include <syncAgent/slots/fishing/fishPolicy.h>
+
+// sleepSyncAgent
+#include <slots/fishing/fishPolicy.h>
 
 
 /*

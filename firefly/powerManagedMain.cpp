@@ -13,11 +13,14 @@
 
 #include <cassert>
 
-// Uses radioSoC and SleepSync libraries.  Projects build configs have path to these
+/*
+ * Uses radioSoC and SleepSync libraries.
+ * Project build configs have path to these
+ */
 #include <syncAgent/syncAgent.h>
 #include <syncAgent/state/phase.h>
-#include <syncAgent/sleepers/syncPowerSleeper.h>
-#include <syncAgent/modules/syncPowerManager.h>
+#include <sleepers/syncPowerSleeper.h>
+#include <modules/syncPowerManager.h>
 
 
 

@@ -1,7 +1,7 @@
 
 #include "workFrequency.h"
 
-#include <syncAgent/logging/logger.h>
+#include <logging/logger.h>
 
 namespace {
 	unsigned int _syncPeriodsBetweenWork = 4;

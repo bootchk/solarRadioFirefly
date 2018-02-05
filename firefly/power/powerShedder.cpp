@@ -1,7 +1,8 @@
 
 #include <cassert>
 
-#include <syncAgent/modules/syncPowerManager.h>
+// sleepSyncAgent
+#include <modules/syncPowerManager.h>
 
 #include "powerShedder.h"
 #include "../work/worker.h"

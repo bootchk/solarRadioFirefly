@@ -3,8 +3,8 @@
 #include "workAndFishEnergyStrategy.h"
 
 
-// #include "../work/worker.h"
-#include <syncAgent/slots/fishing/fishPolicy.h>
+// sleepSyncAgent
+#include <slots/fishing/fishPolicy.h>
 
 // TODO currently is only fish, not work
 

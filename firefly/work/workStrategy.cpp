@@ -1,6 +1,7 @@
 
-#include <syncAgent/modules/syncPowerManager.h>
-#include <syncAgent/logging/flashIndex.h>
+// sleepSyncAgent
+#include <modules/syncPowerManager.h>
+#include <logging/flashIndex.h>
 
 #include <syncAgent/syncAgent.h>
 
