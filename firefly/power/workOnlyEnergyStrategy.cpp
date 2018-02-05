@@ -1,6 +1,6 @@
 
 
-#include "../work/workAmount.h"
+#include "../work/parameters/workAmount.h"
 
 #include "workOnlyEnergyStrategy.h"
 

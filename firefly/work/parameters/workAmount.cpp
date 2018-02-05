@@ -1,7 +1,7 @@
 
 
 #include "workAmount.h"
-#include "worker.h"
+#include "../worker.h"
 
 // TODO an exponential function of increasing/decreasing???
 

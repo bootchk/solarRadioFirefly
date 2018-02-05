@@ -10,7 +10,7 @@
 
 #include "groupWork.h"
 #include "worker.h"
-#include "workAmount.h"
+#include "parameters/workAmount.h"
 #include "workStrategy.h"
 #include "workSupervisor.h"
 

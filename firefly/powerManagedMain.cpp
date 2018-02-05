@@ -26,7 +26,8 @@
 
 #include "work/groupWork.h"
 #include "work/workSupervisor.h"
-#include "work/workTime.h"
+#include "work/parameters/workTime.h"
+#include "work/parameters/workFrequency.h"
 #include "power/powerAdjuster.h"
 
 /*
@@ -176,7 +177,8 @@ void initObjects() {
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 
 	// Connect provisioning
-	SyncAgent::subscribeProvisioning(WorkTime::setPeriodTimeToWork);
+	SyncAgent::subscribeProvisioning(0, WorkTime::setPeriodTimeToWork);
+	SyncAgent::subscribeProvisioning(1, WorkFrequency::setSyncPeriodsBetweenWork);
 }
 
 

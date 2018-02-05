@@ -3,18 +3,6 @@
 
 class WorkStrategy {
 private:
-	/*
-	 * How many sync periods between work.
-	 *
-	 * If too large, work will exhaust power and syncing could suffer.
-	 */
-
-	// work is randomized: average periods between work.
-	static const unsigned int InverseProbabilityToWork = 3;
-
-	// work is regular: periods between work.
-	// for 2.1 second period, 3 is every 6 seconds
-	static const unsigned int SyncPeriodsBetweenWork = 4;
 
 	static void doRandomWork();
 	static void doRegularWork();

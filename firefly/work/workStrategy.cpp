@@ -11,6 +11,7 @@
 #include "groupWork.h"
 #include "worker.h"
 #include "workStrategy.h"
+#include "parameters/workFrequency.h"
 
 #include "../power/powerAdjuster.h"
 
@@ -152,17 +153,22 @@ void WorkStrategy::manageExcessPowerWithWork() {
  * When solar powered, only called when there is power.
  */
 void WorkStrategy::doRandomWork() {
-	if (randomProbability(InverseProbabilityToWork)) {
+	if (randomProbability(WorkFrequency::syncPeriodsBetweenWork())) {
 		GroupWork::initiateGroupWork(WorkFactory::make());
 	}
 }
 
 void WorkStrategy::doRegularWork() {
-	if (regularWorkCounter==SyncPeriodsBetweenWork) {
+	if (regularWorkCounter > WorkFrequency::syncPeriodsBetweenWork()) {
 		GroupWork::initiateGroupWork(WorkFactory::make());
 		regularWorkCounter = 0;
 	}
 	regularWorkCounter++;
+
+	/*
+	 * Loosely: assert(regularWorkCounter <  WorkFrequency::syncPeriodsBetweenWork());
+	 * But since syncPeriodsBetweenWork() can change at any time to a smaller value, can't assert.
+	 */
 }
 
 void WorkStrategy::doRegularLocalWork() {

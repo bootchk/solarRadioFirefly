@@ -2,8 +2,8 @@
 #include <radioSoC.h>	// LEDFlasher
 
 #include "worker.h"
-#include "workAmount.h"
-#include "workTime.h"
+#include "parameters/workAmount.h"
+#include "parameters/workTime.h"
 
 
 /*
