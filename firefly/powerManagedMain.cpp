@@ -26,6 +26,7 @@
 
 #include "work/groupWork.h"
 #include "work/workSupervisor.h"
+#include "work/workTime.h"
 #include "power/powerAdjuster.h"
 
 /*
@@ -43,6 +44,7 @@
 void onWorkMsg(WorkPayload work);
 void onSyncPoint();
 void initObjects();
+void doReceivedWork();
 __attribute__ ((noreturn)) void powerManagedMain();
 
 
@@ -172,6 +174,9 @@ void initObjects() {
 
 	// Initialize SyncAgent (Ensemble) and connect it to app
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
+
+	// Connect provisioning
+	SyncAgent::subscribeProvisioning(WorkTime::setPeriodTimeToWork);
 }
 
 

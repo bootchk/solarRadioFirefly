@@ -3,6 +3,7 @@
 
 #include "worker.h"
 #include "workAmount.h"
+#include "workTime.h"
 
 
 /*
@@ -26,7 +27,9 @@ void Worker::workManagedAmount() {
 	/*
 	 * Flash at an offset from syncPoint, i.e. at varying periodTime
 	 */
-	LEDFlasher::scheduleFlashLEDByAmount(1, WorkAmount::managedAmount(), 40);
+	LEDFlasher::scheduleFlashLEDByAmount(1,
+			WorkAmount::managedAmount(),
+			WorkTime::periodTimeToWork());
 }
 
 void Worker::workAmount(unsigned int aAmount) {
@@ -42,6 +45,6 @@ void Worker::workAmount(unsigned int aAmount) {}
 #endif
 
 
-unsigned int maxWorkAmount() {
+unsigned int Worker::maxWorkAmount() {
 	return LEDFlasher::MaxFlashAmount;
 }
