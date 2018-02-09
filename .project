@@ -3,7 +3,6 @@
 	<name>firefly</name>
 	<comment></comment>
 	<projects>
-		<project>nRF5x</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

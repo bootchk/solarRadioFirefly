@@ -43,8 +43,8 @@
 
 // To control network, need SleepSync library and include paths to embeddedMath library
 #include <syncAgent/syncAgent.h>
-#include <syncAgent/modules/syncSender.h>
-#include <syncAgent/message/serializer.h>
+#include <modules/syncSender.h>
+#include <message/serializer.h>
 
 // I couldn't get logPrintf to work
 
@@ -214,7 +214,7 @@ void sendControlMessage() {
 	 */
 	for (int i = 1600; i>0; i--) {
 		// Change xmit power
-		SyncSender::sendControlSetXmitPower(static_cast<WorkPayload>(TransmitPowerdBm::Minus8));
+		// OBSOLETE SyncSender::sendControlGranularity(static_cast<WorkPayload>(TransmitPowerdBm::Minus8));
 
 		// delay 1.5 mSec
 		sleeper.clearReasonForWake();
@@ -237,9 +237,9 @@ void snifferMain(void)
 
 	ClockFacilitator::startLongClockWithSleepUntilRunning();
 
-	Ensemble::init(sleeper.msgReceivedCallback, &radioUseCaseSleepSync);
+	Ensemble::init(sleeper.msgReceivedCallback); // OLD , &radioUseCaseSleepSync);
 
-	// For now superfluous, in future use case can be BLE
+	// In future use case can be BLE
 	Ensemble::setRadioUseCase(&radioUseCaseSleepSync);
 
 #ifdef OLD
