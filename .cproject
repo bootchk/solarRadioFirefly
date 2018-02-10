@@ -679,7 +679,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/sleepSyncAgent/ArchiveArmM0&quot;"/>
 									<listOptionValue builtIn="false" value="/home/bootch/git/radioSoC/Debug51"/>
-									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/DebugnRF51&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/Debug51&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/embeddedMath/Debug51&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.1607555473" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" useByScannerDiscovery="false" valueType="libs">

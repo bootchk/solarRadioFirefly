@@ -61,8 +61,10 @@ void onRcvMsgCallback() {
 }
 
 
-void logIDAndWork(BufferPointer buffer) {
-	SEGGER_RTT_printf(0, "ID %02x%02x Work %02x",  buffer[2],buffer[1], buffer[10]);
+void logIDAndWork(MessageType aType, BufferPointer buffer) {
+	SEGGER_RTT_printf(0, "%s ID %02x%02x Work %02x",
+			SyncMessage::representation(aType),
+			buffer[2],buffer[1], buffer[10]);
 }
 
 void logRSSI() {
@@ -98,34 +100,23 @@ void logMessage() {
 
 	// switch on message type
 	// should include libSleepSyncAgent and cast (MessageType)
-	switch( buffer[0]){
+	MessageType msgType = SyncMessage::messageTypeFromRaw(buffer[0]);
 
-	case 17:
-		// Print two LSB's of MasterID
+	switch( msgType ){
+
+	case MessageType::MasterSync:
+	case MessageType::WorkSync:
+	case MessageType::ControlNetGranularity:
+	case MessageType::ControlScatterClique:
+	case MessageType::EnticingInferior:
+	case MessageType::MasterMergedAway:
+	case MessageType::SlaveMergedAway:
+	case MessageType::AbandonMastership:
+	case MessageType::Info:
 		SEGGER_RTT_printf(0, " Sync ");
-		logIDAndWork(buffer);
+		logIDAndWork(msgType, buffer);
 		break;
-	case 136:
-		SEGGER_RTT_printf(0, "WSync ");
-		logIDAndWork(buffer);
-		break;
-	case 34:
-		SEGGER_RTT_printf(0, "Entic ");
-		logIDAndWork(buffer);
-		break;
-	case 37:
-		SEGGER_RTT_printf(0, "MMAw ");
-		logIDAndWork(buffer);
-		break;
-	case 41:
-		SEGGER_RTT_printf(0, "SMAw ");
-		logIDAndWork(buffer);
-		break;
-	case 231:
-		SEGGER_RTT_printf(0, "Info ");
-		logIDAndWork(buffer);
-		break;
-	default:
+	case MessageType::Invalid:
 		// Other unidentified i.e. garbled message types
 		SEGGER_RTT_printf(0, "Type %02x ID %02x%02x", buffer[0], buffer[2], buffer[1]);
 	}
@@ -260,18 +251,26 @@ void snifferMain(void)
     // This could be: ensemble::startup();
 
     logger.log(LongClock::nowTime());
-    ClockFacilitator::startHFXOAndSleepUntilRunning();	// radio requires
+    logger.log("<hfclock starting...\n");
+
+    //ClockFacilitator::startHFXOAndSleepUntilRunning();	// radio requires
+    ClockFacilitator::startHFClockWithSleepConstantExpectedDelay(500);
     //logInt(TimeMath::clampedTimeDifferenceToNow(foo));
+
     logger.log(LongClock::nowTime());
-    logger.log("<hfclock\n");
+    logger.log("<hfclock started\n");
 
     while (true) {
 
+#ifdef TEST_CONTROL
     	// Listen for 40 messages at default xmit power
     	for (int i = 40; i>0; i--)
     		messageLoggingSleep();
 
     	// sendControlMessage();
+#endif
+    	messageLoggingSleep();
+    	//logger.log("Listening...\n");
     }
 }
 
