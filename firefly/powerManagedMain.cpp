@@ -14,7 +14,8 @@
 #include <cassert>
 
 /*
- * Uses radioSoC and SleepSync libraries.
+ * Uses SleepSync libraries.
+ * (which requires radioSoC lib)
  * Project build configs have path to these
  */
 #include <sleepers/syncPowerSleeper.h>
@@ -22,8 +23,6 @@
 // TODO eliminate this
 #include <syncAgentImp/state/phase.h>
 #include <syncAgent/syncAgent.h>
-
-
 
 
 #include "other/boardManager.h"
@@ -46,7 +45,7 @@
 
 
 
-void onWorkMsg(WorkPayload work);
+void onWorkMsg(MailContents work);
 void onSyncPoint();
 void initObjects();
 void doReceivedWork();
@@ -93,7 +92,7 @@ Mailbox myInMailbox;
  *
  * FUTURE schedule low priority work thread/task to do work.
  */
-void onWorkMsg(WorkPayload work) {
+void onWorkMsg(MailContents work) {
 	// Queue work to be done later (at next sync point)
 	WorkSupervisor::queueLocalWork(work);
 }

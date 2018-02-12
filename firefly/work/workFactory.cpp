@@ -1,21 +1,23 @@
 
 #include "workFactory.h"
 
-#include <services/system.h>
+
+// Implementation
 #include <radioUseCase/radioUseCase.h>
 
 
 // dummy workpayload represents version of code
 // #define WORK_VERSION 34
 
-WorkPayload WorkFactory::make() {
+MailContents WorkFactory::make() {
 
 
-	WorkPayload value;
+	MailContents value;
 
 	// debugging
 
 	// ID of sender
+	//#include <services/system.h>
 	// value = System::shortID();
 
 	// xmit power of sender

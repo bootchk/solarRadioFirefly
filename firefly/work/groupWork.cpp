@@ -12,7 +12,7 @@ namespace {
 Mailbox* myOutMailbox;
 Mailbox* myInMailbox;
 
-void tellOthersInGroupToWork(WorkPayload work) {
+void tellOthersInGroupToWork(MailContents work) {
 	if (myOutMailbox->isMail() ){
 		// My last mail didn't go out yet
 		RTTLogger::log("Mail still in OutBox\n");
@@ -26,7 +26,7 @@ void tellOthersInGroupToWork(WorkPayload work) {
 } // namespace
 
 
-void GroupWork::queueLocalWork(WorkPayload work) {
+void GroupWork::queueLocalWork(MailContents work) {
 	if (myInMailbox->isMail() ){
 		// Work already pending from others
 		RTTLogger::log("Mail still in InBox\n");
@@ -44,7 +44,7 @@ void GroupWork::init(Mailbox* aOutMailbox, Mailbox* aInMailbox){
 
 }
 
-void GroupWork::initiateGroupWork(WorkPayload work) {
+void GroupWork::initiateGroupWork(MailContents work) {
 	// assert I have enough power to work
 
 	tellOthersInGroupToWork(work);

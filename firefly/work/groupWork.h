@@ -15,7 +15,7 @@ public:
 	/*
 	 * Definitely work local, and tell group to work if power permits.
 	 */
-	static void initiateGroupWork(WorkPayload work);
+	static void initiateGroupWork(MailContents work);
 
 
 	/*
@@ -25,5 +25,5 @@ public:
 	 * - when work is heard
 	 * - when work is initiated locally
 	 */
-	static void queueLocalWork(WorkPayload work);
+	static void queueLocalWork(MailContents work);
 };

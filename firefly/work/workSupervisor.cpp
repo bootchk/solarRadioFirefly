@@ -118,7 +118,7 @@ void WorkSupervisor::tryWorkLocally() {
 }
 
 
-void WorkSupervisor::queueLocalWork(WorkPayload work) {
+void WorkSupervisor::queueLocalWork(MailContents work) {
 	GroupWork::queueLocalWork(work);
 }
 

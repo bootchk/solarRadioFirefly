@@ -2,7 +2,7 @@
 #pragma once
 
 
-#include <radioSoC.h>  // Mailbox, WorkPayload
+#include <radioSoC.h>  // Mailbox, MailContents
 
 /*
  * Knows:
@@ -41,5 +41,5 @@ public:
 	 */
 	static void tryWorkLocally();
 
-	static void queueLocalWork(WorkPayload work);
+	static void queueLocalWork(MailContents work);
 };

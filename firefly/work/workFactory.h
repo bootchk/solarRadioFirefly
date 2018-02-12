@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <platformTypes.h>   // WorkPayload
+#include <platformTypes.h>   // MailContents
 
 
 /*
@@ -16,5 +16,5 @@
  */
 class WorkFactory {
 public:
-	static WorkPayload make();
+	static MailContents make();
 };
