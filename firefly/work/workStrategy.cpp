@@ -3,10 +3,8 @@
 #include <modules/syncPowerManager.h>
 #include <logging/flashIndex.h>
 
-#include <syncAgent/syncAgent.h>
-
-// From embeddedMath
 #include <random.h>
+#include <syncAgent/syncAgent.h>
 
 #include "workFactory.h"
 #include "groupWork.h"

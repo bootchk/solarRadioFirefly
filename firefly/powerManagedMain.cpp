@@ -17,10 +17,11 @@
  * Uses radioSoC and SleepSync libraries.
  * Project build configs have path to these
  */
-#include <syncAgent/syncAgent.h>
-#include <syncAgent/state/phase.h>
 #include <sleepers/syncPowerSleeper.h>
 #include <modules/syncPowerManager.h>
+// TODO eliminate this
+#include <syncAgentImp/state/phase.h>
+#include <syncAgent/syncAgent.h>
 
 
 
