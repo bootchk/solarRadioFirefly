@@ -10,6 +10,10 @@
 #include "groupWork.h"
 #include "worker.h"
 #include "workStrategy.h"
+
+#include "distributed/workClock.h"
+#include "distributed/workSyncMaintainer.h"
+
 #include "parameters/workFrequency.h"
 
 #include "../power/powerAdjuster.h"
@@ -172,4 +176,12 @@ void WorkStrategy::doRegularWork() {
 
 void WorkStrategy::doRegularLocalWork() {
 	Worker::workManagedAmount();
+}
+
+void WorkStrategy::manageWorkSynchronizedDistributed() {
+	// tick a clock, which might alarm, which might work
+	WorkClock::tickSyncPeriod();
+
+	// give chance to check mail
+	WorkSyncMaintainer::tickSyncPeriod();
 }

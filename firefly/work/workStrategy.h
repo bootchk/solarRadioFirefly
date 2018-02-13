@@ -1,6 +1,19 @@
 
 #pragma once
 
+/*
+ * Decides whether and how much to work (locally and/or in unison with clique).
+ *
+ * Called regularly (every SyncPeriod).
+ *
+ * Every call might work.
+ * Every call might change amount of work (side effect for later work.)
+ *
+ * Some strategies are more sophisticated and use other objects.
+ *
+ * This class as an object is just a collection of alternative methods
+ * that all do the same thing: decide whether to work.
+ */
 class WorkStrategy {
 private:
 
@@ -36,4 +49,12 @@ public:
 	 * For testing capacity of storage.
 	 */
 	static void doRegularLocalWork();
+
+	/*
+	 * Work periodically on a schedule that is synchronized with the clique,
+	 * but doesn't require a "work now" from the master,
+	 * only message from master to synchronize the work schedule.
+	 */
+	static void manageWorkSynchronizedDistributed();
+
 };

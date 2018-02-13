@@ -15,6 +15,10 @@
 #include "workStrategy.h"
 #include "workSupervisor.h"
 
+// Both for distributed workers
+#include "distributed/distributedSynchronizedWorker.h"
+#include "distributed/workSyncMaintainer.h"
+
 
 /*
  * Implementation notes:
@@ -33,11 +37,21 @@ void WorkSupervisor::init(
 	WorkAmount::init(WorkAmount::AmountEasilyPerceivable);
 	// AmountMoreThanPerceivable
 
-	// self doesn't use mailbox, merely passes mailbox to groupWorkAmount
-	// GroupWork also uses Worker
-	GroupWork::init(aOutMailbox, aInMailbox);
-
 	// SyncPowerManager needs no init
+	// Worker and DistributedSynchronizedWorker need no init
+
+	/*
+	 * Self doesn't use mailbox, merely passes mailbox to other objects,
+	 * who may use the mailboxes for different purposes.
+	 *
+	 * GroupWork uses it for WorkNow messages
+	 * WorkSyncMaintainer uses it for WorkSync messages.
+	 */
+
+	// Choice here
+
+	//GroupWork::init(aOutMailbox, aInMailbox);
+	WorkSyncMaintainer::init(aOutMailbox, aInMailbox);
 }
 
 
@@ -99,6 +113,9 @@ void WorkSupervisor::manageVoltageAndWork() {
 
 	// Group work
 	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
+
+	// Distributed worker, works regardless of power
+	WorkStrategy::manageWorkSynchronizedDistributed();
 #endif
 
 
