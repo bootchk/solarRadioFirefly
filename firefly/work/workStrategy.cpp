@@ -117,7 +117,6 @@ void WorkStrategy::manageExcessPowerWithWork() {
 	case VoltageRange::MediumToHigh:   // e.g. 2.5--2.7V
 		PowerAdjuster::maintainUsage();
 		doNestedWorkStrategy();
-		// WAS GroupWork::initiateGroupWork(WORK_VERSION);
 		break;
 
 

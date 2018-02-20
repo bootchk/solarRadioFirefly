@@ -7,6 +7,8 @@
 #include <syncAgent/syncAgent.h>
 #include <cassert>
 
+// radioSoC library
+#include <services/logger.h>
 
 
 namespace {
@@ -96,6 +98,8 @@ void WorkSyncMaintainer::onWorkSyncMaintenanceAlarm() {
 	 * Both might have been changed by provisioning
 	 * since last time I told clique members.
 	 */
-	_outBoxForWorkSync->put(WorkClock::period());
+	if ( ! _outBoxForWorkSync->tryPut(WorkClock::period()) ) {
+		RTTLogger::log("Fail mail WorkSync\n");
+	}
 }
 

@@ -180,8 +180,12 @@ void initObjects() {
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 
 	// Connect provisioning
-	SyncAgent::subscribeProvisioning(0, WorkTime::setPeriodTimeToWork);
-	SyncAgent::subscribeProvisioning(1, WorkFrequency::setSyncPeriodsBetweenWork);
+	SyncAgent::subscribeProvisioning(
+			ProvisionablePropertyIndex::WorkTime,
+			WorkTime::setPeriodTimeToWork);
+	SyncAgent::subscribeProvisioning(
+			ProvisionablePropertyIndex::WorkCycle,
+			WorkFrequency::setSyncPeriodsBetweenWork);
 }
 
 

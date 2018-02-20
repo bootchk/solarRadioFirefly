@@ -13,13 +13,9 @@ Mailbox* myOutMailbox;
 Mailbox* myInMailbox;
 
 void tellOthersInGroupToWork(MailContents work) {
-	if (myOutMailbox->isMail() ){
-		// My last mail didn't go out yet
-		RTTLogger::log("Mail still in OutBox\n");
-	}
-	else {
-		myOutMailbox->put(work);
-		// RTTLogger::log("Que work out\n");
+	// RTTLogger::log("Que work out\n");
+	if ( ! myOutMailbox->tryPut(work) ){
+		RTTLogger::log("Fail mail group work\n");
 	}
 }
 
@@ -27,13 +23,9 @@ void tellOthersInGroupToWork(MailContents work) {
 
 
 void GroupWork::queueLocalWork(MailContents work) {
-	if (myInMailbox->isMail() ){
-		// Work already pending from others
-		RTTLogger::log("Mail still in InBox\n");
-	}
-	else {
-		myInMailbox->put(work);
-		//log("App queue received or initiated work\n");
+	//log("App queue received or initiated work\n");
+	if ( ! myInMailbox->tryPut(work) ) {
+		RTTLogger::log("Fail mail self work\n");
 	}
 }
 
