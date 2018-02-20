@@ -184,6 +184,6 @@ void WorkStrategy::manageWorkSynchronizedDistributed() {
 	// tick a clock, which might alarm, which might work and maintain sync
 	WorkClock::tickSyncPeriod();
 
-	if (SyncAgent::isSelfMaster())
+	if (SyncAgent::isSelfSlave())
 		WorkSyncMaintainer::checkForWorkSyncFromMaster();
 }

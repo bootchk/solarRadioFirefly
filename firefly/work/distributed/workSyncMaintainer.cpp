@@ -51,7 +51,7 @@ void WorkSyncMaintainer::checkForWorkSyncFromMaster() {
 	 * Only slaves receive WorkSync (Masters send, can't receive their own.)
 	 * Master updates its WorkClock (the master workClock, when provisioned.)
 	 */
-	assert( ! SyncAgent::isSelfMaster() );
+	assert( SyncAgent::isSelfSlave() );
 
 	if (_inBoxForWorkSync->isMail()) {
 		unsigned char newPeriod = _inBoxForWorkSync->fetch();
