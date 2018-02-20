@@ -13,15 +13,19 @@ public:
 	 */
 	static void init(Mailbox* aOutMailbox, Mailbox* aInMailbox);
 
-	// called from WorkClock
+	// from WorkClock
 	static void onWorkAlarm();
 
-	// so can check mail
-	static void tickSyncPeriod();
+	// from WorkSyncMaintenanceClock
+	static void onWorkSyncMaintenanceAlarm();
+
+	static void checkForWorkSyncFromMaster();
 
 	// callback from Provisioner
 	static void onWorkSyncProvisioned(unsigned char period);
 
 	// Need this separately for more precise work (offset to SyncPoint)
 	//static void onWorkFreqProvisioned(unsigned char value);
+
+
 };

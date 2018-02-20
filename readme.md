@@ -151,9 +151,24 @@ The only Nordic source in Firefly is intended to be the startup files for an emb
 To get SD compatible versions of the libraries, build them with -DSOFTDEVICE_PRESENT.
 There is little penalty for always building them SD compatible.
 
+To burn softdevice (on my dev sys)
+
+     ~/Downloads/nrfjprog/nrfjprog --family NRF52 --program ~/nRF*14*/components/softdevice/s132/hex/s132_nrf52_5.0.0_softdevice.hex --chiperase --verify
+
+
 
 CMake
 -
+I have started to transition to another build system: cmake.
+For now it is in parallel with Eclipse build.
+Building in a separate directory: cmake_build (which is .gitignored)
+
+Status: builds sniffer app only.
+
+To use:
+>mkdir cmake_build
+>cmake TODO initial build
+>cmake --build cmake_build --target sniffer
 
 The CMakeLists.txt for now only documents the build.
 It is intended to duplicate the Eclipse build configuration "Debug52DKwSD"

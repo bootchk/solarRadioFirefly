@@ -179,9 +179,11 @@ void WorkStrategy::doRegularLocalWork() {
 }
 
 void WorkStrategy::manageWorkSynchronizedDistributed() {
-	// tick a clock, which might alarm, which might work
+	// assert now is syncPoint
+
+	// tick a clock, which might alarm, which might work and maintain sync
 	WorkClock::tickSyncPeriod();
 
-	// give chance to check mail
-	WorkSyncMaintainer::tickSyncPeriod();
+	if (SyncAgent::isSelfMaster())
+		WorkSyncMaintainer::checkForWorkSyncFromMaster();
 }
