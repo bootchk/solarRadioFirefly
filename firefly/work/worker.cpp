@@ -11,6 +11,25 @@
  */
 
 
+namespace {
+void workNow() {
+	/*
+	 * Choice here: old implementation using interrupts, or not.
+	 */
+	//LEDFlasher::flashLEDByAmount(1, WorkAmount::managedAmount());
+	LEDFlasher::flashLEDByAmountTasked(1, WorkAmount::managedAmount());
+}
+
+void workInFuture() {
+	LEDFlasher::scheduleFlashLEDByAmount(1,
+				WorkAmount::managedAmount(),
+				WorkTime::periodTimeToWork());
+}
+
+}
+
+
+
 
 // whether work actually done
 #define REAL_WORK 1
@@ -21,15 +40,11 @@ void Worker::workManagedAmount() {
 	// Record that we worked at least once.
 	// CustomFlash::writeZeroAtIndex(WorkEventFlagIndex);
 
-	// Flash now, at fixed periodTime i.e.
-	// LEDFlasher::flashLEDByAmount(1, WorkAmount::managedAmount());
-
 	/*
-	 * Flash at an offset from syncPoint, i.e. at varying periodTime
+	 * Choice here: work when called, or later
 	 */
-	LEDFlasher::scheduleFlashLEDByAmount(1,
-			WorkAmount::managedAmount(),
-			WorkTime::periodTimeToWork());
+	workNow();
+	//workInFuture();
 }
 
 void Worker::workAmount(unsigned int aAmount) {
