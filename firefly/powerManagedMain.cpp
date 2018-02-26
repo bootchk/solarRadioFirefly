@@ -182,10 +182,15 @@ void initObjects() {
 	// Connect provisioning
 	SyncAgent::subscribeProvisioning(
 			ProvisionablePropertyIndex::WorkTime,
-			WorkTime::setPeriodTimeToWork);
+			WorkSupervisor::provisionWork);
 	SyncAgent::subscribeProvisioning(
 			ProvisionablePropertyIndex::WorkCycle,
-			WorkFrequency::setSyncPeriodsBetweenWork);
+			WorkFrequency::setSyncPeriodsBetweenWorkCoded);
+	/*
+	 * Not used design: provisioning include an offset, which sets WorkTime
+	 *
+	 * WorkTime::setPeriodTimeToWork
+	 */
 }
 
 

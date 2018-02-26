@@ -2,9 +2,11 @@
 // sleepSyncAgent
 #include <modules/syncPowerManager.h>
 #include <logging/flashIndex.h>
-
-#include <random.h>
 #include <syncAgent/syncAgent.h>
+
+// embeddedMath
+#include <random.h>
+
 
 #include "workFactory.h"
 #include "groupWork.h"

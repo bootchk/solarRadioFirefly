@@ -15,10 +15,10 @@
 #include "workStrategy.h"
 #include "workSupervisor.h"
 
-// Both for distributed workers
+// For distributed worker strategy
 #include "distributed/distributedSynchronizedWorker.h"
 #include "distributed/workSyncMaintainer.h"
-
+#include "distributed/workClock.h"
 
 /*
  * Implementation notes:
@@ -112,7 +112,7 @@ void WorkSupervisor::manageVoltageAndWork() {
 	// WorkStrategy::doRegularLocalWork();
 
 	// Group work
-	WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
+	// WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
 
 	// Distributed worker, works regardless of power
 	WorkStrategy::manageWorkSynchronizedDistributed();
@@ -138,4 +138,24 @@ void WorkSupervisor::tryWorkLocally() {
 void WorkSupervisor::queueLocalWork(MailContents work) {
 	GroupWork::queueLocalWork(work);
 }
+
+
+/*
+ * Called at provisioning time.
+ * Real provisioning (by user, the "mark" on wall clock) happened at offset from now.
+ *
+ * Calculate how many sync periods have elapsed since then and sync my workClock to that wall time.
+ * TODO
+ *
+ * Note there is unused design to work at a syncPeriodOffset from syncPoint.
+ * Here, we always work at a syncPoint.
+ * Thus separate clique's work is not synchronized yet.
+ */
+void WorkSupervisor::provisionWork() {
+	// Delegate to WorkStrategy
+
+	// The provisioning does not carry a workCycle, so set it to the current one.
+	WorkClock::setSync(WorkClock::getPeriod());
+}
+
 

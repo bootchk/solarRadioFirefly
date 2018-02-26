@@ -16,7 +16,11 @@ public:
 	 * E.G. for 2.1 second period, 3 is once every 6 seconds
 	 */
 
-	static const unsigned int syncPeriodsBetweenWork();
+	static unsigned int syncPeriodsBetweenWork();
 
+	// Units in syncPeriods (e.g. units of 2 seconds.)
 	static void setSyncPeriodsBetweenWork(uint32_t periods);
+
+	// Units an enum to be decoded
+	static void setSyncPeriodsBetweenWorkCoded(uint32_t workFreqCode);
 };

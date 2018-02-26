@@ -4,10 +4,11 @@
 
 #include "../worker.h"
 
-
+// sleepSyncAgent
+#include <modules/syncPowerManager.h>	// SyncPowerManager
 
 
 void DistributedSynchronizedWorker::onWorkAlarm() {
-	// work regardless of power
-	Worker::workManagedAmount();
+	if (SyncPowerManager::isPowerForWork())
+		Worker::workManagedAmount();
 }

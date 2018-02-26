@@ -12,17 +12,31 @@ typedef void (*AlarmCallback)(void);
  * which are kept synchronized.
  */
 
+/*
+ * !!! Alarm delegate is hardcoded.
+ */
+
+
 class WorkClock {
 public:
-	// Advance clock
+	/*
+	 * Advance clock, possibly triggering alarm and work.
+	 */
 	static void tickSyncPeriod();
 
 	/*
 	 * Synchronize my clock and possibly set its period.
+	 *
+	 * Called:
+	 * - when master is provisioned (at behest of user)
+	 * - when slave's workClock is kept in sync by messages from master.
 	 */
 	static void setSync(unsigned char period);
 
-	static unsigned char period();
+	/*
+	 * WorkSyncMaintainer calls this and distributes master period to slaves.
+	 */
+	static unsigned char getPeriod();
 
 
 #ifdef NOT_USED

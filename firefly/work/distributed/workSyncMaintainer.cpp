@@ -98,7 +98,7 @@ void WorkSyncMaintainer::onWorkSyncMaintenanceAlarm() {
 	 * Both might have been changed by provisioning
 	 * since last time I told clique members.
 	 */
-	if ( ! _outBoxForWorkSync->tryPut(WorkClock::period()) ) {
+	if ( ! _outBoxForWorkSync->tryPut(WorkClock::getPeriod()) ) {
 		RTTLogger::log("Fail mail WorkSync\n");
 	}
 }

@@ -47,7 +47,7 @@ void WorkClock::setSync(unsigned char period) {
 }
 
 
-unsigned char WorkClock::period() {
+unsigned char WorkClock::getPeriod() {
 	return _period;
 }
 

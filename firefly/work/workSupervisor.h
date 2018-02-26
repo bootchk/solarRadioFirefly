@@ -42,4 +42,10 @@ public:
 	static void tryWorkLocally();
 
 	static void queueLocalWork(MailContents work);
+
+	/*
+	 * Provision work.
+	 * WorkSupervisor chooses strategy, and knows how to provision by strategy.
+	 */
+	static void provisionWork();
 };

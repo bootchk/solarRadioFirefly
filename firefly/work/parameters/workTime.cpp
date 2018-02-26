@@ -19,3 +19,6 @@ DeltaTime WorkTime::periodTimeToWork() {
 void WorkTime::setPeriodTimeToWork(DeltaTime offsetFromSyncPoint) {
 	_periodTimeToWork = offsetFromSyncPoint;
 }
+
+
+
