@@ -17,7 +17,7 @@ void workNow() {
 	 * Choice here: old implementation using interrupts, or not.
 	 */
 	//LEDFlasher::flashLEDByAmount(1, WorkAmount::managedAmount());
-	LEDFlasher::flashLEDByAmountTasked(1, WorkAmount::managedAmount());
+	LEDFlasherTask::flashLEDByAmount(WorkAmount::managedAmount());
 }
 
 void workInFuture() {

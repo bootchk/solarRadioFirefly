@@ -11,6 +11,7 @@ void BoardManager::initLEDs() {
 #if BOARD_NRF52DK
 	// nRF52DK board (from pca10040.h)
 	LEDService::init(4, true, 17, 18, 19, 20);
+	LEDFlasherTask::init(17);
 #elif BOARD_REDBEAR_NANO || BOARD_WAVESHARE
 	LEDService::init(1, McuSinks, 19, 0, 0, 0);
 #elif BOARD_UBLOX_NINA_SOURCE_LED_REV1
@@ -27,6 +28,7 @@ void BoardManager::initLEDs() {
 	LEDService::init(1, true, 30, 0, 0, 0);
 #elif BOARD_WAVESHARE2_REV2
 	LEDService::init(1, true, 8, 0, 0, 0);
+	LEDFlasherTask::init(8);
 
 #else
 #error "No board defined"
