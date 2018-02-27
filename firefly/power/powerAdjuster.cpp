@@ -62,12 +62,13 @@ void increaseUsageAndWorkLocally() {
 }
 
 
-
+#ifdef POWER_IS_SOLAR
 void increasePowerUsageAndShedPower() {
 	EnergyStrategy::increaseUsage();
 	PowerShedder::shedPowerUntilVccLessThanVmax();
 	// assert power is not excess
 }
+#endif
 
 } // namespace
 

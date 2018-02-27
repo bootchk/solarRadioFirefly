@@ -17,6 +17,8 @@ include("CMakeEnv")
 set(NRF_TARGET "nrf52")
 set(NRF_SOFTDEVICE "s132")
 
+# BOARD_NRF52DK
+
 
 # scripts specific to nRF5x building
 # Defines cmake macros prefixed with "nRF5"
@@ -27,7 +29,8 @@ include("nRF5")
 nRF5CheckSetupPreconditions()
 nRF5SetBuildOptions()
 nRF5SetIncludePaths()
-nRF5SetSDKSourcesBasic()
+nRF5SDKSourcesStartup()
+# nRF5SetSDKSourcesBasic()
 
 # Also BLE
 nRF5SDKSourcesBLE()
@@ -41,15 +44,18 @@ add_executable(fireflyInteractive "")
 
 # import libs from outside project
 
-add_library(radioSoC52 STATIC IMPORTED)
-set_target_properties( radioSoC52 
+add_library(radioSoC52wSD STATIC IMPORTED)
+set_target_properties( radioSoC52wSD 
     PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52/libradioSoC52.a
+        IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52wSD/libradioSoC52wSD.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
     )
 
 add_library(nRF5x STATIC IMPORTED)
-set_target_properties( nRF5x PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a )
+set_target_properties( nRF5x 
+	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a
+	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
+	)
 
 add_library(embeddedMath STATIC IMPORTED)
 set_target_properties( embeddedMath PROPERTIES IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a )
@@ -88,18 +94,18 @@ ENDIF()
 
 
 
-
+# ??? order is important unless we specify interlibrary dependencies
 target_link_libraries(fireflyInteractive 
 PRIVATE
-    BLEProvisionee
-    radioSoC52
+    sleepSyncAgent
+    radioSoC52wSD
     nRF5x
     embeddedMath
+    BLEProvisionee
     NRFDrivers
-    sleepSyncAgent
     )
 
-# TODO firefly
+# TODO firefly non-interactive
 # TODO radioSoC52SD
 # TODO sleepSync
 
@@ -113,6 +119,17 @@ target_sources(fireflyInteractive
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/powerManagedMain.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/workSupervisor.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/parameters/workFrequency.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/parameters/workAmount.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/distributed/workStrategyDistributed.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/distributed/workClock.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/distributed/distributedSynchronizedWorker.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/distributed/workSyncMaintainer.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/distributed/workSyncMaintenanceClock.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/work/worker.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/power/powerAdjuster.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/other/boardManager.cpp"
        "${SDK_SOURCES_STARTUP}"
    )
  

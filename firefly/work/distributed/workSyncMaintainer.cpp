@@ -63,12 +63,14 @@ void WorkSyncMaintainer::checkForWorkSyncFromMaster() {
 		 */
 		assert(isPowerOfTwo(newPeriod));
 
-		WorkClock::setSync(newPeriod);
+		WorkClock::syncToNow(newPeriod);
 	}
 }
 
 
-
+// TODO only set the period, and leave the sync alone
+// i.e. at the next work alarm, change the period for the subsequent work alarms.
+// shortening and lengthening takes care
 void WorkSyncMaintainer::onWorkSyncProvisioned(unsigned char period) {
 	/*
 	 * Provisioning has same semantics as what I tell other clique members:
@@ -83,7 +85,7 @@ void WorkSyncMaintainer::onWorkSyncProvisioned(unsigned char period) {
 	 * As Master, tell other clique members of new clock value later,
 	 * when next the WorkSyncMaintence clock alarms.
 	 */
-	WorkClock::setSync(period);
+	WorkClock::syncToNow(period);
 }
 
 void WorkSyncMaintainer::onWorkSyncMaintenanceAlarm() {

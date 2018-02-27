@@ -143,7 +143,7 @@ void WorkSupervisor::onWorkMsg(MailContents work) {
 	// Delegate (again) to workStrategy
 
 	// 1
-	WorkStrategyGroup::onWorkMsg(work);
+	// WorkStrategyGroup::onWorkMsg(work);
 	// 2
 	WorkStrategyDistributed::onWorkMsg(work);
 
@@ -161,13 +161,13 @@ void WorkSupervisor::onWorkMsg(MailContents work) {
  * Here, we always work at a syncPoint.
  * Thus separate clique's work is not synchronized yet.
  */
-void WorkSupervisor::provisionWork() {
+void WorkSupervisor::provisionWorkTime(uint32_t periodsElapsed) {
 	// Delegate to WorkStrategy
 
 	// 1
 	// TODO WorkStrategyGroup::provisionWork();
 	// 2
-	WorkStrategyDistributed::provisionWork();
+	WorkStrategyDistributed::provisionWorkTime(periodsElapsed);
 }
 
 

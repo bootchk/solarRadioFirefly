@@ -25,18 +25,28 @@ public:
 	static void tickSyncPeriod();
 
 	/*
-	 * Synchronize my clock and possibly set its period.
+	 * Synchronize my clock and set its period.
+	 * The given period might be same as current period.
 	 *
-	 * Called:
-	 * - when master is provisioned (at behest of user)
-	 * - when slave's workClock is kept in sync by messages from master.
+	 * Called when slave's workClock is kept in sync by messages from master.
+	 * Clock is set to zero, i.e. synced to now at time of call.
 	 */
-	static void setSync(unsigned char period);
+	static void syncToNow(unsigned int period);
+
+	/*
+	 * Synchronize my clock to a tick in the past.
+	 * Does not change period (workCycle.)
+	 * Clock is set in range [0, period]
+	 *
+	 * Called when master is provisioned (at behest of user).
+	 * Later, master's clock is propagated to slaves.
+	 */
+	static void syncToPast(unsigned int elapsedPeriods);
 
 	/*
 	 * WorkSyncMaintainer calls this and distributes master period to slaves.
 	 */
-	static unsigned char getPeriod();
+	static unsigned int getPeriod();
 
 
 #ifdef NOT_USED

@@ -8,7 +8,7 @@
 
 
 void BoardManager::initLEDs() {
-#if BOARD_NRF52DK
+#if BOARD_NRF52DK || BOARD_PCA10040
 	// nRF52DK board (from pca10040.h)
 	LEDService::init(4, true, 17, 18, 19, 20);
 	LEDFlasherTask::init(17);

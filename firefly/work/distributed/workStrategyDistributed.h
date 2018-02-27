@@ -19,7 +19,7 @@ public:
 	 */
 	static void manageWorkSynchronizedDistributed();
 
-	static void provisionWork();
+	static void provisionWorkTime(unsigned int periodsElapsed);
 
 	static void onWorkMsg(MailContents work);
 };

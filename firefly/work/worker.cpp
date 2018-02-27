@@ -12,6 +12,7 @@
 
 
 namespace {
+
 void workNow() {
 	/*
 	 * Choice here: old implementation using interrupts, or not.
@@ -20,12 +21,14 @@ void workNow() {
 	LEDFlasherTask::flashLEDByAmount(WorkAmount::managedAmount());
 }
 
+#ifdef NOT_USED
+needed if work at offset in syncperiod
 void workInFuture() {
 	LEDFlasher::scheduleFlashLEDByAmount(1,
 				WorkAmount::managedAmount(),
 				WorkTime::periodTimeToWork());
 }
-
+#endif
 }
 
 

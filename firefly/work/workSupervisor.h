@@ -47,5 +47,5 @@ public:
 	 * Provision work.
 	 * WorkSupervisor chooses strategy, and knows how to provision by strategy.
 	 */
-	static void provisionWork();
+	static void provisionWorkTime(uint32_t periodsElapsed);
 };

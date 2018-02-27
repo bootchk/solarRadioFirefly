@@ -18,7 +18,7 @@ namespace {
  * It would only wrap if WorkSyncMaintainer never provisions with WorkSync.
  */
 unsigned int _counter = 0;
-unsigned char _period = 4; // default.  Must be a power of two.
+unsigned int _period = 4; // default.  Must be a power of two.
 
 
 static void onTickWorkClock() {
@@ -40,14 +40,20 @@ void WorkClock::tickSyncPeriod() {
 }
 
 
-void WorkClock::setSync(unsigned char period) {
+void WorkClock::syncToNow(unsigned int period) {
 	// All unit's clocks back to zero
 	_counter = 0;
 	_period = period;
 }
 
 
-unsigned char WorkClock::getPeriod() {
+void WorkClock::syncToPast(unsigned int elapsedSyncPeriods) {
+	_counter = elapsedSyncPeriods % getPeriod();
+}
+
+
+
+unsigned int WorkClock::getPeriod() {
 	return _period;
 }
 

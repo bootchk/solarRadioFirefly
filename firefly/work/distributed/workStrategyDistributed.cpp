@@ -33,10 +33,10 @@ void WorkStrategyDistributed::manageWorkSynchronizedDistributed() {
 }
 
 
-void WorkStrategyDistributed::provisionWork() {
+void WorkStrategyDistributed::provisionWorkTime(unsigned int periodsElapsed) {
 
-	// The provisioning does not carry a workCycle, so set it to the current one.
-	WorkClock::setSync(WorkClock::getPeriod());
+	// The provisioning does not carry a workCycle.
+	WorkClock::syncToPast(periodsElapsed);
 
 	// TODO use the offset and calculate what former sync period user pushed button
 	// i.e. adjust workclock forward or back, not just to 0

@@ -184,7 +184,7 @@ void initObjects() {
 	// Connect provisioning
 	ProvisioningPublisher::subscribe(
 			ProvisionablePropertyIndex::WorkTime,
-			WorkSupervisor::provisionWork);
+			WorkSupervisor::provisionWorkTime);
 
 	ProvisioningPublisher::subscribe(
 			ProvisionablePropertyIndex::WorkCycle,
@@ -216,7 +216,9 @@ void powerManagedMain() {
 	// This is not crucial:  MCU::enableInstructionCache();
 #endif
 
-	clearResetReason();
+	// No need for this:  is POR, which clears reset reasons
+	// clearResetReason();
+
 
 	/*
 	 * assert interrupts globally enabled i.e. PRIMASK
