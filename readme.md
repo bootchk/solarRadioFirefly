@@ -166,9 +166,9 @@ Building in a separate directory: cmake_build (which is .gitignored)
 Status: builds sniffer app only.
 
 To use:
->mkdir cmake_build
+>mkdir cmakeBuild
 >cmake TODO initial build
->cmake --build cmake_build --target sniffer
+>cmake --build cmakeBuild --target sniffer
 
 The CMakeLists.txt for now only documents the build.
 It is intended to duplicate the Eclipse build configuration "Debug52DKwSD"

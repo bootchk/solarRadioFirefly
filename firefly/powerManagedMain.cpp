@@ -22,7 +22,9 @@
 #include <modules/syncPowerManager.h>
 // TODO eliminate this
 #include <syncAgentImp/state/phase.h>
+
 #include <syncAgent/syncAgent.h>
+#include <provisioning/provisioningPublisher.h>
 
 
 #include "other/boardManager.h"
@@ -180,10 +182,11 @@ void initObjects() {
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 
 	// Connect provisioning
-	SyncAgent::subscribeProvisioning(
+	ProvisioningPublisher::subscribe(
 			ProvisionablePropertyIndex::WorkTime,
 			WorkSupervisor::provisionWork);
-	SyncAgent::subscribeProvisioning(
+
+	ProvisioningPublisher::subscribe(
 			ProvisionablePropertyIndex::WorkCycle,
 			WorkFrequency::setSyncPeriodsBetweenWorkCoded);
 	/*
