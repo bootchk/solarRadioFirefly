@@ -9,19 +9,13 @@
 #include <modules/syncPowerManager.h>
 #include <logging/logger.h>
 
-
+// Only include workStrategy, and not any objects that they depend on
 #include <work/groupWork/workStrategyGroup.h>
 #include <work/distributed/workStrategyDistributed.h>
 
-#include "groupWork/groupWork.h"
 #include "worker.h"
 #include "parameters/workAmount.h"
 
-
-// For distributed worker strategy
-#include "distributed/distributedSynchronizedWorker.h"
-#include "distributed/workSyncMaintainer.h"
-//#include "distributed/workClock.h"
 
 // radioSoC
 //#include <services/logger.h>	// RTTLogger
@@ -58,9 +52,10 @@ void WorkSupervisor::init(
 	// Choice here
 
 	// 1
+	// TODO WorkStrategyGroup::init
 	//GroupWork::init(aOutMailbox, aInMailbox);
 	// 2
-	WorkSyncMaintainer::init(aOutMailbox, aInMailbox);
+	WorkStrategyDistributed::init(aOutMailbox, aInMailbox);
 }
 
 
@@ -144,8 +139,14 @@ void WorkSupervisor::tryWorkLocally() {
 }
 
 
-void WorkSupervisor::queueLocalWork(MailContents work) {
-	GroupWork::queueLocalWork(work);
+void WorkSupervisor::onWorkMsg(MailContents work) {
+	// Delegate (again) to workStrategy
+
+	// 1
+	WorkStrategyGroup::onWorkMsg(work);
+	// 2
+	WorkStrategyDistributed::onWorkMsg(work);
+
 }
 
 

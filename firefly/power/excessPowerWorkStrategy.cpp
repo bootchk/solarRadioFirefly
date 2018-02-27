@@ -21,7 +21,7 @@ void doNestedWorkStrategy() {
 	 */
 
 	// 1
-	WorkStrategyGroup::manageWorkOnlyRegularlyIfPowerAndMaster();
+	//WorkStrategyGroup::manageWorkOnlyRegularlyIfPowerAndMaster();
 	// 2
 	WorkStrategyDistributed::manageWorkSynchronizedDistributed();
 }
@@ -73,6 +73,7 @@ void ExcessPowerWorkStrategy::manageExcessPowerWithWork() {
 		/*
 		 * Not enough power to work, and power getting low.
 		 */
+		// TODO for distributed, still need to maintain workclock ?
 		PowerAdjuster::decreaseUsage();
 		break;
 

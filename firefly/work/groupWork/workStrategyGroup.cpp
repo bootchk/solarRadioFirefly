@@ -104,3 +104,8 @@ void WorkStrategyGroup::doRegularLocalWork() {
 }
 
 
+void WorkStrategyGroup::onWorkMsg(MailContents work) {
+	// Queue work to be done later (at next sync point)
+	GroupWork::queueLocalWork(work);
+}
+

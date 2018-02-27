@@ -93,8 +93,8 @@ Mailbox myInMailbox;
  * FUTURE schedule low priority work thread/task to do work.
  */
 void onWorkMsg(MailContents work) {
-	// Queue work to be done later (at next sync point)
-	WorkSupervisor::queueLocalWork(work);
+	// Delegate
+	WorkSupervisor::onWorkMsg(work);
 }
 
 /*

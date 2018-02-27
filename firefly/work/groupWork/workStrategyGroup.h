@@ -1,6 +1,10 @@
 
 #pragma once
 
+
+#include <radioSoC.h>  // Mailbox, MailContents
+
+
 /*
  * Decides whether and how much to work (locally and/or in unison with clique).
  *
@@ -49,4 +53,6 @@ public:
 	 * For testing capacity of storage.
 	 */
 	static void doRegularLocalWork();
+
+	static void onWorkMsg(MailContents work);
 };

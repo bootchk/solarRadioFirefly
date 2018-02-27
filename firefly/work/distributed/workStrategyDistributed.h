@@ -1,9 +1,17 @@
 
 #pragma once
 
+#include <radioSoC.h>  // Mailbox, MailContents
+
 
 class WorkStrategyDistributed {
 public:
+
+	static void init(
+			Mailbox* aOutMailbox,
+			Mailbox* aInMailbox
+	);
+
 	/*
 	 * Work periodically on a schedule that is synchronized with the clique,
 	 * but doesn't require a "work now" from the master,
@@ -12,4 +20,6 @@ public:
 	static void manageWorkSynchronizedDistributed();
 
 	static void provisionWork();
+
+	static void onWorkMsg(MailContents work);
 };

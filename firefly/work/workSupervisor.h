@@ -41,7 +41,7 @@ public:
 	 */
 	static void tryWorkLocally();
 
-	static void queueLocalWork(MailContents work);
+	static void onWorkMsg(MailContents work);
 
 	/*
 	 * Provision work.
