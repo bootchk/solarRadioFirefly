@@ -45,11 +45,11 @@ add_library(radioSoC52 STATIC IMPORTED)
 set_target_properties( radioSoC52 
     PROPERTIES 
         IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52/libradioSoC52.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src/clock"
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
     )
 
 add_library(nRF5x STATIC IMPORTED)
-set_target_properties( nRF5x PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/DebugnRF52/libnRF5x52.a )
+set_target_properties( nRF5x PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a )
 
 add_library(embeddedMath STATIC IMPORTED)
 set_target_properties( embeddedMath PROPERTIES IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a )
@@ -57,7 +57,19 @@ set_target_properties( embeddedMath PROPERTIES IMPORTED_LOCATION /home/bootch/gi
 add_library(NRFDrivers STATIC IMPORTED)
 set_target_properties( NRFDrivers PROPERTIES IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a )
 
+add_library(BLEProvisionee STATIC IMPORTED)
+set_target_properties( BLEProvisionee 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
+    )
 
+add_library(sleepSyncAgent STATIC IMPORTED)
+set_target_properties( sleepSyncAgent 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+    )
 
 IF(EXISTS /home/bootch/git/radioSoC/Debug52/libradioSoC52.a)
 else()
@@ -84,10 +96,12 @@ PRIVATE
     nRF5x
     embeddedMath
     NRFDrivers
+    sleepSyncAgent
     )
 
 # TODO firefly
 # TODO radioSoC52SD
+# TODO sleepSync
 
    
 # sources of executable
@@ -98,11 +112,14 @@ PRIVATE
 target_sources(fireflyInteractive
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
-       "${SDK_STARTUP_SOURCES}"
+       "${CMAKE_CURRENT_LIST_DIR}/powerManagedMain.cpp"
+       "${SDK_SOURCES_STARTUP}"
    )
  
  
 nRF5GenerateOtherArtifacts(fireflyInteractive)
-nRF5AddCustomTargets(fireflyInteractive)
+
+# not generate FLASH_SOFTDEVICE target, already created by sniffer
+# nRF5AddCustomTargets(fireflyInteractive)
 
 

@@ -167,8 +167,9 @@ Status: builds sniffer app only.
 
 To use:
 >mkdir cmakeBuild
->cmake TODO initial build
+>cmake -H. -B"cmakeBuild" -G "Ninja"
 >cmake --build cmakeBuild --target sniffer
+>cmake --build cmakeBuild --target fireflyInteractive
 
 The CMakeLists.txt for now only documents the build.
 It is intended to duplicate the Eclipse build configuration "Debug52DKwSD"
