@@ -14,7 +14,7 @@
  * This class as an object is just a collection of alternative methods
  * that all do the same thing: decide whether to work.
  */
-class WorkStrategy {
+class WorkStrategyGroup {
 private:
 
 	static void doRandomWork();
@@ -49,12 +49,4 @@ public:
 	 * For testing capacity of storage.
 	 */
 	static void doRegularLocalWork();
-
-	/*
-	 * Work periodically on a schedule that is synchronized with the clique,
-	 * but doesn't require a "work now" from the master,
-	 * only message from master to synchronize the work schedule.
-	 */
-	static void manageWorkSynchronizedDistributed();
-
 };

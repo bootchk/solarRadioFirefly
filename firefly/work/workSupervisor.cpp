@@ -1,24 +1,31 @@
 
 // Config depends on POWER_IS_SOLAR in build config
 
-
-//#include <services/logger.h>	// RTTLogger
 //#include <syncAgent/syncAgent.h>
+
+#include "workSupervisor.h"
 
 // sleepSyncAgent
 #include <modules/syncPowerManager.h>
 #include <logging/logger.h>
 
-#include "groupWork.h"
+
+#include <work/groupWork/workStrategyGroup.h>
+#include <work/distributed/workStrategyDistributed.h>
+
+#include "groupWork/groupWork.h"
 #include "worker.h"
 #include "parameters/workAmount.h"
-#include "workStrategy.h"
-#include "workSupervisor.h"
+
 
 // For distributed worker strategy
 #include "distributed/distributedSynchronizedWorker.h"
 #include "distributed/workSyncMaintainer.h"
-#include "distributed/workClock.h"
+//#include "distributed/workClock.h"
+
+// radioSoC
+//#include <services/logger.h>	// RTTLogger
+
 
 /*
  * Implementation notes:
@@ -50,7 +57,9 @@ void WorkSupervisor::init(
 
 	// Choice here
 
+	// 1
 	//GroupWork::init(aOutMailbox, aInMailbox);
+	// 2
 	WorkSyncMaintainer::init(aOutMailbox, aInMailbox);
 }
 
@@ -115,7 +124,7 @@ void WorkSupervisor::manageVoltageAndWork() {
 	// WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
 
 	// Distributed worker, works regardless of power
-	WorkStrategy::manageWorkSynchronizedDistributed();
+	WorkStrategyDistributed::manageWorkSynchronizedDistributed();
 #endif
 
 
@@ -154,8 +163,10 @@ void WorkSupervisor::queueLocalWork(MailContents work) {
 void WorkSupervisor::provisionWork() {
 	// Delegate to WorkStrategy
 
-	// The provisioning does not carry a workCycle, so set it to the current one.
-	WorkClock::setSync(WorkClock::getPeriod());
+	// 1
+	// TODO WorkStrategyGroup::provisionWork();
+	// 2
+	WorkStrategyDistributed::provisionWork();
 }
 
 

@@ -27,10 +27,10 @@
 
 #include "other/boardManager.h"
 
-#include "work/groupWork.h"
 #include "work/workSupervisor.h"
 #include "work/parameters/workTime.h"
 #include "work/parameters/workFrequency.h"
+
 #include "power/powerAdjuster.h"
 
 /*
