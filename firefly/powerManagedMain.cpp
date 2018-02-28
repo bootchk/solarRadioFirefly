@@ -35,6 +35,11 @@
 
 #include "power/powerAdjuster.h"
 
+// Unit testing
+#include <logging/logger.h>
+#include <random.h>
+
+
 /*
  * Uses pure classes:
  *
@@ -273,6 +278,14 @@ void powerManagedMain() {
 
 	SyncPowerSleeper::sleepUntilSyncPower();
 	// sleepSyncAgent has enough power to start
+
+	/*
+	Unit testing harness
+	 while(true) {
+		Logger::log((unsigned char) randBool());
+		LongClock::waitOneTick();
+	}
+	*/
 
 	// never returns
 	SyncAgent::loop();
