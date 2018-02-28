@@ -3,6 +3,7 @@
 
 #include "workClock.h"
 #include "workSyncMaintenanceClock.h"
+#include "../parameters/workFrequency.h"
 
 #include <syncAgent/syncAgent.h>
 #include <cassert>
@@ -95,12 +96,12 @@ void WorkSyncMaintainer::onWorkSyncMaintenanceAlarm() {
 	 *
 	 * Tell clique members:
 	 * - sync: now is work time
-	 * - period: of WorkClock (not of WorkMaintenance clock.)
+	 * - period: of WorkFrequency (not of WorkMaintenance clock.)
 	 *
 	 * Both might have been changed by provisioning
 	 * since last time I told clique members.
 	 */
-	if ( ! _outBoxForWorkSync->tryPut(WorkClock::getPeriod()) ) {
+	if ( ! _outBoxForWorkSync->tryPut(WorkFrequency::syncPeriodsBetweenWork()) ) {
 		RTTLogger::log("Fail mail WorkSync\n");
 	}
 }

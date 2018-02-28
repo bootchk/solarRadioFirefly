@@ -21,7 +21,7 @@ MailContents WorkFactory::make() {
 	// value = System::shortID();
 
 	// xmit power of sender
-	value = static_cast<unsigned char> (RadioUseCase::getXmitPower());
+	value = XmitPower::rawXmitPower(RadioUseCase::getXmitPower());
 
 	// FUTURE: an amount of work
 

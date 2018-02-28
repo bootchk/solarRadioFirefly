@@ -4,6 +4,7 @@
 // hardcode observers of alarm
 #include "distributedSynchronizedWorker.h"
 #include "workSyncMaintainer.h"
+#include "../parameters/workFrequency.h"
 
 
 
@@ -18,10 +19,9 @@ namespace {
  * It would only wrap if WorkSyncMaintainer never provisions with WorkSync.
  */
 unsigned int _counter = 0;
-unsigned int _period = 4; // default.  Must be a power of two.
 
 
-static void onTickWorkClock() {
+static void onWorkClockAlarm() {
 	DistributedSynchronizedWorker::onWorkAlarm();
 	WorkSyncMaintainer::onWorkAlarm();
 }
@@ -34,8 +34,8 @@ void WorkClock::tickSyncPeriod() {
 	_counter++;
 
 	// 0 is arbitrary choice
-	if ( (_counter % _period) == 0) {
-		onTickWorkClock();
+	if ( (_counter % WorkFrequency::syncPeriodsBetweenWork()) == 0) {
+		onWorkClockAlarm();
 	}
 }
 
@@ -43,17 +43,20 @@ void WorkClock::tickSyncPeriod() {
 void WorkClock::syncToNow(unsigned int period) {
 	// All unit's clocks back to zero
 	_counter = 0;
-	_period = period;
+
+	WorkFrequency::setSyncPeriodsBetweenWork(period);
 }
 
 
 void WorkClock::syncToPast(unsigned int elapsedSyncPeriods) {
-	_counter = elapsedSyncPeriods % getPeriod();
+	/*
+	 * A "mark" (a user pushing a button) was elapsedSyncPeriods ago.
+	 * Sync the work clock with the mark.
+	 *
+	 * This may make the next work sooner or later than it would have been.
+	 */
+	_counter = elapsedSyncPeriods % WorkFrequency::syncPeriodsBetweenWork();
+	// assert _counter < period
 }
 
-
-
-unsigned int WorkClock::getPeriod() {
-	return _period;
-}
 

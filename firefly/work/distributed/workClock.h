@@ -43,11 +43,6 @@ public:
 	 */
 	static void syncToPast(unsigned int elapsedPeriods);
 
-	/*
-	 * WorkSyncMaintainer calls this and distributes master period to slaves.
-	 */
-	static unsigned int getPeriod();
-
 
 #ifdef NOT_USED
 

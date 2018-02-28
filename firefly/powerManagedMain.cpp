@@ -216,8 +216,11 @@ void powerManagedMain() {
 	// This is not crucial:  MCU::enableInstructionCache();
 #endif
 
-	// No need for this:  is POR, which clears reset reasons
-	// clearResetReason();
+	/*
+	 * POR clears reset reasons.
+	 * But we are often debugging, so clear this register now to catch subsequent reset reasons.
+	 */
+	clearResetReason();
 
 
 	/*
