@@ -48,5 +48,4 @@ void WorkStrategyDistributed::onWorkMsg(MailContents work) {
 	// Harmless: just indicated older version of program
 	// Or could be programming error
 	Logger::log(" Distributed work received work message??\n");
-
 }

@@ -49,6 +49,7 @@ void WorkSyncMaintainer::onWorkAlarm() {
 /*
  * Check for WorkSync every syncPeriod so Work is synchronized to nearest syncPoint
  */
+// TODO this is at the syncpoint, one sync period late?
 void WorkSyncMaintainer::checkForWorkSyncFromMaster() {
 	/*
 	 * Only slaves receive WorkSync (Masters send, can't receive their own.)
@@ -68,6 +69,7 @@ void WorkSyncMaintainer::checkForWorkSyncFromMaster() {
 	}
 }
 
+// TODO no caller?
 
 // TODO only set the period, and leave the sync alone
 // i.e. at the next work alarm, change the period for the subsequent work alarms.

@@ -22,7 +22,14 @@ unsigned int _counter = 0;
 
 
 static void onWorkClockAlarm() {
+
+	// Work required in this syncPeriod.  E.g. flash LED
 	DistributedSynchronizedWorker::onWorkAlarm();
+
+	/*
+	 * tick WorkSyncMaintenance clock with alarms from WorkClock.
+	 * I.E. an alarm from one clock ticks another clock.
+	 */
 	WorkSyncMaintainer::onWorkAlarm();
 }
 

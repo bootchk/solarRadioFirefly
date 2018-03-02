@@ -24,7 +24,7 @@
 #include <syncAgentImp/state/phase.h>
 
 #include <syncAgent/syncAgent.h>
-#include <provisioning/provisioningPublisher.h>
+#include <provisioning/workProvisioningProxy.h>
 
 
 #include "other/boardManager.h"
@@ -187,18 +187,8 @@ void initObjects() {
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 
 	// Connect provisioning
-	ProvisioningPublisher::subscribe(
-			ProvisionablePropertyIndex::WorkTime,
-			WorkSupervisor::provisionWorkTime);
-
-	ProvisioningPublisher::subscribe(
-			ProvisionablePropertyIndex::WorkCycle,
-			WorkFrequency::setSyncPeriodsBetweenWorkCoded);
-	/*
-	 * Not used design: provisioning include an offset, which sets WorkTime
-	 *
-	 * WorkTime::setPeriodTimeToWork
-	 */
+	WorkProvisioningProxy::setWorkTimeFinalProvisioningCallback(WorkSupervisor::provisionWorkTime);
+	WorkProvisioningProxy::setWorkCycleFinalProvisioningCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
 }
 
 

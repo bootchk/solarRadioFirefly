@@ -146,7 +146,6 @@ void WorkSupervisor::onWorkMsg(MailContents work) {
 	// WorkStrategyGroup::onWorkMsg(work);
 	// 2
 	WorkStrategyDistributed::onWorkMsg(work);
-
 }
 
 
