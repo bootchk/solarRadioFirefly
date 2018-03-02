@@ -43,6 +43,10 @@ public:
 	 */
 	static void syncToPast(unsigned int elapsedPeriods);
 
+	static unsigned int convertPeriodsElapsedToClockAdvance(unsigned int  elapsedSyncPeriods);
+
+
+
 
 #ifdef NOT_USED
 

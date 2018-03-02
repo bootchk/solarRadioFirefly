@@ -30,7 +30,9 @@
 #include "other/boardManager.h"
 
 #include "work/workSupervisor.h"
-#include "work/parameters/workTime.h"
+
+// For final provisioning
+#include "work/distributed/workClock.h"
 #include "work/parameters/workFrequency.h"
 
 #include "power/powerAdjuster.h"
@@ -187,8 +189,9 @@ void initObjects() {
 	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
 
 	// Connect provisioning
-	WorkProvisioningProxy::setWorkTimeFinalProvisioningCallback(WorkSupervisor::provisionWorkTime);
+	WorkProvisioningProxy::setWorkTimeFinalProvisioningCallback(WorkClock::syncToPast);
 	WorkProvisioningProxy::setWorkCycleFinalProvisioningCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
+	WorkProvisioningProxy::setConverterFunc(WorkClock::convertPeriodsElapsedToClockAdvance);
 }
 
 

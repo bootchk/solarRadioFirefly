@@ -24,7 +24,5 @@ public:
 	 */
 	static void manageWorkSynchronizedDistributed();
 
-	static void provisionWorkTime(unsigned int periodsElapsed);
-
 	static void onWorkMsg(MailContents work);
 };

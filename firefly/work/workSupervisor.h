@@ -44,8 +44,7 @@ public:
 	static void onWorkMsg(MailContents work);
 
 	/*
-	 * Provision work.
-	 * WorkSupervisor chooses strategy, and knows how to provision by strategy.
+	 * !!! Provisioning goes around the work supervisor, directly to
+	 * WorkClock and WorkFrequency.
 	 */
-	static void provisionWorkTime(uint32_t periodsElapsed);
 };

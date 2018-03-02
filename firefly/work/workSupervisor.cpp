@@ -147,26 +147,3 @@ void WorkSupervisor::onWorkMsg(MailContents work) {
 	// 2
 	WorkStrategyDistributed::onWorkMsg(work);
 }
-
-
-/*
- * Called at provisioning time.
- * Real provisioning (by user, the "mark" on wall clock) happened at offset from now.
- *
- * Calculate how many sync periods have elapsed since then and sync my workClock to that wall time.
- * TODO
- *
- * Note there is unused design to work at a syncPeriodOffset from syncPoint.
- * Here, we always work at a syncPoint.
- * Thus separate clique's work is not synchronized yet.
- */
-void WorkSupervisor::provisionWorkTime(uint32_t periodsElapsed) {
-	// Delegate to WorkStrategy
-
-	// 1
-	// TODO WorkStrategyGroup::provisionWork();
-	// 2
-	WorkStrategyDistributed::provisionWorkTime(periodsElapsed);
-}
-
-

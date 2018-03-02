@@ -40,7 +40,7 @@ static void onWorkClockAlarm() {
 void WorkClock::tickSyncPeriod() {
 	_counter++;
 
-	// 0 is arbitrary choice
+	// 0 is arbitrary choice, but counter continues to increment
 	if ( (_counter % WorkFrequency::syncPeriodsBetweenWork()) == 0) {
 		onWorkClockAlarm();
 	}
@@ -55,15 +55,37 @@ void WorkClock::syncToNow(unsigned int period) {
 }
 
 
-void WorkClock::syncToPast(unsigned int elapsedSyncPeriods) {
+
+
+/*
+ * Note there is unused design to work at a syncPeriodOffset from syncPoint.
+ * Here, we always work at a syncPoint.
+ * Thus separate clique's work is not synchronized yet.
+ */
+/*
+ * Called at provisioning time.
+ * elapsedSyncPeriods is in real (wall) time, with no delay.
+ * Convert elapsedSyncPeriods wall time (from button push) into
+ * clockAdvance on the current WorkClock.
+ * That fixes it against the distributed WorkClock.
+ */
+unsigned int WorkClock::convertPeriodsElapsedToClockAdvance(unsigned int  elapsedSyncPeriods) {
+	return elapsedSyncPeriods % WorkFrequency::syncPeriodsBetweenWork();
+}
+
+
+void WorkClock::syncToPast(unsigned int clockAdvance) {
 	/*
-	 * A "mark" (a user pushing a button) was elapsedSyncPeriods ago.
+	 * A "mark" (a user pushing a button) was pushed at the clockAdvance tick of clock.
 	 * Sync the work clock with the mark.
 	 *
 	 * This may make the next work sooner or later than it would have been.
 	 */
-	_counter = elapsedSyncPeriods % WorkFrequency::syncPeriodsBetweenWork();
-	// assert _counter < period
+	_counter = ( _counter + clockAdvance);
+	/*
+	 *  !!! Not assert _counter < period.
+	 *  See ticking, it is free running counter.
+	 */
 }
 
 
