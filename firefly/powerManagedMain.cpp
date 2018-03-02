@@ -24,16 +24,8 @@
 #include <syncAgentImp/state/phase.h>
 
 #include <syncAgent/syncAgent.h>
-#include <provisioning/workProvisioningProxy.h>
 
-
-#include "other/boardManager.h"
-
-#include "work/workSupervisor.h"
-
-// For final provisioning
-#include "work/distributed/workClock.h"
-#include "work/parameters/workFrequency.h"
+#include "workFacilitator.h"
 
 #include "power/powerAdjuster.h"
 
@@ -47,125 +39,23 @@
  *
  * SyncAgent
  * SyncPowerManager
- *
  * LongClock
  * Timer
  */
 
 
-
-void onWorkMsg(MailContents work);
-void onSyncPoint();
-void initObjects();
-void doReceivedWork();
 __attribute__ ((noreturn)) void powerManagedMain();
 
 
-
-
-namespace {
-
 // Objects from radioSoC i.e. platform abstraction
-
 // devices
 // Pure class  widely used by WorkSupervisor, SleepSyncAgent
-
 // Nvic , DCDCPowerSupply HfCrystalClock
 
-// Not devices
-Mailbox myOutMailbox;
-Mailbox myInMailbox;
-
-} // namespace
-
-
 
 
 /*
- * The app understands power for work.
- * SleepSyncAgent further understands power for radio.
- *
- * SleepSyncAgent will sync-keep, or sync-maintain depending on power.
- *
- * The app sends work OUT only if self has enough power.
- * SleepSyncAgent will convey work IN if it hears it,
- * but app will not act on it if not enough power..
- */
-
-
-/*
- * SleepSyncAgent received a work msg.
- * I.E. other units are working, in sync, so self should work if it can.
- *
- * This method is realtime constrained: it is called in middle of a sync slot.
- *
- * FUTURE schedule low priority work thread/task to do work.
- */
-void onWorkMsg(MailContents work) {
-	// Delegate
-	WorkSupervisor::onWorkMsg(work);
-}
-
-/*
- * Here we start work at the SyncPoint since goal is synchronized work (firefly flashing.)
- * Work itself need not be synchronized, only the SyncAgents.
- * I.E. we could do work at some other time in the sync period, or accumulate work, etc.
- *
- * Work requires no cpu (uses timer), i.e. is a separate task.
- * But starting work task takes time.
- * !!! If starting work takes a long time,
- * work should be started elsewhere (not at the sync point, say in a work slot, or after sync slot.)
- * Otherwise, starting work may disrupt sync if it takes too long.
- */
-void doReceivedWork() {
-	if (myInMailbox.isMail()) {
-		// Do work bounced (that I sent) or received in previous sync slot
-		// For now, ignore work specifics
-		(void) myInMailbox.fetch();
-		WorkSupervisor::tryWorkLocally();
-	}
-}
-
-/*
- * Managing voltage requires periodic checking, this is a convenient place.
- *
- * This may initiate group work (working locally and as a group.)
- *
- * Must be short duration, else interferes with sync.
- * FUTURE make this a thread and yield to higher priority sleep sync thread
- */
-
-void onSyncPoint() {
-
-	doReceivedWork();
-	/*
-	 * Received work from others might have depleted my power.
-	 * (But we just started a work task, it probably didn't use much power yet.)
-	 * But I might have enough power to initiate work again.
-	 */
-
-	/*
-	 * WorkSupervisor chooses a strategy:, e.g. work regularly or work only if power
-	 * One strategy: if voltage is excess, this may not return immediately, and disturbs sync
-	 */
-	WorkSupervisor::manageVoltageAndWork();
-
-	/*
-	 * Might have queued work out and in:
-	 * - randomly, if power is good but not excess
-	 * - if power is excess
-	 *
-	 * Might have done local work just to shed power.
-	 * In that case, we flashed now, and will try to flash again
-	 * when our outgoing work bounces back at next sync point.
-	 * If the now flash is still in progress at next sync point,
-	 * the try will fail (just one long flash.) ???
-	 */
-}
-
-
-
-/*
+ * SleepSync init is:
  * Stitch together objects that use each other.  Order is important.
  *
  * nvic, powerSupply, hfClock not need init
@@ -178,21 +68,7 @@ void onSyncPoint() {
  * - uses LongClockTimer for nowTime
  * - communicates using mailBox
  */
-void initObjects() {
 
-	// WorkSupervisor uses LED's, pure classes LEDFlasher which uses LEDService and Timer
-	BoardManager::initLEDs();
-
-	WorkSupervisor::init(&myOutMailbox, &myInMailbox);
-
-	// Initialize SyncAgent (Ensemble) and connect it to app
-	SyncAgent::initSyncObjects(&myOutMailbox, onWorkMsg, onSyncPoint);
-
-	// Connect provisioning
-	WorkProvisioningProxy::setWorkTimeFinalProvisioningCallback(WorkClock::syncToPast);
-	WorkProvisioningProxy::setWorkCycleFinalProvisioningCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
-	WorkProvisioningProxy::setConverterFunc(WorkClock::convertPeriodsElapsedToClockAdvance);
-}
 
 
 
@@ -259,7 +135,14 @@ void powerManagedMain() {
 
 	Phase::set(PhaseEnum::firstSyncPower);
 
-	initObjects();
+	WorkFacilitator::init();
+
+	// Initialize SyncAgent (Ensemble) and connect it to app
+	SyncAgent::initSyncObjects(
+			WorkFacilitator::outMailbox(),
+			WorkFacilitator::onWorkSyncMsg,
+			WorkFacilitator::onSyncPoint);
+
 	// sleepSyncAgent prepared to loop
 
 #ifndef POWER_IS_SOLAR
