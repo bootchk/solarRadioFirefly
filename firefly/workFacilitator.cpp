@@ -1,14 +1,16 @@
 
+
 #include  "workFacilitator.h"
 
 #include "other/boardManager.h"
 
 #include "work/workSupervisor.h"
 
-#include <provisioning/workProvisioningProxy.h>
-// For final provisioning
 #include "work/distributed/workClock.h"
 #include "work/parameters/workFrequency.h"
+
+#include <provisioning/workControlProxy.h>
+#include <provisioning/workProvisioner.h>
 
 
 namespace {
@@ -63,9 +65,10 @@ void WorkFacilitator::init() {
 	WorkSupervisor::init(&myOutMailbox, &myInMailbox);
 
 	// Connect provisioning
-	WorkProvisioningProxy::setWorkTimeFinalProvisioningCallback(WorkClock::syncToPast);
-	WorkProvisioningProxy::setWorkCycleFinalProvisioningCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
-	WorkProvisioningProxy::setConverterFunc(WorkClock::convertPeriodsElapsedToClockAdvance);
+	WorkControlProxy::setWorkTimeControlCallback(WorkClock::syncToPast);
+	WorkControlProxy::setWorkCycleControlCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
+
+	WorkProvisioner::setConverterFunc(WorkClock::convertPeriodsElapsedToClockAdvance);
 }
 
 

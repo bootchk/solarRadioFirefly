@@ -108,6 +108,8 @@ void logMessage() {
 	case MessageType::WorkSync:
 	case MessageType::ControlNetGranularity:
 	case MessageType::ControlScatterClique:
+	case MessageType::ControlWorkTime:
+	case MessageType::ControlWorkCycle:
 	case MessageType::EnticingInferior:
 	case MessageType::MasterMergedAway:
 	case MessageType::SlaveMergedAway:

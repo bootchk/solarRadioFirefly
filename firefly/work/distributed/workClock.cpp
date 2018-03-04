@@ -74,7 +74,7 @@ unsigned int WorkClock::convertPeriodsElapsedToClockAdvance(unsigned int  elapse
 }
 
 
-void WorkClock::syncToPast(unsigned int clockAdvance) {
+void WorkClock::syncToPast(uint32_t clockAdvance) {
 	/*
 	 * A "mark" (a user pushing a button) was pushed at the clockAdvance tick of clock.
 	 * Sync the work clock with the mark.

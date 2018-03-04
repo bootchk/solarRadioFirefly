@@ -118,6 +118,7 @@ PRIVATE
 target_sources(fireflyInteractive
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/workFacilitator.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/powerManagedMain.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/workSupervisor.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/parameters/workFrequency.cpp"

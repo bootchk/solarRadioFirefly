@@ -1,6 +1,10 @@
 
 #pragma once
 
+#include <inttypes.h>
+
+
+
 typedef void (*AlarmCallback)(void);
 
 /*
@@ -41,7 +45,7 @@ public:
 	 * Called when master is provisioned (at behest of user).
 	 * Later, master's clock is propagated to slaves.
 	 */
-	static void syncToPast(unsigned int elapsedPeriods);
+	static void syncToPast(uint32_t elapsedPeriods);
 
 	static unsigned int convertPeriodsElapsedToClockAdvance(unsigned int  elapsedSyncPeriods);
 

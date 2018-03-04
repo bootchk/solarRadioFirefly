@@ -25,13 +25,15 @@
 
 #include <syncAgent/syncAgent.h>
 
+#include <drivers/mcu.h>
+
 #include "workFacilitator.h"
 
 #include "power/powerAdjuster.h"
 
 // Unit testing
-#include <logging/logger.h>
-#include <random.h>
+//#include <logging/logger.h>
+//#include <random.h>
 
 
 /*
@@ -94,7 +96,7 @@ void powerManagedMain() {
 	 * POR clears reset reasons.
 	 * But we are often debugging, so clear this register now to catch subsequent reset reasons.
 	 */
-	clearResetReason();
+	MCU::clearResetReason();
 
 
 	/*
