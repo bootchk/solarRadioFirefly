@@ -7,8 +7,8 @@
 #include <random.h>
 
 
-#include <work/groupWork/workStrategyGroup.h>
-#include <work/groupWork/groupWork.h>
+#include "workStrategyGroup.h"
+#include "groupWork.h"
 
 #include "../workFactory.h"
 #include "../worker.h"

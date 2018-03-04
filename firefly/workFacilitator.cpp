@@ -10,7 +10,9 @@
 #include "work/parameters/workFrequency.h"
 
 #include <provisioning/workControlProxy.h>
+#ifdef SOFTDEVICE_PRESENT
 #include <provisioning/workProvisioner.h>
+#endif
 
 
 namespace {
@@ -68,7 +70,9 @@ void WorkFacilitator::init() {
 	WorkControlProxy::setWorkTimeControlCallback(WorkClock::syncToPast);
 	WorkControlProxy::setWorkCycleControlCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
 
+#ifdef SOFTDEVICE_PRESENT
 	WorkProvisioner::setConverterFunc(WorkClock::convertPeriodsElapsedToClockAdvance);
+#endif
 }
 
 

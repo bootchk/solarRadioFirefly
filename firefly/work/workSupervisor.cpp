@@ -10,8 +10,8 @@
 #include <logging/logger.h>
 
 // Only include workStrategy, and not any objects that they depend on
-#include <work/groupWork/workStrategyGroup.h>
-#include <work/distributed/workStrategyDistributed.h>
+#include "groupWork/workStrategyGroup.h"
+#include "distributed/workStrategyDistributed.h"
 
 #include "worker.h"
 #include "parameters/workAmount.h"
@@ -89,14 +89,16 @@ void WorkSupervisor::manageVoltageAndWork() {
 
 #ifdef SOLAR_EXCEEDS_VMAX
 	// Solar cell Voc exceed SoC Vmax
-	WorkStrategy::manageExcessPowerWithWork();
+	WorkStrategyGroup::manageExcessPowerWithWork();
 #else
 	// Solar cell Voc always below SoC Vmax (no need to shed power.)
 	// WorkStrategy::manageWorkOnlyRandomlyIfPowerAndMaster();
 	// WorkStrategy::manageWorkOnlyRegularlyIfPowerAndMaster();
 
 	// TEMP testing energy strategy on DK
-	WorkStrategy::manageExcessPowerWithWork();
+	//WorkStrategy::manageExcessPowerWithWork();
+
+	WorkStrategyDistributed::manageWorkSynchronizedDistributed();
 #endif
 
 #else

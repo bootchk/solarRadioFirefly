@@ -633,7 +633,6 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1210916265" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.882569104" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="NRF51"/>
-									<listOptionValue builtIn="false" value="SOLAR_EXCEEDS_VMAX"/>
 									<listOptionValue builtIn="false" value="POWER_IS_SOLAR"/>
 									<listOptionValue builtIn="false" value="ADC_PRESENT"/>
 									<listOptionValue builtIn="false" value="BOARD_WAVESHARE2_REV1"/>
