@@ -26,6 +26,7 @@ void BoardManager::initLEDs() {
 	LEDService::init(1, true, 10, 0, 0, 0);
 #elif BOARD_WAVESHARE2_REV1
 	LEDService::init(1, true, 30, 0, 0, 0);
+	LEDFlasherTask::init(30);
 #elif BOARD_WAVESHARE2_REV2
 	LEDService::init(1, true, 8, 0, 0, 0);
 	LEDFlasherTask::init(8);

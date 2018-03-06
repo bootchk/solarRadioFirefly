@@ -9,9 +9,9 @@
 class WorkSyncMaintainer {
 public:
 	/*
-	 * Init with mailbox for outgoing messages to synchronize work clocks of others in clique
+	 * mailbox for outgoing messages to synchronize work clocks of others in clique
 	 */
-	static void init(Mailbox* aOutMailbox, Mailbox* aInMailbox);
+	static void init(Mailbox* aOutMailbox);
 
 	// from WorkClock
 	static void onWorkAlarm();
@@ -19,7 +19,8 @@ public:
 	// from WorkSyncMaintenanceClock
 	static void onWorkSyncMaintenanceAlarm();
 
-	static void checkForWorkSyncFromMaster();
+	//
+	static void onWorkSyncFromMaster(unsigned char);
 
 	// callback from Provisioner
 	static void onWorkSyncProvisioned(unsigned char period);

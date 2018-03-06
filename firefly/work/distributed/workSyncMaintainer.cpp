@@ -14,7 +14,6 @@
 
 namespace {
 
-Mailbox * _inBoxForWorkSync;
 Mailbox * _outBoxForWorkSync;
 
 
@@ -28,8 +27,7 @@ bool isPowerOfTwo(unsigned char x) {
 
 
 
-void WorkSyncMaintainer::init(Mailbox* aOutMailbox, Mailbox* aInMailbox) {
-	_inBoxForWorkSync = aInMailbox;
+void WorkSyncMaintainer::init(Mailbox* aOutMailbox) {
 	_outBoxForWorkSync = aOutMailbox;
 }
 
@@ -47,29 +45,27 @@ void WorkSyncMaintainer::onWorkAlarm() {
 
 
 /*
- * Check for WorkSync every syncPeriod so Work is synchronized to nearest syncPoint
+ * WorkSync synchronizes  WorkClock to nearest syncPoint.
+ *
+ * Currently called when WorkSync is received, in middle of SyncSlot.
+ * It could be queued (in inMailbox) and handled postSyncSlot
  */
-// TODO this is at the syncpoint, one sync period late?
-void WorkSyncMaintainer::checkForWorkSyncFromMaster() {
+void WorkSyncMaintainer::onWorkSyncFromMaster(unsigned char newPeriod) {
 	/*
 	 * Only slaves receive WorkSync (Masters send, can't receive their own.)
 	 * Master updates its WorkClock (the master workClock, when provisioned.)
 	 */
 	assert( SyncAgent::isSelfSlave() );
 
-	if (_inBoxForWorkSync->isMail()) {
-		unsigned char newPeriod = _inBoxForWorkSync->fetch();
+	/*
+	 * Ensure period is power of 2
+	 */
+	assert(isPowerOfTwo(newPeriod));
 
-		/*
-		 * Ensure period is power of 2
-		 */
-		assert(isPowerOfTwo(newPeriod));
-
-		WorkClock::syncToNow(newPeriod);
-	}
+	WorkClock::syncToNow(newPeriod);
 }
 
-// TODO no caller?
+#ifdef NOT_USED
 
 // TODO only set the period, and leave the sync alone
 // i.e. at the next work alarm, change the period for the subsequent work alarms.
@@ -90,6 +86,8 @@ void WorkSyncMaintainer::onWorkSyncProvisioned(unsigned char period) {
 	 */
 	WorkClock::syncToNow(period);
 }
+#endif
+
 
 void WorkSyncMaintainer::onWorkSyncMaintenanceAlarm() {
 	/*

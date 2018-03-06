@@ -24,5 +24,7 @@ public:
 	 */
 	static void manageWorkSynchronizedDistributed();
 
+	static void onWorkSyncMsg(MailContents work);
+
 	static void onWorkMsg(MailContents work);
 };

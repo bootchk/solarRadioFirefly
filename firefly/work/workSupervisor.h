@@ -36,12 +36,11 @@ public:
 	 */
 	static void manageVoltageAndWork();
 
-	/*
-	 * Work on this unit if power allows.
-	 */
+	//  Work on this unit if power allows.
 	static void tryWorkLocally();
 
-	static void onWorkMsg(MailContents work);
+	// Msg that maintains work sync
+	static void onWorkSyncMsg(MailContents work);
 
 	/*
 	 * !!! Provisioning goes around the work supervisor, directly to

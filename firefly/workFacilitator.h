@@ -25,7 +25,14 @@ public:
 
 	/*
 	 * Called every SyncPeriod.
+	 *
+	 * preSyncSlot is timing critical: reduces listening.
 	 * Tick my clocks, generate alarms, and queue WorkSync out
+	 *
+	 * postSyncSlot is not timing critical: only might reduce fishing.
 	 */
-	static void onSyncPoint();
+	static void onPreSyncSlot();
+
+	// TODO not used yet.
+	static void onPostSyncSlot();
 };

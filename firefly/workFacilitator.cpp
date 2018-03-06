@@ -99,7 +99,7 @@ Mailbox* WorkFacilitator::outMailbox() { return &myOutMailbox; }
  */
 void WorkFacilitator::onWorkSyncMsg(MailContents work) {
 	// Delegate
-	WorkSupervisor::onWorkMsg(work);
+	WorkSupervisor::onWorkSyncMsg(work);
 }
 
 
@@ -113,7 +113,7 @@ void WorkFacilitator::onWorkSyncMsg(MailContents work) {
  * FUTURE make this a thread and yield to higher priority sleep sync thread
  */
 
-void WorkFacilitator::onSyncPoint() {
+void WorkFacilitator::onPreSyncSlot() {
 
 	// In an old design:  doReceivedWork();
 	/*

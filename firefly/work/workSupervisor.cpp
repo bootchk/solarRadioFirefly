@@ -141,11 +141,11 @@ void WorkSupervisor::tryWorkLocally() {
 }
 
 
-void WorkSupervisor::onWorkMsg(MailContents work) {
+void WorkSupervisor::onWorkSyncMsg(MailContents work) {
 	// Delegate (again) to workStrategy
 
 	// 1
-	// WorkStrategyGroup::onWorkMsg(work);
+	// WorkStrategyGroup::onWorkSyncMsg(work);
 	// 2
-	WorkStrategyDistributed::onWorkMsg(work);
+	WorkStrategyDistributed::onWorkSyncMsg(work);
 }

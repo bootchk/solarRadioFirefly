@@ -143,7 +143,7 @@ void powerManagedMain() {
 	SyncAgent::initSyncObjects(
 			WorkFacilitator::outMailbox(),
 			WorkFacilitator::onWorkSyncMsg,
-			WorkFacilitator::onSyncPoint);
+			WorkFacilitator::onPreSyncSlot);
 
 	// sleepSyncAgent prepared to loop
 
