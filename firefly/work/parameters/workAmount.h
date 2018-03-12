@@ -33,6 +33,7 @@ class WorkAmount {
 	 */
 public:
 	static const unsigned int AmountBarelyPerceivable = 2;
+	static const unsigned int AmountPerceivable = 20;
 	static const unsigned int AmountEasilyPerceivable = 50;
 	static const unsigned int AmountMoreThanPerceivable = 200;
 

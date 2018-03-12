@@ -34,9 +34,8 @@ void WorkSupervisor::init(
 		Mailbox* aInMailbox
 		)
 {
-	//WorkAmount::init(WorkAmount::AmountBarelyPerceivable);
-	WorkAmount::init(WorkAmount::AmountEasilyPerceivable);
-	// AmountMoreThanPerceivable
+	// AmountBarelyPerceivable, AmountPerceivable, AmountEasilyPerceivable, AmountMoreThanPerceivable
+	WorkAmount::init(WorkAmount::AmountPerceivable);
 
 	// SyncPowerManager needs no init
 	// Worker and DistributedSynchronizedWorker need no init
