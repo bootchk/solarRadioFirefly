@@ -14,10 +14,12 @@ message("${CMAKE_MODULE_PATH}")
 include("CMakeEnv")
 
 # set var that configures CMake_nRF5x
-set(NRF_TARGET "nrf52")
-set(NRF_SOFTDEVICE "s132")
-
+set(NRF_FAMILY "nrf52")
+set(CHIP "nrf52832_xxaa")
+set(SOFTDEVICE "s132")
+set(FLOAT_ABI "soft")
 # BOARD_NRF52DK
+set(NRF5_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
 
 
 # scripts specific to nRF5x building
@@ -41,6 +43,7 @@ nRF5SDKSourcesBLE()
 # Executable cross compiled for embedded NRF52
 add_executable(fireflyInteractive "")
 
+nRF5SetChipCompileDefinitions( fireflyInteractive ${CHIP})
 
 # import libs from outside project
 
