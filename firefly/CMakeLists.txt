@@ -43,6 +43,8 @@ nRF5SDKSourcesBLE()
 # Executable cross compiled for embedded NRF52
 add_executable(fireflyInteractive "")
 
+nRF5SetSoftdeviceIncludePaths( fireflyInteractive ${SOFTDEVICE})
+nRF5SetSoftdeviceDefinitions( fireflyInteractive ${SOFTDEVICE})
 nRF5SetChipCompileDefinitions( fireflyInteractive ${CHIP})
 
 # import libs from outside project
