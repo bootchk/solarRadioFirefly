@@ -13,14 +13,6 @@ message("${CMAKE_MODULE_PATH}")
 # i.e. file CMakeEnv.cmake on the MODULE_PATH
 include("CMakeEnv")
 
-# set var that configures CMake_nRF5x
-set(NRF_FAMILY "nrf52")
-set(CHIP "nrf52832_xxaa")
-set(SOFTDEVICE "none")
-set(FLOAT_ABI "soft")
-set(NRF5_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
-
-
 # scripts specific to nRF5x building
 # Defines cmake macros prefixed with "nRF5"
 # Sets many cmake vars for tool flags
@@ -30,9 +22,6 @@ include("nRF5")
 nRF5CheckSetupPreconditions()
 nRF5SetBuildOptions()
 nRF5SetIncludePaths()
-
-# SDK sources for startup, 
-nRF5SDKSourcesStartup()
 
 # Since using RTT logger need nrf libraries/util
 nRF5SDKSourcesUtils()
@@ -49,6 +38,17 @@ nRF5x_addRTT()
 # Primary artifact
 # Executable cross compiled for embedded NRF52
 add_executable(sniffer "")
+
+set_target_properties( sniffer
+    PROPERTIES
+       CHIP "nrf52832_xxaa"
+       SOFTDEVICE "none"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(sniffer)
+nRF5ConfigTargetByProperties(sniffer)
+nRF5SetTargetStartupSources(sniffer)
+nRF5SetTargetsLinkerScript(sniffer "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
 
 
 # import libs from outside project

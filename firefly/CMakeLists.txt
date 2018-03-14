@@ -13,39 +13,55 @@ message("${CMAKE_MODULE_PATH}")
 # i.e. file CMakeEnv.cmake on the MODULE_PATH
 include("CMakeEnv")
 
-# set var that configures CMake_nRF5x
-set(NRF_FAMILY "nrf52")
-set(CHIP "nrf52832_xxaa")
-set(SOFTDEVICE "s132")
-set(FLOAT_ABI "soft")
-# BOARD_NRF52DK
-set(NRF5_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
-
-
 # scripts specific to nRF5x building
 # Defines cmake macros prefixed with "nRF5"
 # Sets many cmake vars for tool flags
 include("nRF5")
 
-
 nRF5CheckSetupPreconditions()
 nRF5SetBuildOptions()
 nRF5SetIncludePaths()
-nRF5SDKSourcesStartup()
 # nRF5SetSDKSourcesBasic()
 
 # Also BLE
-nRF5SDKSourcesBLE()
+# nRF5SDKSourcesBLE()
 
 
 
 # Primary artifact
-# Executable cross compiled for embedded NRF52
+# Executable cross compiled for embedded NRF52832
 add_executable(fireflyInteractive "")
 
-nRF5SetSoftdeviceIncludePaths( fireflyInteractive ${SOFTDEVICE})
-nRF5SetSoftdeviceDefinitions( fireflyInteractive ${SOFTDEVICE})
-nRF5SetChipCompileDefinitions( fireflyInteractive ${CHIP})
+set_target_properties( fireflyInteractive
+    PROPERTIES
+       CHIP "nrf52832_xxaa"
+       SOFTDEVICE "s132"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(fireflyInteractive)
+nRF5ConfigTargetByProperties(fireflyInteractive)
+nRF5SetTargetStartupSources(fireflyInteractive)
+nRF5SetTargetsLinkerScript(fireflyInteractive "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
+
+#TODO this cmake script uses SDK's std gcc_startup_nrf52.S
+# whose heap size is set non-zero 
+# whereas the local one I hacked
+
+add_executable(firefly52810 "")
+
+set_target_properties( firefly52810
+    PROPERTIES
+       CHIP "nrf52810_xxaa"
+       SOFTDEVICE "s112"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(firefly52810)
+nRF5ConfigTargetByProperties(firefly52810)
+nRF5SetTargetStartupSources(firefly52810)
+nRF5SetTargetsLinkerScript(firefly52810 "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810SD.ld")
+
+
+
 
 # import libs from outside project
 
@@ -72,6 +88,14 @@ add_library(BLEProvisionee STATIC IMPORTED)
 set_target_properties( BLEProvisionee 
     PROPERTIES 
         IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
+    )
+
+# Same library but built for 52810
+add_library(BLEProvisionee52810 STATIC IMPORTED)
+set_target_properties( BLEProvisionee52810 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
     )
 
@@ -109,19 +133,26 @@ PRIVATE
     BLEProvisionee
     NRFDrivers
     )
+# Same for 52810 except for BLEProvisionee !!!
+target_link_libraries(firefly52810 
+PRIVATE
+    sleepSyncAgent
+    radioSoC52wSD
+    nRF5x
+    embeddedMath
+    BLEProvisionee52810
+    NRFDrivers
+    )
 
-# TODO firefly non-interactive
-# TODO radioSoC52SD
-# TODO sleepSync
+# TODO target firefly non-interactive
+# TODO subdir radioSoC52SD sleepSync etc to insure they are built
 
    
 # sources of executable
 #     main which calls libraries
-#     SDK startup sources
+# SDK startup sources are property of target
 # all other SDK sources are built into libraries
-
-target_sources(fireflyInteractive
-   PUBLIC
+list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/workFacilitator.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/powerManagedMain.cpp"
@@ -138,9 +169,19 @@ target_sources(fireflyInteractive
        "${CMAKE_CURRENT_LIST_DIR}/other/boardManager.cpp"
        "${SDK_SOURCES_STARTUP}"
    )
- 
- 
+
+target_sources(fireflyInteractive
+   PUBLIC
+      ${FireflySources}
+   )
+   
+target_sources(firefly52810
+   PUBLIC
+      ${FireflySources}
+   )
+
 nRF5GenerateOtherArtifacts(fireflyInteractive)
+nRF5GenerateOtherArtifacts(firefly52810)
 
 # not generate FLASH_SOFTDEVICE target, already created by sniffer
 # nRF5AddCustomTargets(fireflyInteractive)
