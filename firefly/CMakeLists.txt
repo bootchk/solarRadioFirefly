@@ -47,6 +47,19 @@ nRF5SetTargetsLinkerScript(fireflyInteractive "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld"
 # whose heap size is set non-zero 
 # whereas the local one I hacked
 
+add_executable(firefly52810e "")
+
+set_target_properties( firefly52810e
+    PROPERTIES
+       CHIP "nrf52810e"
+       SOFTDEVICE "s112"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(firefly52810e)
+nRF5ConfigTargetByProperties(firefly52810e)
+nRF5SetTargetStartupSources(firefly52810e)
+nRF5SetTargetsLinkerScript(firefly52810e "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810SD.ld")
+    
 add_executable(firefly52810 "")
 
 set_target_properties( firefly52810
@@ -84,18 +97,25 @@ set_target_properties( embeddedMath PROPERTIES IMPORTED_LOCATION /home/bootch/gi
 add_library(NRFDrivers STATIC IMPORTED)
 set_target_properties( NRFDrivers PROPERTIES IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a )
 
+
 add_library(BLEProvisionee STATIC IMPORTED)
 set_target_properties( BLEProvisionee 
     PROPERTIES 
         IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
     )
-
 # Same library but built for 52810
 add_library(BLEProvisionee52810 STATIC IMPORTED)
 set_target_properties( BLEProvisionee52810 
     PROPERTIES 
         IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
+    )
+# Same library but built for 52810e emulated
+add_library(BLEProvisionee52810e STATIC IMPORTED)
+set_target_properties( BLEProvisionee52810e 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810e.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
     )
 
@@ -143,6 +163,15 @@ PRIVATE
     BLEProvisionee52810
     NRFDrivers
     )
+target_link_libraries(firefly52810e
+PRIVATE
+    sleepSyncAgent
+    radioSoC52wSD
+    nRF5x
+    embeddedMath
+    BLEProvisionee52810e
+    NRFDrivers
+    )
 
 # TODO target firefly non-interactive
 # TODO subdir radioSoC52SD sleepSync etc to insure they are built
@@ -174,14 +203,18 @@ target_sources(fireflyInteractive
    PUBLIC
       ${FireflySources}
    )
-   
 target_sources(firefly52810
+   PUBLIC
+      ${FireflySources}
+   )
+target_sources(firefly52810e
    PUBLIC
       ${FireflySources}
    )
 
 nRF5GenerateOtherArtifacts(fireflyInteractive)
 nRF5GenerateOtherArtifacts(firefly52810)
+nRF5GenerateOtherArtifacts(firefly52810e)
 
 # not generate FLASH_SOFTDEVICE target, already created by sniffer
 # nRF5AddCustomTargets(fireflyInteractive)
