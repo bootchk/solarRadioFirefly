@@ -43,6 +43,8 @@ nRF5ConfigTargetByProperties(fireflyInteractive)
 nRF5SetTargetStartupSources(fireflyInteractive)
 nRF5SetTargetsLinkerScript(fireflyInteractive "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
 
+
+
 #TODO this cmake script uses SDK's std gcc_startup_nrf52.S
 # whose heap size is set non-zero 
 # whereas the local one I hacked
@@ -84,12 +86,26 @@ set_target_properties( radioSoC52wSD
         IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52wSD/libradioSoC52wSD.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
     )
+add_library(radioSoC52810 STATIC IMPORTED)
+set_target_properties( radioSoC52810 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52810.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
+        IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
+    )
 
-add_library(nRF5x STATIC IMPORTED)
-set_target_properties( nRF5x 
+
+add_library(nRF5x52 STATIC IMPORTED)
+set_target_properties( nRF5x52
 	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a
 	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
 	)
+add_library(nRF5x52810 STATIC IMPORTED)
+set_target_properties( nRF5x52810 
+	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/cmakeBuild/libnRF5x52810.a
+	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
+	)
+
 
 add_library(embeddedMath STATIC IMPORTED)
 set_target_properties( embeddedMath PROPERTIES IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a )
@@ -148,7 +164,7 @@ target_link_libraries(fireflyInteractive
 PRIVATE
     sleepSyncAgent
     radioSoC52wSD
-    nRF5x
+    nRF5x52
     embeddedMath
     BLEProvisionee
     NRFDrivers
@@ -158,20 +174,26 @@ target_link_libraries(firefly52810
 PRIVATE
     sleepSyncAgent
     radioSoC52wSD
-    nRF5x
+    nRF5x52
     embeddedMath
     BLEProvisionee52810
     NRFDrivers
     )
+    
+# this target uses cmake build libraries
 target_link_libraries(firefly52810e
 PRIVATE
     sleepSyncAgent
-    radioSoC52wSD
-    nRF5x
-    embeddedMath
     BLEProvisionee52810e
+    radioSoC52810
+    embeddedMath
     NRFDrivers
     )
+# nRF5x52810 is built into radio
+# NRFDrivers
+
+# declare transitive dependence
+# target_link_libraries(radioSoC52810 nRF5x52810)
 
 # TODO target firefly non-interactive
 # TODO subdir radioSoC52SD sleepSync etc to insure they are built
@@ -180,7 +202,8 @@ PRIVATE
 # sources of executable
 #     main which calls libraries
 # SDK startup sources are property of target
-# all other SDK sources are built into libraries
+# other SDK sources are built into libraries e.g. SEGGER_RTT in radioSoC
+# and certain SDK modules in NRFDrivers
 list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/workFacilitator.cpp"
@@ -196,7 +219,6 @@ list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/work/worker.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/power/powerAdjuster.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/other/boardManager.cpp"
-       "${SDK_SOURCES_STARTUP}"
    )
 
 target_sources(fireflyInteractive

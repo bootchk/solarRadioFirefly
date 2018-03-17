@@ -7,6 +7,9 @@
 // Config depends on BOARD_xxx defined in build configuration
 
 
+/*
+ * Index in [0,31] i.e. P0.0..P0.31
+ */
 void BoardManager::initLEDs() {
 #if BOARD_NRF52DK || BOARD_PCA10040
 	// nRF52DK board (from pca10040.h)
@@ -30,7 +33,9 @@ void BoardManager::initLEDs() {
 #elif BOARD_WAVESHARE2_REV2
 	LEDService::init(1, true, 8, 0, 0, 0);
 	LEDFlasherTask::init(8);
-
+#elif BOARD_FANSTEL52810
+	LEDService::init(1, true, 3, 0, 0, 0);
+	LEDFlasherTask::init(3);
 #else
 #error "No board defined"
 #endif

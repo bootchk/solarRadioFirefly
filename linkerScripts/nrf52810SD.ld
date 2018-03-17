@@ -4,13 +4,13 @@ SEARCH_DIR(.)
 GROUP(-lgcc -lc -lnosys)
 
 /* lkk original  ORIGIN = 0x20000eb8, LENGTH = 0x5148 */
-/* Adjusted following the process using "ram_start" var. */
-
+/* Adjusted following the process using "ram_start" var. RAM (rwx) :  ORIGIN = 0x20001a50, LENGTH = 0x45b0 */
+/* From blinky example: RAM (rwx) :  ORIGIN = 0x20001cd0, LENGTH = 0x4330 */
 MEMORY
 {
   FLASH (rx) : ORIGIN = 0x18000, LENGTH = 0x18000
-  RAM (rwx) :  ORIGIN = 0x20001a50, LENGTH = 0x45b0
   
+  RAM (rwx) :  ORIGIN = 0x20001cd0, LENGTH = 0x4330
 }
 
 SECTIONS
