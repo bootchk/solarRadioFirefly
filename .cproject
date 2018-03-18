@@ -421,7 +421,7 @@
 			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1355699534.757719800" moduleId="org.eclipse.cdt.core.settings" name="sniffer52">
 				<macros>
 					<stringMacro name="MY_SDK" type="VALUE_TEXT" value="/home/bootch/git"/>
-					<stringMacro name="NRF_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_12.3.0"/>
+					<stringMacro name="NRF_SDK" type="VALUE_TEXT" value="/home/bootch/nRF5_SDK_14.2.0_17b948a"/>
 				</macros>
 				<externalSettings/>
 				<extensions>
@@ -531,12 +531,12 @@
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/embeddedMath/Debug52&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/sleepSyncAgent/ArchiveArmM4&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/DebugnRF52&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/radioSoC/Debug52&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/Debug52&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/radioSoC/Debug52Log&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.201759729" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" useByScannerDiscovery="false" valueType="libs">
-									<listOptionValue builtIn="false" value="radioSoC52"/>
+									<listOptionValue builtIn="false" value="radioSoC52Log"/>
 									<listOptionValue builtIn="false" value="embeddedMath52"/>
 									<listOptionValue builtIn="false" value="sleepSyncAgentM4"/>
 									<listOptionValue builtIn="false" value="nRF5x52"/>
@@ -1665,6 +1665,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.agreggatereturn.771991420.1882896557" name="Warn if struct is returned (-Wagreggate-return)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.agreggatereturn.771991420"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal.655866127.1895448562" name="Warn if floats are compared as equal (-Wfloat-equal)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal.655866127"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createlisting.617487897.1819367293" name="Create extended listing" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createlisting.617487897"/>
+							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.69093877" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.60898624">
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1572547444" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -1672,7 +1673,7 @@
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1403427374" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1298779262" name="Cross ARM C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.2101941348">
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.299826708" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.299826708" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="S112"/>
 									<listOptionValue builtIn="false" value="SOFTDEVICE_PRESENT"/>
 									<listOptionValue builtIn="false" value="BOARD_FANSTEL52810"/>

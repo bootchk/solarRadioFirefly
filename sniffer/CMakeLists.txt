@@ -48,7 +48,7 @@ set_target_properties( sniffer
 nRF5CheckTargetProperties(sniffer)
 nRF5ConfigTargetByProperties(sniffer)
 nRF5SetTargetStartupSources(sniffer)
-nRF5SetTargetsLinkerScript(sniffer "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
+nRF5SetTargetsLinkerScript(sniffer "${CMAKE_SOURCE_DIR}/gcc_nrf52NoSD.ld")
 
 
 # import libs from outside project
@@ -121,7 +121,6 @@ target_sources(sniffer
    PUBLIC
        "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/snifferMain.cpp"
-       "${SDK_SOURCES_STARTUP}"
        "${SDK_SOURCES}"
    )
  
@@ -129,5 +128,4 @@ target_sources(sniffer
 nRF5GenerateOtherArtifacts(sniffer)
 nRF5AddCustomTargets(sniffer)
 
-message("SDK_SOURCES_STARTUP: ${SDK_SOURCES_STARTUP}")
 message("SDK_SOURCES: ${SDK_SOURCES}")
