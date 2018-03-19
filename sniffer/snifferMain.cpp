@@ -60,11 +60,15 @@ void onRcvMsgCallback() {
 	;	// Do nothing, we get message in raw buffer elsewhere below
 }
 
-
+/*
+ * Print 2 bytes of ID.
+ * LSB: buffer[2],buffer[1]
+ */
 void logIDAndWork(MessageType aType, BufferPointer buffer) {
 	SEGGER_RTT_printf(0, "%s ID %02x%02x Work %02x",
 			SyncMessage::representation(aType),
-			buffer[2],buffer[1], buffer[10]);
+			buffer[6],buffer[5], // MSB two bytes of ID
+			buffer[10]);
 }
 
 void logRSSI() {
@@ -118,6 +122,7 @@ void logMessage() {
 		SEGGER_RTT_printf(0, " Sync ");
 		logIDAndWork(msgType, buffer);
 		break;
+
 	case MessageType::Invalid:
 		// Other unidentified i.e. garbled message types
 		SEGGER_RTT_printf(0, "Type %02x ID %02x%02x", buffer[0], buffer[2], buffer[1]);
