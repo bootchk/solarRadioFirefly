@@ -4,7 +4,7 @@
 
 
 // sleepSyncAgent
-#include <slots/fishing/fishPolicy.h>
+#include <fishPolicy/slottedFishSession.h>
 
 // TODO currently is only fish, not work
 
@@ -27,12 +27,12 @@
 
 void WorkAndFishEnergyStrategy::increaseUsage() {
 	// Worker::increaseAmountWithoutExceedingTimerLimit();
-	SyncRecoveryTrollingPolicy::incrementFishSessionDuration(50);	// one slot
+	SlottedFishSession::incrementFishSessionDuration(50);	// one slot
 }
 
 void WorkAndFishEnergyStrategy::decreaseUsage(){
 	//Worker::decreaseAmount();
-	SyncRecoveryTrollingPolicy::decrementFishSessionDuration(50);	// 50 ticks, one slot
+	SlottedFishSession::decrementFishSessionDuration(50);	// 50 ticks, one slot
 }
 
 void WorkAndFishEnergyStrategy::maintainUsage(){
@@ -41,5 +41,5 @@ void WorkAndFishEnergyStrategy::maintainUsage(){
 
 void WorkAndFishEnergyStrategy::setLeastUsage(){
 	//Worker::setLeastAmount();
-	SyncRecoveryTrollingPolicy::setDurationToMinDuration();
+	SlottedFishSession::setDurationToMinDuration();
 }

@@ -13,7 +13,7 @@
 #include "../power/powerShedder.h"
 
 // sleepSyncAgent
-#include <slots/fishing/fishPolicy.h>
+#include <fishPolicy/slottedFishSession.h>
 
 
 /*
@@ -76,8 +76,8 @@ void increasePowerUsageAndShedPower() {
 
 void PowerAdjuster::setUnconstrainedEnergy(){
 	// Fish more if power is unconstrained.
-	// 20 slots of 50 ticks
-	SyncRecoveryTrollingPolicy::incrementFishSessionDuration(1000);
+	// 20 slots of 50 ticks is 1000 ticks
+	SlottedFishSession::incrementFishSessionDuration(20);
 }
 
 
