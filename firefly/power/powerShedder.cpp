@@ -31,7 +31,7 @@ void PowerShedder::shedPowerUntilVccLessThanVmax(){
 
 		// TODO no sleep here, this is at sync point, should return to sync loop
 		// any interrupt may wake a sync sleep, but it will continue
-		MCU::sleep();
+		MCU::sleepUntilEvent();
 	}
 	while (SyncPowerManager::isPowerExcess());
 
