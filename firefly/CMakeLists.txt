@@ -138,9 +138,13 @@ set_target_properties( BLEProvisionee52810e
 add_library(sleepSyncAgent STATIC IMPORTED)
 set_target_properties( sleepSyncAgent 
     PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a
+        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52832.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath
     )
+
+# with provisioning
+#IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a  
 
 IF(EXISTS /home/bootch/git/radioSoC/Debug52/libradioSoC52.a)
 else()

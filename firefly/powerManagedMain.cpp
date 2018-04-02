@@ -114,7 +114,7 @@ void powerManagedMain() {
 	 * The first timeout is over long or inaccurate, until lfclock is stable.
 	 */
 
-#ifdef SOFTDEVICE_PRESENT
+#ifdef PROVISIONING
 	// requires libNRFDrivers, to use SD compatible modules from SDK
 	ClockFacilitator::startLongClockNoWaitUntilRunning();
 #else
