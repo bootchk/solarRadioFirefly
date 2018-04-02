@@ -170,6 +170,7 @@ To use:
 >cmake -H. -B"cmakeBuild" -G "Ninja"
 >cmake --build cmakeBuild --target sniffer
 >cmake --build cmakeBuild --target fireflyInteractive
+>cmake --build cmakeBuild --target firefly52810NoSDFanstel
 
 The CMakeLists.txt for now only documents the build.
 It is intended to duplicate the Eclipse build configuration "Debug52DKwSD"

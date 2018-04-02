@@ -9,7 +9,8 @@
 #include "work/distributed/workClock.h"
 #include "work/parameters/workFrequency.h"
 
-#include <provisioning/workControlProxy.h>
+// libSleepSyncAgent
+#include <work/workControlProxy.h>
 #ifdef SOFTDEVICE_PRESENT
 #include <provisioning/workProvisioner.h>
 #endif

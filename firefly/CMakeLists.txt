@@ -29,7 +29,7 @@ nRF5SetIncludePaths()
 
 
 # Primary artifact
-# Executable cross compiled for embedded NRF52832
+# Executable cross compiled for NRF52832
 add_executable(fireflyInteractive "")
 
 set_target_properties( fireflyInteractive
@@ -62,23 +62,63 @@ nRF5ConfigTargetByProperties(firefly52810e)
 nRF5SetTargetStartupSources(firefly52810e)
 nRF5SetTargetsLinkerScript(firefly52810e "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810SD.ld")
     
-add_executable(firefly52810 "")
+add_executable(firefly52810SDFanstel "")
 
-set_target_properties( firefly52810
+set_target_properties( firefly52810SDFanstel
     PROPERTIES
        CHIP "nrf52810_xxaa"
        SOFTDEVICE "s112"
        FLOAT_ABI "soft"
     )
-nRF5CheckTargetProperties(firefly52810)
-nRF5ConfigTargetByProperties(firefly52810)
-nRF5SetTargetStartupSources(firefly52810)
-nRF5SetTargetsLinkerScript(firefly52810 "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810SD.ld")
+nRF5CheckTargetProperties(firefly52810SDFanstel)
+nRF5ConfigTargetByProperties(firefly52810SDFanstel)
+nRF5SetTargetStartupSources(firefly52810SDFanstel)
+nRF5SetTargetsLinkerScript(firefly52810SDFanstel "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810SD.ld")
+
+
+
+# differences: no SD, linkerscript, 
+add_executable(firefly52810NoSDFanstel "")
+
+set_target_properties( firefly52810NoSDFanstel
+    PROPERTIES
+       CHIP "nrf52810_xxaa"
+       SOFTDEVICE "none"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(firefly52810NoSDFanstel)
+nRF5ConfigTargetByProperties(firefly52810NoSDFanstel)
+nRF5SetTargetStartupSources(firefly52810NoSDFanstel)
+# RTT logging requires app_util
+# TODO the rest of RTT is built into radioSoC, why isn't this?
+nRF5SetTargetRTTUtilSources(firefly52810NoSDFanstel)
+nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810_xxaa.ld")
+
 
 
 
 
 # import libs from outside project
+
+add_library(sleepSyncAgent52xSD STATIC IMPORTED)
+set_target_properties( sleepSyncAgent52xSD 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52832.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath52
+    )
+    
+    
+add_library(sleepSyncAgent52xNoSD STATIC IMPORTED)
+set_target_properties( sleepSyncAgent52xNoSD 
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52xNoSD.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath52
+    )
+
+# with provisioning
+#IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a  
 
 add_library(radioSoC52wSD STATIC IMPORTED)
 set_target_properties( radioSoC52wSD 
@@ -93,6 +133,15 @@ set_target_properties( radioSoC52810
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
         IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
     )
+add_library(radioSoC52810NoSD STATIC IMPORTED)
+set_target_properties( radioSoC52810NoSD
+    PROPERTIES 
+        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52810NoSD.a
+        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
+        IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
+    )
+
+
 
 
 add_library(nRF5x52 STATIC IMPORTED)
@@ -107,8 +156,12 @@ set_target_properties( nRF5x52810
 	)
 
 
-add_library(embeddedMath STATIC IMPORTED)
-set_target_properties( embeddedMath PROPERTIES IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a )
+add_library(embeddedMath52 STATIC IMPORTED)
+set_target_properties( embeddedMath52 PROPERTIES 
+     IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
+     INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/embeddedMath/src" )
+
+
 
 add_library(NRFDrivers STATIC IMPORTED)
 set_target_properties( NRFDrivers PROPERTIES IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a )
@@ -135,16 +188,7 @@ set_target_properties( BLEProvisionee52810e
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
     )
 
-add_library(sleepSyncAgent STATIC IMPORTED)
-set_target_properties( sleepSyncAgent 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52832.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
-        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath
-    )
 
-# with provisioning
-#IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a  
 
 IF(EXISTS /home/bootch/git/radioSoC/Debug52/libradioSoC52.a)
 else()
@@ -169,19 +213,27 @@ PRIVATE
     sleepSyncAgent
     radioSoC52wSD
     nRF5x52
-    embeddedMath
+    embeddedMath52
     BLEProvisionee
     NRFDrivers
     )
 # Same for 52810 except for BLEProvisionee !!!
-target_link_libraries(firefly52810 
+target_link_libraries(firefly52810SDFanstel 
 PRIVATE
     sleepSyncAgent
     radioSoC52wSD
     nRF5x52
-    embeddedMath
+    embeddedMath52
     BLEProvisionee52810
     NRFDrivers
+    )
+
+target_link_libraries(firefly52810NoSDFanstel 
+PRIVATE
+    sleepSyncAgent52xNoSD
+    radioSoC52810NoSD
+    nRF5x52810
+    embeddedMath52
     )
     
 # this target uses cmake build libraries
@@ -190,10 +242,10 @@ PRIVATE
     sleepSyncAgent
     BLEProvisionee52810e
     radioSoC52810
-    embeddedMath
+    embeddedMath52
     NRFDrivers
     )
-# nRF5x52810 is built into radio
+# nRF5x52810 is built into radioSoC
 # NRFDrivers
 
 # declare transitive dependence
@@ -229,7 +281,11 @@ target_sources(fireflyInteractive
    PUBLIC
       ${FireflySources}
    )
-target_sources(firefly52810
+target_sources(firefly52810SDFanstel
+   PUBLIC
+      ${FireflySources}
+   )
+target_sources(firefly52810NoSDFanstel
    PUBLIC
       ${FireflySources}
    )
@@ -239,7 +295,8 @@ target_sources(firefly52810e
    )
 
 nRF5GenerateOtherArtifacts(fireflyInteractive)
-nRF5GenerateOtherArtifacts(firefly52810)
+nRF5GenerateOtherArtifacts(firefly52810SDFanstel)
+nRF5GenerateOtherArtifacts(firefly52810NoSDFanstel)
 nRF5GenerateOtherArtifacts(firefly52810e)
 
 # not generate FLASH_SOFTDEVICE target, already created by sniffer

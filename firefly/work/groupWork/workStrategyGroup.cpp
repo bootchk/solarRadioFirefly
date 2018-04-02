@@ -81,7 +81,7 @@ void WorkStrategyGroup::manageWorkOnlyRegularlyIfPowerAndMaster() {
  * When solar powered, only called when there is power.
  */
 void WorkStrategyGroup::doRandomWork() {
-	if (randomProbability(WorkFrequency::syncPeriodsBetweenWork())) {
+	if (Random::eventWInverseProbability(WorkFrequency::syncPeriodsBetweenWork())) {
 		GroupWork::initiateGroupWork(WorkFactory::make());
 	}
 }
