@@ -110,13 +110,16 @@ void logMessage() {
 
 	case MessageType::MasterSync:
 	case MessageType::WorkSync:
+
 	case MessageType::ControlNetGranularity:
 	case MessageType::ControlScatterClique:
 	case MessageType::ControlWorkTime:
 	case MessageType::ControlWorkCycle:
-	case MessageType::EnticingInferior:
-	case MessageType::MasterMergedAway:
-	case MessageType::SlaveMergedAway:
+
+	case MessageType::MergeOther:
+	case MessageType::MergeMyMasterDepart:
+	case MessageType::MergeMySlaveDepart:
+
 	case MessageType::AbandonMastership:
 	case MessageType::Info:
 		SEGGER_RTT_printf(0, " Sync ");

@@ -61,6 +61,26 @@ nRF5CheckTargetProperties(firefly52810e)
 nRF5ConfigTargetByProperties(firefly52810e)
 nRF5SetTargetStartupSources(firefly52810e)
 nRF5SetTargetsLinkerScript(firefly52810e "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810SD.ld")
+
+
+
+add_executable(firefly52810eNoSD "")
+
+set_target_properties( firefly52810eNoSD
+    PROPERTIES
+       CHIP "nrf52810e"
+       SOFTDEVICE "none"
+       FLOAT_ABI "soft"
+    )
+nRF5CheckTargetProperties(firefly52810eNoSD)
+nRF5ConfigTargetByProperties(firefly52810eNoSD)
+nRF5SetTargetStartupSources(firefly52810eNoSD)
+nRF5SetTargetsLinkerScript(firefly52810eNoSD "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810_xxaa.ld")
+nRF5SetTargetRTTUtilSources(firefly52810eNoSD)
+
+target_compile_definitions(firefly52810eNoSD PUBLIC BOARD_PCA10040)
+
+
     
 add_executable(firefly52810SDFanstel "")
 
@@ -77,7 +97,9 @@ nRF5SetTargetsLinkerScript(firefly52810SDFanstel "${CMAKE_SOURCE_DIR}/linkerScri
 
 
 
-# differences: no SD, linkerscript, 
+
+
+# differences: no SD, linkerscript, board
 add_executable(firefly52810NoSDFanstel "")
 
 set_target_properties( firefly52810NoSDFanstel
@@ -94,7 +116,7 @@ nRF5SetTargetStartupSources(firefly52810NoSDFanstel)
 nRF5SetTargetRTTUtilSources(firefly52810NoSDFanstel)
 nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810_xxaa.ld")
 
-
+target_compile_definitions(firefly52810NoSDFanstel PUBLIC BOARD_FANSTEL52810)
 
 
 
@@ -248,6 +270,16 @@ PRIVATE
 # nRF5x52810 is built into radioSoC
 # NRFDrivers
 
+
+target_link_libraries(firefly52810eNoSD
+PRIVATE
+    sleepSyncAgent52xNoSD
+    radioSoC52810NoSD
+    nRF5x52810
+    embeddedMath52
+    )
+    
+    
 # declare transitive dependence
 # target_link_libraries(radioSoC52810 nRF5x52810)
 
@@ -293,11 +325,16 @@ target_sources(firefly52810e
    PUBLIC
       ${FireflySources}
    )
+target_sources(firefly52810eNoSD
+   PUBLIC
+      ${FireflySources}
+   )
 
 nRF5GenerateOtherArtifacts(fireflyInteractive)
 nRF5GenerateOtherArtifacts(firefly52810SDFanstel)
 nRF5GenerateOtherArtifacts(firefly52810NoSDFanstel)
 nRF5GenerateOtherArtifacts(firefly52810e)
+nRF5GenerateOtherArtifacts(firefly52810eNoSD)
 
 # not generate FLASH_SOFTDEVICE target, already created by sniffer
 # nRF5AddCustomTargets(fireflyInteractive)
