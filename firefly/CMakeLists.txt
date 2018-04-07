@@ -131,13 +131,13 @@ set_target_properties( sleepSyncAgent52xSD
     )
     
     
-add_library(sleepSyncAgent52xNoSD STATIC IMPORTED)
-set_target_properties( sleepSyncAgent52xNoSD 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52xNoSD.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
-        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath52
-    )
+#add_library(sleepSyncAgent52xNoSD STATIC IMPORTED)
+#set_target_properties( sleepSyncAgent52xNoSD 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52xNoSD.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+#        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath52
+#    )
 
 # with provisioning
 #IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a  
@@ -155,33 +155,37 @@ set_target_properties( radioSoC52810
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
         IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
     )
-add_library(radioSoC52810NoSD STATIC IMPORTED)
-set_target_properties( radioSoC52810NoSD
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52810NoSD.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
-        IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
-    )
+    
+    
+# OBSOLETE since now using subdirectory
+
+#add_library(radioSoC52810NoSD STATIC IMPORTED)
+#set_target_properties( radioSoC52810NoSD
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52810NoSD.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
+#        IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
+#    )
 
 
+#add_library(nRF5x52 STATIC IMPORTED)
+#set_target_properties( nRF5x52
+#	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a
+#	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
+#	)
+	
+#add_library(nRF5x52810 STATIC IMPORTED)
+#set_target_properties( nRF5x52810 
+#	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/cmakeBuild/libnRF5x52810.a
+#	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
+#	)
 
 
-add_library(nRF5x52 STATIC IMPORTED)
-set_target_properties( nRF5x52
-	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a
-	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
-	)
-add_library(nRF5x52810 STATIC IMPORTED)
-set_target_properties( nRF5x52810 
-	PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/cmakeBuild/libnRF5x52810.a
-	INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/nRF5x/src"
-	)
-
-
-add_library(embeddedMath52 STATIC IMPORTED)
-set_target_properties( embeddedMath52 PROPERTIES 
-     IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
-     INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/embeddedMath/src" )
+# TODO TEMP making this a subdir
+#add_library(embeddedMath52 STATIC IMPORTED)
+#set_target_properties( embeddedMath52 PROPERTIES 
+#     IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
+#     INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/embeddedMath/src" )
 
 
 
@@ -212,20 +216,7 @@ set_target_properties( BLEProvisionee52810e
 
 
 
-IF(EXISTS /home/bootch/git/radioSoC/Debug52/libradioSoC52.a)
-else()
-    message("FATAL_ERROR libradioSoC52.a not exist")
-ENDIF()
 
-IF(EXISTS /home/bootch/git/nRF5x/Debug52/libnRF5x52.a )
-else()
-    message("FATAL_ERROR libnRF5x52.a not exist")
-ENDIF()
-
-IF(EXISTS /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a)
-else()
-    message("FATAL_ERROR libembeddedMath52.a not exist")
-ENDIF()
 
 
 

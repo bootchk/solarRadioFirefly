@@ -166,11 +166,19 @@ Building in a separate directory: cmake_build (which is .gitignored)
 Status: builds sniffer app only.
 
 To use:
->mkdir cmakeBuild
->cmake -H. -B"cmakeBuild" -G "Ninja"
->cmake --build cmakeBuild --target sniffer
->cmake --build cmakeBuild --target fireflyInteractive
->cmake --build cmakeBuild --target firefly52810NoSDFanstel
+
+    mkdir cmakeBuild
+    cmake -H. -B"cmakeBuild" -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=/home/bootch/git/nRF5Cmake/toolchain-gnu-arm.cmake ..
+    cmake --build cmakeBuild --target sniffer
+    cmake --build cmakeBuild --target fireflyInteractive
+    cmake --build cmakeBuild --target firefly52810NoSDFanstel
+    
+Or:
+    
+    mkdir cmakeBuild
+    cd cmakeBuild
+    cmake -G "Ninja" -DCMAKE_TOOLCHAIN_FILE=/home/bootch/git/nRF5Cmake/toolchain-gnu-arm.cmake ..
+    cmake --build . --target firefly52810e
 
 The CMakeLists.txt for now only documents the build.
 It is intended to duplicate the Eclipse build configuration "Debug52DKwSD"

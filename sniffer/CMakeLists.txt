@@ -4,6 +4,16 @@ cmake_minimum_required(VERSION 3.5.1)
 project(sniffer C CXX ASM)
 
 
+
+# brief
+# app that runs on DK and listens continually, logging all messages
+# Does not use SD (logs SleepSync, not BT.)
+# Runs on nrf52832
+# Uses radioSoC to listen
+# Uses sleepSyncAgent for definitions of message types
+
+
+
 # Use cmake modules nRF5 specific
 set(CMAKE_MODULE_PATH "/home/bootch/git/nRF5Cmake/")
 message("${CMAKE_MODULE_PATH}")
@@ -35,6 +45,9 @@ nRF5x_addRTT()
 
 
 
+
+
+
 # Primary artifact
 # Executable cross compiled for embedded NRF52
 add_executable(sniffer "")
@@ -51,58 +64,59 @@ nRF5SetTargetStartupSources(sniffer)
 nRF5SetTargetsLinkerScript(sniffer "${CMAKE_SOURCE_DIR}/gcc_nrf52NoSD.ld")
 
 
+
+
+
+
+# build libs outside project
+# This builds libraries if needed, and brings their targets into current scope (import not needed)
+add_subdirectory( /home/bootch/git/embeddedMath embeddedMath52)
+add_subdirectory( /home/bootch/git/nRF5x nRF5x52)
+add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
+add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent52xNoSD)
+
+
+
+
+
+# OBSOLETE since now using subdirectories
 # import libs from outside project
 
-add_library(radioSoC52 STATIC IMPORTED)
-set_target_properties( radioSoC52 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52/libradioSoC52.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src/"
-    )
 
-add_library(nRF5x STATIC IMPORTED)
-set_target_properties( nRF5x PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a )
+#add_library(embeddedMath STATIC IMPORTED)
+#set_target_properties( embeddedMath 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/embeddedMath/src"
+#    )
 
-add_library(embeddedMath STATIC IMPORTED)
-set_target_properties( embeddedMath 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/embeddedMath/src"
-    )
+#add_library(nRF5x STATIC IMPORTED)
+#set_target_properties( nRF5x PROPERTIES IMPORTED_LOCATION /home/bootch/git/nRF5x/Debug52/libnRF5x52.a )
 
-add_library(sleepSyncAgentM4 STATIC IMPORTED)
-set_target_properties( sleepSyncAgentM4 
-    PROPERTIES 
-         IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/ArchiveArmM4/libsleepSyncAgentM4.a
-         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
-    )
+#add_library(radioSoC52 STATIC IMPORTED)
+#set_target_properties( radioSoC52 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52/libradioSoC52.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src/"
+#   )
 
+#add_library(sleepSyncAgentM4 STATIC IMPORTED)
+#set_target_properties( sleepSyncAgentM4 
+#    PROPERTIES 
+#         IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/ArchiveArmM4/libsleepSyncAgentM4.a
+#         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+#    )
 
-
-IF(EXISTS /home/bootch/git/radioSoC/Debug52/libradioSoC52.a)
-else()
-    message("FATAL_ERROR libradioSoC52.a not exist")
-ENDIF()
-
-IF(EXISTS /home/bootch/git/nRF5x/Debug52/libnRF5x52.a )
-else()
-    message("FATAL_ERROR libnRF5x52.a not exist")
-ENDIF()
-
-IF(EXISTS /home/bootch/git/embeddedMath/Debug52/libembeddedMath52.a)
-else()
-    message("FATAL_ERROR libembeddedMath52.a not exist")
-ENDIF()
 
 
 
 
 target_link_libraries(sniffer 
 PRIVATE
-    sleepSyncAgentM4
-    radioSoC52
-    nRF5x
-    embeddedMath
+    sleepSyncAgent52xNoSD
+    radioSoC52NoSD
+    nRF5x52
+    embeddedMath52
     )
 
 
@@ -128,4 +142,4 @@ target_sources(sniffer
 nRF5GenerateOtherArtifacts(sniffer)
 nRF5AddCustomTargets(sniffer)
 
-message("SDK_SOURCES: ${SDK_SOURCES}")
+message("SDK_SOURCES for sniffer: ${SDK_SOURCES}")
