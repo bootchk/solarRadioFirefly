@@ -27,12 +27,20 @@ nRF5SetBuildOptions()
 
 
 
+# build libs outside project
+# This builds libraries if needed, and brings their targets into current scope (import not needed)
+add_subdirectory( /home/bootch/git/embeddedMath embeddedMath52)
+add_subdirectory( /home/bootch/git/nRF5x nRF5x52)
+add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
+add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent52xNoSD)
 
 
-# Rest delegated to subdirs
 
-# Sniffer for sleepSync protocol
+
+# apps: delegate to subdirs
+
+# app: niffer for sleepSync protocol
 add_subdirectory(sniffer)
 
-# firefly app
+# app: firefly 
 add_subdirectory(firefly)

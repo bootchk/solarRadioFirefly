@@ -1,7 +1,7 @@
 
 cmake_minimum_required(VERSION 3.5.1)
 
-project(fireflyInteractive C CXX ASM)
+project(firefly C CXX ASM)
 
 
 # Use cmake modules nRF5 specific
@@ -28,20 +28,50 @@ nRF5SetIncludePaths()
 
 
 
-# Primary artifact
-# Executable cross compiled for NRF52832
-add_executable(fireflyInteractive "")
 
-set_target_properties( fireflyInteractive
+
+
+# Primary artifacts
+# App
+# Combinations of:
+# - chip nrf52832, nrf52810, nrf51?
+# - w or w/o provisioning (SD)
+# - board: NRF52DK, or custom board: Fanstel, WAVESHARE_r2, etc
+# - logging or not
+
+
+# Executable cross compiled for NRF52832, with SD
+add_executable(firefly52832SD "")
+
+set_target_properties( firefly52832SD
     PROPERTIES
        CHIP "nrf52832_xxaa"
        SOFTDEVICE "s132"
        FLOAT_ABI "soft"
     )
-nRF5CheckTargetProperties(fireflyInteractive)
-nRF5ConfigTargetByProperties(fireflyInteractive)
-nRF5SetTargetStartupSources(fireflyInteractive)
-nRF5SetTargetsLinkerScript(fireflyInteractive "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
+nRF5CheckTargetProperties(firefly52832SD)
+nRF5ConfigTargetByProperties(firefly52832SD)
+nRF5SetTargetStartupSources(firefly52832SD)
+nRF5SetTargetsLinkerScript(firefly52832SD "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
+
+
+add_executable(firefly52832NoSD "")
+
+set_target_properties( firefly52832NoSD
+    PROPERTIES
+       CHIP "nrf52832_xxaa"
+       SOFTDEVICE "none"
+       FLOAT_ABI "soft"
+    )
+target_compile_definitions(firefly52832NoSD PUBLIC BOARD_PCA10040)
+
+nRF5CheckTargetProperties(firefly52832NoSD)
+nRF5ConfigTargetByProperties(firefly52832NoSD)
+nRF5SetTargetStartupSources(firefly52832NoSD)
+# RTT logging requires app_util
+nRF5SetTargetRTTUtilSources(firefly52832NoSD)
+nRF5SetTargetsLinkerScript(firefly52832NoSD "${CMAKE_SOURCE_DIR}/gcc_nrf52NoSD.ld")
+
 
 
 
@@ -102,6 +132,7 @@ nRF5SetTargetsLinkerScript(firefly52810SDFanstel "${CMAKE_SOURCE_DIR}/linkerScri
 # differences: no SD, linkerscript, board
 add_executable(firefly52810NoSDFanstel "")
 
+target_compile_definitions(firefly52810NoSDFanstel PRIVATE BOARD_FANSTEL52810)
 set_target_properties( firefly52810NoSDFanstel
     PROPERTIES
        CHIP "nrf52810_xxaa"
@@ -116,7 +147,11 @@ nRF5SetTargetStartupSources(firefly52810NoSDFanstel)
 nRF5SetTargetRTTUtilSources(firefly52810NoSDFanstel)
 nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810_xxaa.ld")
 
-target_compile_definitions(firefly52810NoSDFanstel PUBLIC BOARD_FANSTEL52810)
+
+
+
+
+
 
 
 
@@ -221,7 +256,7 @@ set_target_properties( BLEProvisionee52810e
 
 
 # ??? order is important unless we specify interlibrary dependencies
-target_link_libraries(fireflyInteractive 
+target_link_libraries(firefly52832SD 
 PRIVATE
     sleepSyncAgent
     radioSoC52wSD
@@ -230,6 +265,21 @@ PRIVATE
     BLEProvisionee
     NRFDrivers
     )
+
+
+
+target_link_libraries(firefly52832NoSD 
+PRIVATE
+    sleepSyncAgent52xNoSD
+    radioSoC52NoSD
+    nRF5x52
+    embeddedMath52
+    )
+    
+    
+    
+    
+    
 # Same for 52810 except for BLEProvisionee !!!
 target_link_libraries(firefly52810SDFanstel 
 PRIVATE
@@ -241,15 +291,22 @@ PRIVATE
     NRFDrivers
     )
 
+
+
+
 target_link_libraries(firefly52810NoSDFanstel 
 PRIVATE
     sleepSyncAgent52xNoSD
-    radioSoC52810NoSD
-    nRF5x52810
+    radioSoC52NoSD
+    nRF5x52
     embeddedMath52
     )
+# WAS
+#    sleepSyncAgent52xNoSD
+#    radioSoC52810NoSD
+#    nRF5x52810
+
     
-# this target uses cmake build libraries
 target_link_libraries(firefly52810e
 PRIVATE
     sleepSyncAgent
@@ -265,8 +322,8 @@ PRIVATE
 target_link_libraries(firefly52810eNoSD
 PRIVATE
     sleepSyncAgent52xNoSD
-    radioSoC52810NoSD
-    nRF5x52810
+    radioSoC52NoSD
+    nRF5x52
     embeddedMath52
     )
     
@@ -297,37 +354,25 @@ list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/work/distributed/workSyncMaintenanceClock.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/worker.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/power/powerAdjuster.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/power/workAndFishEnergyStrategy.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/other/boardManager.cpp"
    )
 
-target_sources(fireflyInteractive
-   PUBLIC
-      ${FireflySources}
-   )
-target_sources(firefly52810SDFanstel
-   PUBLIC
-      ${FireflySources}
-   )
-target_sources(firefly52810NoSDFanstel
-   PUBLIC
-      ${FireflySources}
-   )
-target_sources(firefly52810e
-   PUBLIC
-      ${FireflySources}
-   )
-target_sources(firefly52810eNoSD
-   PUBLIC
-      ${FireflySources}
-   )
+target_sources(firefly52832SD          PUBLIC ${FireflySources} )
+target_sources(firefly52832NoSD        PUBLIC ${FireflySources} )
+target_sources(firefly52810SDFanstel   PUBLIC ${FireflySources} )
+target_sources(firefly52810NoSDFanstel PUBLIC ${FireflySources} )
+target_sources(firefly52810e           PUBLIC ${FireflySources} )
+target_sources(firefly52810eNoSD       PUBLIC ${FireflySources} )
 
-nRF5GenerateOtherArtifacts(fireflyInteractive)
+nRF5GenerateOtherArtifacts(firefly52832SD)
+nRF5GenerateOtherArtifacts(firefly52832NoSD)
 nRF5GenerateOtherArtifacts(firefly52810SDFanstel)
 nRF5GenerateOtherArtifacts(firefly52810NoSDFanstel)
 nRF5GenerateOtherArtifacts(firefly52810e)
 nRF5GenerateOtherArtifacts(firefly52810eNoSD)
 
 # not generate FLASH_SOFTDEVICE target, already created by sniffer
-# nRF5AddCustomTargets(fireflyInteractive)
+# nRF5AddCustomTargets(firefly52832SD)
 
 

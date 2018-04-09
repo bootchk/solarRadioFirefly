@@ -67,18 +67,6 @@ nRF5SetTargetsLinkerScript(sniffer "${CMAKE_SOURCE_DIR}/gcc_nrf52NoSD.ld")
 
 
 
-
-# build libs outside project
-# This builds libraries if needed, and brings their targets into current scope (import not needed)
-add_subdirectory( /home/bootch/git/embeddedMath embeddedMath52)
-add_subdirectory( /home/bootch/git/nRF5x nRF5x52)
-add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
-add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent52xNoSD)
-
-
-
-
-
 # OBSOLETE since now using subdirectories
 # import libs from outside project
 
