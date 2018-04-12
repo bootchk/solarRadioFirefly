@@ -114,6 +114,7 @@ target_compile_definitions(firefly52810eNoSD PUBLIC BOARD_PCA10040)
     
 add_executable(firefly52810SDFanstel "")
 
+target_compile_definitions(firefly52810SDFanstel PRIVATE BOARD_FANSTEL52810)
 set_target_properties( firefly52810SDFanstel
     PROPERTIES
        CHIP "nrf52810_xxaa"
@@ -341,9 +342,10 @@ PRIVATE
 # other SDK sources are built into libraries e.g. SEGGER_RTT in radioSoC
 # and certain SDK modules in NRFDrivers
 list(APPEND FireflySources
-       "${CMAKE_CURRENT_LIST_DIR}/main.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/main/main.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/main/mainTask.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/main/powerManagedMain.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/workFacilitator.cpp"
-       "${CMAKE_CURRENT_LIST_DIR}/powerManagedMain.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/workSupervisor.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/parameters/workFrequency.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/parameters/workAmount.cpp"

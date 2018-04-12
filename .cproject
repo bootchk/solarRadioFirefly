@@ -121,7 +121,7 @@
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/gcc&quot;"/>
 									<listOptionValue builtIn="false" value="/home/bootch/git/radioSoC/Debug52Log"/>
 									<listOptionValue builtIn="false" value="/home/bootch/git/embeddedMath/Debug52"/>
-									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/sleepSyncAgent/ArchiveArmM4&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/sleepSyncAgent/Debug52Task&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/Debug52&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
