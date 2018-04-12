@@ -18,59 +18,60 @@
 
 void MainTask::onReset(void) {
 	/*
-		 * Compile time test to ensure that macro __FPU_USED is not set.
-		 * If it were set, then system_nrf52.c enables FPU hw,
-		 * consuming power that
-		 */
-		#ifdef __FPU_USED
-		#error "FPU used: ensure that FPU exceptions do not prevent sleep."
-		#endif
+	 * Compile time test to ensure that macro __FPU_USED is not set.
+	 * If it were set, then system_nrf52.c enables FPU hw,
+	 * consuming power that
+	 */
+#ifdef __FPU_USED
+#error "FPU used: ensure that FPU exceptions do not prevent sleep."
+#endif
 
-		#if NRF52
-		// This is not crucial:  MCU::enableInstructionCache();
-		#endif
+#if NRF52
+	// This is not crucial:  MCU::enableInstructionCache();
+#endif
 
-		/*
-		 * POR clears reset reasons.
-		 * But we are often debugging, so clear this register now to catch subsequent reset reasons.
-		 */
-		MCU::clearResetReason();
+	/*
+	 * POR clears reset reasons.
+	 * But we are often debugging, so clear this register now to catch subsequent reset reasons.
+	 */
+	MCU::clearResetReason();
 
-		/*
-		 * assert interrupts globally enabled i.e. PRIMASK
-		 * Starting clocks will enable IRQ and interrupt on event
-		 */
+	/*
+	 * assert interrupts globally enabled i.e. PRIMASK
+	 * Starting clocks will enable IRQ and interrupt on event
+	 */
 
-		/* Start LFClock and LongClock, sleeping until.
-		 * Takes 0.6mSec for LFRC to be running, .25seconds for LFXO
-		 *
-		 * Formerly just LongClock::start(); but didn't seem to insure Timer would work.
-		 *
-		 * Current code starts long clock (lfclock and rtc)
-		 * The timers will eventually work.
-		 * The first timeout is over long or inaccurate, until lfclock is stable.
-		 */
+	/* Start LFClock and LongClock, sleeping until.
+	 * Takes 0.6mSec for LFRC to be running, .25seconds for LFXO
+	 *
+	 * Formerly just LongClock::start(); but didn't seem to insure Timer would work.
+	 *
+	 * Current code starts long clock (lfclock and rtc)
+	 * The timers will eventually work.
+	 * The first timeout is over long or inaccurate, until lfclock is stable.
+	 */
 
-	#ifdef PROVISIONING
-		// requires libNRFDrivers, to use SD compatible modules from SDK
-		ClockFacilitator::startLongClockNoWaitUntilRunning();
-	#else
-		// requires access to PowerClock, which is blocked by SD.
-		ClockFacilitator::startLongClockWithSleepUntilRunning();
-	#endif
+#ifdef PROVISIONING
+	// requires libNRFDrivers, to use SD compatible modules from SDK
+	ClockFacilitator::startLongClockNoWaitUntilRunning();
+#else
+	// requires access to PowerClock, which is blocked by SD.
+	// Obsolete: ClockFacilitator::startLongClockWithSleepUntilRunning();
+	ClockFacilitator::startLongClockNoWaitUntilRunning();
+#endif
 
-		// We can use Timer even though it is not accurate
+	// We can use Timer even though it is not accurate
 
-		// So we can measure power.
-		SyncPowerManager::init();
+	// So we can measure power.
+	SyncPowerManager::init();
 
-		// ensure Clock running (Timer is init) and SyncPowerManager can measure power
+	// ensure Clock running (Timer is init) and SyncPowerManager can measure power
 }
 
 
 
 
-void MainTask::waitForMuchPowerReserve() {
+void MainTask::scheduleCheckPowerReserve() {
 	// Arrange callback
 	SyncAgent::connectOnMuchPowerReserve(MainTask::onMuchPowerReserve);
 
@@ -100,5 +101,6 @@ void MainTask::onMuchPowerReserve() {
 
 	PowerAdjuster::setUnconstrainedEnergy();
 #endif
-	// app and sleepSyncAgent are init
+	// app is init
+	// sleepSyncAgent will soon init
 }

@@ -26,9 +26,13 @@ int main() {
 
 	MainTask::onReset();
 
-	MainTask::waitForMuchPowerReserve();
-	// assert checkPowerReserve task is scheduled
-	// It might eventually schedule startup of SyncAgent loop on syncPeriods
+	MainTask::scheduleCheckPowerReserve();
+	/*
+	 * If ever power reserves are met (depends on solar power supply)
+	 * the checkPowerReserve task will schedule startup tasks of SyncAgent loop on syncPeriods
+	 * including a callback to onMuchPowerReserve()
+	 */
+
 
 	/*
 	 * loop on interrupts:
@@ -42,10 +46,12 @@ int main() {
 
 			/*
 			 * An ISR has completed.
-			 * Crux: low power algorithm, all devices off after every task completes.
 			 * Assert another interrupt will come (Timer scheduled or device is concurrently processing, set to interrupt.)
 			 */
-			assertUltraLowPower();
+			/*
+			 * Often, but not always, all devices off after a task completes.
+			 * Make assertions on power in the tasks that turn off devices.
+			 */
 		}
 
 }

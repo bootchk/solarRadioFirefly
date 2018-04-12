@@ -22,7 +22,7 @@ public:
 	 * then task will schedule onMuchPowerReserve,
 	 * else task will reschedule itself to check power again later.
 	 */
-	static void waitForMuchPowerReserve();
+	static void scheduleCheckPowerReserve();
 
 	/*
 	 * Invoked (callback) after power reserves adequate.
