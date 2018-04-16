@@ -16,6 +16,40 @@
 
 //__attribute__((noreturn))
 
+
+#include "nrf_soc.h"	// sd_app_evt_wait
+
+void sleep();
+
+#ifdef SOFTDEVICE_PRESENT
+/*
+ * Sequential multi-protocol: sleep implement depends on active protocol (BLE or SleepSync)
+ */
+// libBLEProvisionee
+#include <provisioner.h>
+
+void sleep() {
+	if (Provisioner::isProvisioning()) {
+		// Fails to link: MCUSleep::untilInterruptSDCompatible();
+		uint32_t errorCode = sd_app_evt_wait();
+		// always return NRF_SUCCESS, according to docs
+		(void) errorCode;
+	}
+	else {
+		MCUSleep::untilInterrupt();
+
+	}
+}
+#else
+void sleep() {
+	// MCUSleep::untilAnyEvent();
+	MCUSleep::untilInterrupt();
+}
+#endif
+
+
+
+
 int main() {
 	// assert embedded system startup is done.  SoC in reset state.
 
@@ -41,17 +75,16 @@ int main() {
 	 */
 
 	while (true) {
-			// MCUSleep::untilAnyEvent();
-			MCUSleep::untilInterrupt();
+		sleep();
 
-			/*
-			 * An ISR has completed.
-			 * Assert another interrupt will come (Timer scheduled or device is concurrently processing, set to interrupt.)
-			 */
-			/*
-			 * Often, but not always, all devices off after a task completes.
-			 * Make assertions on power in the tasks that turn off devices.
-			 */
-		}
+		/*
+		 * An ISR has completed.
+		 * Assert another interrupt will come (Timer scheduled or device is concurrently processing, set to interrupt.)
+		 */
+		/*
+		 * Often, but not always, all devices off after a task completes.
+		 * Make assertions on power in the tasks that turn off devices.
+		 */
+	}
 
 }

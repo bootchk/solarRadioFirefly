@@ -43,6 +43,7 @@ nRF5SetIncludePaths()
 # Executable cross compiled for NRF52832, with SD
 add_executable(firefly52832SD "")
 
+target_compile_definitions(firefly52832SD PRIVATE BOARD_NRF52DK)
 set_target_properties( firefly52832SD
     PROPERTIES
        CHIP "nrf52832_xxaa"
@@ -53,6 +54,7 @@ nRF5CheckTargetProperties(firefly52832SD)
 nRF5ConfigTargetByProperties(firefly52832SD)
 nRF5SetTargetStartupSources(firefly52832SD)
 nRF5SetTargetsLinkerScript(firefly52832SD "${CMAKE_SOURCE_DIR}/gcc_nrf52.ld")
+
 
 
 add_executable(firefly52832NoSD "")
@@ -158,13 +160,13 @@ nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerSc
 
 # import libs from outside project
 
-add_library(sleepSyncAgent52xSD STATIC IMPORTED)
-set_target_properties( sleepSyncAgent52xSD 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52832.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
-        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath52
-    )
+#add_library(sleepSyncAgent52xSD STATIC IMPORTED)
+#set_target_properties( sleepSyncAgent52xSD 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/cmakeBuild/src/libsleepSyncAgent52832.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/sleepSyncAgent/src"
+#        IMPORTED_LINK_INTERFACE_LIBRARIES embeddedMath52
+#    )
     
     
 #add_library(sleepSyncAgent52xNoSD STATIC IMPORTED)
@@ -229,26 +231,26 @@ add_library(NRFDrivers STATIC IMPORTED)
 set_target_properties( NRFDrivers PROPERTIES IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a )
 
 
-add_library(BLEProvisionee STATIC IMPORTED)
-set_target_properties( BLEProvisionee 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
-    )
+#add_library(BLEProvisionee STATIC IMPORTED)
+#set_target_properties( BLEProvisionee 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
+#    )
 # Same library but built for 52810
-add_library(BLEProvisionee52810 STATIC IMPORTED)
-set_target_properties( BLEProvisionee52810 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
-    )
+#add_library(BLEProvisionee52810 STATIC IMPORTED)
+#set_target_properties( BLEProvisionee52810 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
+#    )
 # Same library but built for 52810e emulated
-add_library(BLEProvisionee52810e STATIC IMPORTED)
-set_target_properties( BLEProvisionee52810e 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810e.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
-    )
+#add_library(BLEProvisionee52810e STATIC IMPORTED)
+#set_target_properties( BLEProvisionee52810e 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/libBLEProvisionee/Debug/libBLEProvisionee52810e.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/libBLEProvisionee/objects"
+#    )
 
 
 
@@ -259,7 +261,7 @@ set_target_properties( BLEProvisionee52810e
 # ??? order is important unless we specify interlibrary dependencies
 target_link_libraries(firefly52832SD 
 PRIVATE
-    sleepSyncAgent
+    sleepSyncAgent52xSD
     radioSoC52wSD
     nRF5x52
     embeddedMath52

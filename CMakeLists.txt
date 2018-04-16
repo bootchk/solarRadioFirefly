@@ -34,7 +34,10 @@ add_subdirectory( /home/bootch/git/nRF5x nRF5x52)
 add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
 add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent52xNoSD)
 
+add_subdirectory( /home/bootch/git/libBLEProvisionee BLEProvisionee)
 
+#set(installBase Foo)
+#include("${CMAKE_INSTALL_PREFIX}/lib/cmake/embeddedMathTargets.cmake")
 
 
 # apps: delegate to subdirs
