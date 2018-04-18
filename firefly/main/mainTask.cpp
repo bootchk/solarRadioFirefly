@@ -51,7 +51,7 @@ void MainTask::onReset(void) {
 	 * The first timeout is over long or inaccurate, until lfclock is stable.
 	 */
 
-#ifdef PROVISIONING
+#ifdef SOFTDEVICE_PRESENT
 	// requires libNRFDrivers, to use SD compatible modules from SDK
 	ClockFacilitator::startLongClockNoWaitUntilRunning();
 #else

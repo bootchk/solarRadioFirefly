@@ -157,7 +157,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52810.cpp|gcc_startup_nrf52810.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>
@@ -409,7 +409,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf51"/>
 					</sourceEntries>
 				</configuration>
@@ -726,7 +726,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="app_util_platform.cpp" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf51"/>
 					</sourceEntries>
 				</configuration>
@@ -901,7 +901,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52810.cpp|gcc_startup_nrf52810.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>
@@ -1057,7 +1057,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf51"/>
 					</sourceEntries>
 				</configuration>
@@ -1230,7 +1230,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52810.cpp|gcc_startup_nrf52810.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>
@@ -1427,7 +1427,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52.cpp|gcc_startup_nrf52.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>
@@ -1692,7 +1692,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52.cpp|gcc_startup_nrf52.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>
@@ -1959,7 +1959,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52.cpp|gcc_startup_nrf52.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>
@@ -2149,7 +2149,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
+						<entry excluding="cruft|work/workParameters" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="firefly"/>
 						<entry excluding="system_nrf52810.cpp|gcc_startup_nrf52810.S" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="nrf52"/>
 					</sourceEntries>
 				</configuration>

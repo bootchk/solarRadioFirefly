@@ -71,7 +71,7 @@ void WorkFacilitator::init() {
 	WorkControlProxy::setWorkTimeControlCallback(WorkClock::syncToPast);
 	WorkControlProxy::setWorkCycleControlCallback(WorkFrequency::setSyncPeriodsBetweenWorkCoded);
 
-#ifdef PROVISIONING
+#ifdef SOFTDEVICE_PRESENT
 	WorkProvisioner::setConverterFunc(WorkClock::convertPeriodsElapsedToClockAdvance);
 #endif
 }
