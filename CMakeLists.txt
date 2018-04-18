@@ -31,7 +31,7 @@ nRF5SetBuildOptions()
 # This builds libraries if needed, and brings their targets into current scope (import not needed)
 add_subdirectory( /home/bootch/git/embeddedMath embeddedMath52)
 add_subdirectory( /home/bootch/git/nRF5x nRF5x52)
-add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
+#add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
 add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent52xNoSD)
 
 add_subdirectory( /home/bootch/git/libBLEProvisionee BLEProvisionee)

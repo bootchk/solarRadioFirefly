@@ -180,19 +180,22 @@ nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerSc
 # with provisioning
 #IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a  
 
-add_library(radioSoC52wSD STATIC IMPORTED)
-set_target_properties( radioSoC52wSD 
+if(NOT TARGET radioSoC52SD)
+add_library(radioSoC52SD STATIC IMPORTED)
+set_target_properties( radioSoC52SD 
     PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/radioSoC/Debug52wSD/libradioSoC52wSD.a
+        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52SD.a
         INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
     )
-add_library(radioSoC52810 STATIC IMPORTED)
-set_target_properties( radioSoC52810 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52810.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
-        IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
-    )
+endif()
+ 
+#add_library(radioSoC52810 STATIC IMPORTED)
+#set_target_properties( radioSoC52810 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52810.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
+#        IMPORTED_LINK_INTERFACE_LIBRARIES nRF5x52810
+#    )
     
     
 # OBSOLETE since now using subdirectory
@@ -262,7 +265,7 @@ set_target_properties( NRFDrivers PROPERTIES IMPORTED_LOCATION /home/bootch/git/
 target_link_libraries(firefly52832SD 
 PRIVATE
     sleepSyncAgent52xSD
-    radioSoC52wSD
+    radioSoC52SD
     nRF5x52
     embeddedMath52
     BLEProvisionee
@@ -287,7 +290,7 @@ PRIVATE
 target_link_libraries(firefly52810SDFanstel 
 PRIVATE
     sleepSyncAgent
-    radioSoC52wSD
+    radioSoC52SD
     nRF5x52
     embeddedMath52
     BLEProvisionee52810
@@ -346,7 +349,6 @@ PRIVATE
 list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/main/main.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/main/mainTask.cpp"
-       "${CMAKE_CURRENT_LIST_DIR}/main/powerManagedMain.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/workFacilitator.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/workSupervisor.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/parameters/workFrequency.cpp"
@@ -361,6 +363,9 @@ list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/power/workAndFishEnergyStrategy.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/other/boardManager.cpp"
    )
+   
+# obsolete
+#"${CMAKE_CURRENT_LIST_DIR}/main/powerManagedMain.cpp"
 
 target_sources(firefly52832SD          PUBLIC ${FireflySources} )
 target_sources(firefly52832NoSD        PUBLIC ${FireflySources} )

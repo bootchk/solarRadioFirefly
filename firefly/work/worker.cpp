@@ -1,5 +1,5 @@
 
-#include <radioSoC.h>	// LEDFlasher
+#include <radioSoC.h>	// LEDFlasherTask
 
 #include "worker.h"
 #include "parameters/workAmount.h"
@@ -50,8 +50,10 @@ void Worker::workManagedAmount() {
 	//workInFuture();
 }
 
+
 void Worker::workAmount(unsigned int aAmount) {
-	LEDFlasher::flashLEDByAmount(1, aAmount);
+	//LEDFlasher::flashLEDByAmount(1, aAmount);
+	LEDFlasherTask::flashLEDByAmount(aAmount);
 }
 
 
@@ -64,5 +66,6 @@ void Worker::workAmount(unsigned int aAmount) {}
 
 
 unsigned int Worker::maxWorkAmount() {
-	return LEDFlasher::MaxFlashAmount;
+	return LEDFlasherTask::MaxFlashAmount;
+
 }
