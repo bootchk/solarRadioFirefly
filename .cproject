@@ -92,6 +92,7 @@
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/softdevice/s132/headers&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/drivers_nrf/nrf_soc_nosd&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/device&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/drivers_nrf/hal&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${NRF_SDK}/components/toolchain/cmsis/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/nRF5x/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MY_SDK}/sleepSyncAgent/src&quot;"/>
@@ -123,6 +124,7 @@
 									<listOptionValue builtIn="false" value="/home/bootch/git/embeddedMath/Debug52"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/sleepSyncAgent/Debug52Task&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/nRF5x/Debug52&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/home/bootch/git/libNRFDrivers/cmakeBuild&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}}&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs.637571428" name="Libraries (-l)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.libs" useByScannerDiscovery="false" valueType="libs">
@@ -130,6 +132,7 @@
 									<listOptionValue builtIn="false" value="radioSoC52Log"/>
 									<listOptionValue builtIn="false" value="embeddedMath52"/>
 									<listOptionValue builtIn="false" value="nRF5x52"/>
+									<listOptionValue builtIn="false" value="NRFDrivers"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano.2019384492" name="Use newlib-nano (--specs=nano.specs)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other.1872715855" name="Other linker flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other" useByScannerDiscovery="false" value="-specs=nosys.specs" valueType="string"/>

@@ -7,7 +7,8 @@
 #include <exceptions/powerAssertions.h>
 
 
-//void testMain();
+// Alternative mains
+void testMain();
 //void powerManagedMain() __attribute__ ((noreturn));
 
 
@@ -54,7 +55,7 @@ int main() {
 	// assert embedded system startup is done.  SoC in reset state.
 
 	// Choose alternative main
-	//testMain();	// test harness
+	// testMain();	// test harness
 	// powerManagedMain();	// old design using sleep
     // or use RTC Task design as follows:
 

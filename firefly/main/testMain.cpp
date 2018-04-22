@@ -6,6 +6,16 @@
 
 #include <radioSoC.h>
 //#include "/home/bootch/git/nRF5x/src/services/customFlash.h"
+#include <modules/voltageComparator.h>
+
+#include "/home/bootch/git/libNRFDrivers/comparatorCoordinated.h"
+
+
+
+
+
+
+
 
 void testMain();
 
@@ -61,9 +71,27 @@ void testMain() {
 	 *
 	 * Determined that arm gdb will not step through this???
 	 */
+#ifdef NOT_USED
 	while(true) {
 		__SEV();
 		__WFE();
 		__WFE();
 	}
+#endif
+
+
+
+	/*
+	 * Test VoltageComparator
+	 */
+
+	VCompareResult result = VoltageComparator::compareToLowThreshold();
+
+#ifdef NOT_USED
+	ComparatorCoordinated::init();
+	ComparatorCoordinated::start();
+	unsigned int result = ComparatorCoordinated::sample();
+	result = ComparatorCoordinated::sample();
+	result = ComparatorCoordinated::sample();
+#endif
 }
