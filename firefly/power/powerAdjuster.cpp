@@ -61,13 +61,14 @@ void increaseUsageAndWorkLocally() {
 	// GroupWork::initiateGroupWork(WORK_VERSION);
 }
 
-
+#ifdef NOT_USED
 #ifdef POWER_IS_SOLAR
 void increasePowerUsageAndShedPower() {
 	EnergyStrategy::increaseUsage();
 	PowerShedder::shedPowerUntilVccLessThanVmax();
 	// assert power is not excess
 }
+#endif
 #endif
 
 } // namespace

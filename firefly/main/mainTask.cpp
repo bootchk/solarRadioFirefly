@@ -98,8 +98,10 @@ void MainTask::onMuchPowerReserve() {
 			WorkFacilitator::onPreSyncSlot);
 
 #ifndef POWER_IS_SOLAR
-
+#pragma message("POWER unconstrained, fishing many slots")
 	PowerAdjuster::setUnconstrainedEnergy();
+#else
+#pragma message("POWER_IS_SOLAR, fishing one slot")
 #endif
 	// app is init
 	// sleepSyncAgent will soon init

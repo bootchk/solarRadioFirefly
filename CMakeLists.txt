@@ -29,12 +29,12 @@ nRF5SetBuildOptions()
 
 # build libs outside project
 # This builds libraries if needed, and brings their targets into current scope (import not needed)
-add_subdirectory( /home/bootch/git/embeddedMath embeddedMath52)
-add_subdirectory( /home/bootch/git/nRF5x nRF5x52)
-#add_subdirectory( /home/bootch/git/radioSoC radioSoC52NoSD)
-add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent52xNoSD)
-
+add_subdirectory( /home/bootch/git/embeddedMath embeddedMath)
+add_subdirectory( /home/bootch/git/nRF5x nRF5x)
+add_subdirectory( /home/bootch/git/radioSoC radioSoCD)
+add_subdirectory( /home/bootch/git/sleepSyncAgent sleepSyncAgent)
 add_subdirectory( /home/bootch/git/libBLEProvisionee BLEProvisionee)
+add_subdirectory( /home/bootch/git/libNRFDrivers NRFDrivers)
 
 #set(installBase Foo)
 #include("${CMAKE_INSTALL_PREFIX}/lib/cmake/embeddedMathTargets.cmake")

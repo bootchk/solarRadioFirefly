@@ -6,9 +6,9 @@
 
 #include <radioSoC.h>
 //#include "/home/bootch/git/nRF5x/src/services/customFlash.h"
-#include <modules/voltageComparator.h>
-
-#include "/home/bootch/git/libNRFDrivers/comparatorCoordinated.h"
+//#include <modules/voltageComparator.h>
+//#include "/home/bootch/git/libNRFDrivers/comparatorCoordinated.h"
+#include "/home/bootch/git/nRF5x/src/drivers/adc/saadc.h"
 
 
 
@@ -67,19 +67,24 @@ void testMain() {
 	//int foo = *(uint32_t *)(0x20010004);	// addr out of range
 
 	/*
+	 * Test saadc
+	 */
+	VccMonitor::init();
+	signed int result = VccMonitor::getVccProportionTo255();
+	(void) result;
+
+#ifdef NOT_USED
+	/*
 	 * Test WFE, SEV sequence
 	 *
 	 * Determined that arm gdb will not step through this???
 	 */
-#ifdef NOT_USED
+
 	while(true) {
 		__SEV();
 		__WFE();
 		__WFE();
 	}
-#endif
-
-
 
 	/*
 	 * Test VoltageComparator
@@ -87,7 +92,9 @@ void testMain() {
 
 	VCompareResult result = VoltageComparator::compareToLowThreshold();
 
-#ifdef NOT_USED
+	/*
+	 * Test ComparatorCoordinated
+	 */
 	ComparatorCoordinated::init();
 	ComparatorCoordinated::start();
 	unsigned int result = ComparatorCoordinated::sample();

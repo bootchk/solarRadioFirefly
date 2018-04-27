@@ -27,12 +27,13 @@
 
 void WorkAndFishEnergyStrategy::increaseUsage() {
 	// Worker::increaseAmountWithoutExceedingTimerLimit();
-	SlottedFishSession::incrementFishSessionDuration(50);	// one slot
+	// TODO rename incrementFishSessionDurationBySlots
+	SlottedFishSession::incrementFishSessionDuration(1);	// one slot
 }
 
 void WorkAndFishEnergyStrategy::decreaseUsage(){
 	//Worker::decreaseAmount();
-	SlottedFishSession::decrementFishSessionDuration(50);	// 50 ticks, one slot
+	SlottedFishSession::decrementFishSessionDuration(1);	// one slot
 }
 
 void WorkAndFishEnergyStrategy::maintainUsage(){

@@ -117,6 +117,7 @@ target_compile_definitions(firefly52810eNoSD PUBLIC BOARD_PCA10040)
 add_executable(firefly52810SDFanstel "")
 
 target_compile_definitions(firefly52810SDFanstel PRIVATE BOARD_FANSTEL52810)
+target_compile_definitions(firefly52810SDFanstel PRIVATE POWER_IS_SOLAR)
 set_target_properties( firefly52810SDFanstel
     PROPERTIES
        CHIP "nrf52810_xxaa"
@@ -135,7 +136,9 @@ nRF5SetTargetsLinkerScript(firefly52810SDFanstel "${CMAKE_SOURCE_DIR}/linkerScri
 # differences: no SD, linkerscript, board
 add_executable(firefly52810NoSDFanstel "")
 
+# !!!! Solar power so doesn't fish as much
 target_compile_definitions(firefly52810NoSDFanstel PRIVATE BOARD_FANSTEL52810)
+target_compile_definitions(firefly52810NoSDFanstel PRIVATE POWER_IS_SOLAR)
 set_target_properties( firefly52810NoSDFanstel
     PROPERTIES
        CHIP "nrf52810_xxaa"
@@ -149,6 +152,7 @@ nRF5SetTargetStartupSources(firefly52810NoSDFanstel)
 # TODO the rest of RTT is built into radioSoC, why isn't this?
 nRF5SetTargetRTTUtilSources(firefly52810NoSDFanstel)
 nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerScripts/nrf52810_xxaa.ld")
+
 
 
 
@@ -180,14 +184,14 @@ nRF5SetTargetsLinkerScript(firefly52810NoSDFanstel "${CMAKE_SOURCE_DIR}/linkerSc
 # with provisioning
 #IMPORTED_LOCATION /home/bootch/git/sleepSyncAgent/DebugProvisioned/libsleepSyncAgentM4Provisioned.a  
 
-if(NOT TARGET radioSoC52SD)
-add_library(radioSoC52SD STATIC IMPORTED)
-set_target_properties( radioSoC52SD 
-    PROPERTIES 
-        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52SD.a
-        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
-    )
-endif()
+#if(NOT TARGET radioSoC52SD)
+#add_library(radioSoC52SD STATIC IMPORTED)
+#set_target_properties( radioSoC52SD 
+#    PROPERTIES 
+#        IMPORTED_LOCATION /home/bootch/git/radioSoC/cmakeBuild/libradioSoC52SD.a
+#        INTERFACE_INCLUDE_DIRECTORIES "/home/bootch/git/radioSoC/src"
+#    )
+#endif()
  
 #add_library(radioSoC52810 STATIC IMPORTED)
 #set_target_properties( radioSoC52810 
@@ -230,8 +234,9 @@ endif()
 
 
 
-add_library(NRFDrivers STATIC IMPORTED)
-set_target_properties( NRFDrivers PROPERTIES IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a )
+#add_library(NRFDrivers STATIC IMPORTED)
+#set_target_properties( NRFDrivers PROPERTIES 
+#    IMPORTED_LOCATION /home/bootch/git/libNRFDrivers/Debug/libNRFDrivers.a )
 
 
 #add_library(BLEProvisionee STATIC IMPORTED)
@@ -289,7 +294,7 @@ PRIVATE
 # Same for 52810 except for BLEProvisionee !!!
 target_link_libraries(firefly52810SDFanstel 
 PRIVATE
-    sleepSyncAgent
+    sleepSyncAgent52xSD
     radioSoC52SD
     nRF5x52
     embeddedMath52
@@ -308,7 +313,6 @@ PRIVATE
     embeddedMath52
     )
 # WAS
-#    sleepSyncAgent52xNoSD
 #    radioSoC52810NoSD
 #    nRF5x52810
 
@@ -316,7 +320,7 @@ PRIVATE
 target_link_libraries(firefly52810e
 PRIVATE
     sleepSyncAgent
-    BLEProvisionee52810e
+    BLEProvisionee52810
     radioSoC52810
     embeddedMath52
     NRFDrivers
@@ -348,6 +352,7 @@ PRIVATE
 # and certain SDK modules in NRFDrivers
 list(APPEND FireflySources
        "${CMAKE_CURRENT_LIST_DIR}/main/main.cpp"
+       "${CMAKE_CURRENT_LIST_DIR}/main/testMain.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/main/mainTask.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/workFacilitator.cpp"
        "${CMAKE_CURRENT_LIST_DIR}/work/workSupervisor.cpp"
